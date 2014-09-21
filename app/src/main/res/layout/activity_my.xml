@@ -1,0 +1,105 @@
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    tools:context=".MyActivity"
+    android:background="@android:color/white"
+>
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_centerHorizontal="true"
+        android:weightSum="1"
+        android:baselineAligned="false">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        android:text="СКД ММК "
+        android:id="@+id/textView"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_above="@+id/LognText"
+        android:layout_alignParentRight="true"
+        android:textStyle="bold"
+        android:layout_gravity="center_horizontal"
+        android:textSize="40dp"
+        android:layout_weight="0.07" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Система контроля доступа ОАО ММК\n"
+            android:gravity="center"
+            android:id="@+id/textView"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentLeft="true"
+            android:layout_above="@+id/LognText"
+            android:layout_alignParentRight="true"
+            android:layout_gravity="center_horizontal"
+            android:textSize="26dp"
+            android:textColor="@android:color/darker_gray" />
+
+        <Button
+            android:id="@+id/Loginbutton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:drawableLeft="@drawable/u34"
+            android:text="@string/LoginBtn"
+            android:src="@android:drawable/ic_menu_gallery"
+            android:singleLine="false"
+            android:gravity="left"
+            android:background="@drawable/btm_aut"
+            android:drawablePadding="10dp"
+            android:textColor="#000000" />
+
+        <Button
+            android:id="@+id/SetKPP"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:drawableLeft="@drawable/u34"
+            android:text="@string/getKPP"
+            android:src="@android:drawable/ic_menu_gallery"
+            android:singleLine="false"
+            android:gravity="left"
+            android:background="@drawable/btn_inact"
+            android:drawablePadding="10dp"
+            android:textColor="@android:color/darker_gray"
+            />
+        <Button
+            android:id="@+id/ScanBtn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:drawableLeft="@drawable/u34"
+            android:text="@string/ScanBtn"
+            android:src="@android:drawable/ic_menu_gallery"
+            android:singleLine="false"
+            android:gravity="left"
+            android:background="@drawable/btn_inact"
+            android:drawablePadding="10dp"
+            android:textColor="@android:color/darker_gray"
+            />
+        <Button
+            android:id="@+id/ExitBtn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:drawableLeft="@drawable/u34"
+            android:text="@string/ExitBtn"
+            android:src="@android:drawable/ic_menu_gallery"
+            android:singleLine="false"
+            android:gravity="left"
+            android:background="@drawable/btn_inact"
+            android:drawablePadding="10dp"
+            android:textColor="@android:color/darker_gray"
+            />
+
+    </LinearLayout>
+
+
+ </RelativeLayout>

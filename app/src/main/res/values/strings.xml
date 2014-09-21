@@ -1,7 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">skdmobile</string>
+    <string name="app_name">Мобильный КПП</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Настройки</string>
+    <string name="LoginText">Информация о логине</string>
+    <string name="LoginBtn"><b>Авторизоваться</b>\n<font face="Arial" size="15">\nПоднесите личную карту к устройству</font></string>
+    <string name="getKPP"><b>Выбрать КПП</b>\n<font face="Arial" size="15">\nВоспользуйтесь поиском он быстрее поможет найти искомый пункт</font></string>
+    <string name="ScanBtn"><b>Сканировать карту</b>\n<font face="Arial" size="15">\nНажмите на кнопку и приложите считываемую карту к устройству</font></string>
+    <string name="ExitBtn"><b>Выход</b>\n<font face="Arial" size="15">\nЗакрытие смены и сихронизация с базой</font></string>
+    <string name="title_activity_login_activity1">Вход в систему</string>
+    <string name="ScanText">Сканировать карту</string>
+    <string name="CancBtnText">Отмена</string>
+    <string name="SaveBtnText">Сохранить</string>
+    <string name="ScanTxt">Сканировать</string>
+    <string name="syncT">Синхронизация</string>
+    <string name="offlineTx">Оффлайн считыватель</string>
+    <string name="title_activity_activity_scan_off">activity_scan_off</string>
+    <string name="hello"><b>Hello</b>\n<small> World  fh!</small><font face="Arial" size="10" color="red">Писееецццццц</font></string>
     <string name="title_activity_maps">Map</string>
 
 </resources>

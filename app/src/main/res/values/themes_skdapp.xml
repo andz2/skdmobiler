@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!-- Generated with http://android-holo-colors.com -->
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
+
+  <style name="SKDApp" parent="@style/_SKDApp"/>
+
+  <style name="_SKDApp" parent="android:Theme.Holo.Light">
+
+    <item name="android:buttonStyle">@style/ButtonSKDApp</item>
+
+    <item name="android:imageButtonStyle">@style/ImageButtonSKDApp</item>
+  </style>
+
+  <style name="CustomActionBarTheme"
+        parent="@android:style/Theme.Holo.Light">
+        <item name="android:actionBarStyle">@style/MyActionBar</item>
+  </style>
+
+    <!-- ActionBar styles -->
+    <style name="MyActionBar"
+        parent="@android:style/Widget.Holo.Light.ActionBar.Solid.Inverse">
+        <!---item name="android:background">@drawable/actionbar_background</item-->
+    </style>
+
+
+
+</resources>

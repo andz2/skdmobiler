@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:weightSum="1"
+    android:background="@android:color/white">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="378dp">
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="Сканирование не удалось"
+            android:id="@+id/textView"
+            android:textStyle="bold"
+            android:layout_gravity="center_horizontal"
+            android:textSize="40dp"
+            android:layout_alignParentLeft="false"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentRight="false"
+            android:gravity="center_horizontal|fill_vertical|top" />
+
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="1dp"
+            android:background="@android:color/darker_gray"
+            android:id="@+id/view"
+
+            android:layout_below="@+id/textView"
+            android:layout_alignParentLeft="true" />
+
+        <ImageView
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:id="@+id/imageView"
+            android:layout_gravity="center"
+            android:src="@drawable/rerr"
+            android:gravity="center_horizontal|bottom"
+            android:layout_centerVertical="true"
+            android:layout_centerHorizontal="true" />
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="Сканировать не удалось.\nНет связи с сервером.\n"
+            android:id="@+id/textView2"
+            android:textColor="#ffd82835"
+            android:textSize="18dp"
+            android:gravity="center_horizontal|bottom"
+            android:layout_gravity="center_horizontal|bottom"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentLeft="true" />
+
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:orientation="vertical"
+        android:layout_width="fill_parent"
+        android:layout_height="match_parent">
+
+        <Button
+            android:layout_width="fill_parent"
+            android:layout_height="60dp"
+            android:text="Попробовать ещё раз"
+            android:id="@+id/tryagain"
+            android:textSize="20dp"
+            android:width="150dp"
+            android:gravity="center_vertical|center_horizontal"
+            android:background="#65A1FD"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentLeft="true" />
+
+        <Button
+            android:layout_width="fill_parent"
+            android:layout_height="60dp"
+            android:text="Сканировать оффлайн"
+            android:id="@+id/offscan"
+            android:textSize="20dp"
+            android:width="150dp"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:gravity="center_vertical|center_horizontal"
+            android:background="#65A1FD" />
+
+    </RelativeLayout>
+
+</LinearLayout>
