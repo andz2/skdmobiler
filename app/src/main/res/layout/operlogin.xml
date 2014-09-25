@@ -50,7 +50,7 @@
             android:layout_height="wrap_content"
             android:id="@+id/imageView"
             android:layout_alignParentTop="true"
-            android:layout_alignRight="@+id/CancBn"
+            android:layout_alignRight="@+id/bk"
             android:layout_gravity="center_horizontal|top"
             android:src="@drawable/ust"
             android:layout_weight="0.54" /><![CDATA[
@@ -73,7 +73,7 @@
         android:layout_width="fill_parent"
         android:layout_height="60dp"
         android:text="Назад"
-        android:id="@+id/CancBn"
+        android:id="@+id/bk"
         android:background="#999999"
         android:layout_gravity="center_horizontal|bottom"
         android:gravity="center"
@@ -92,7 +92,7 @@
         android:textSize="18dp"
         android:gravity="center_horizontal"
         android:layout_gravity="center_horizontal|bottom"
-        android:layout_above="@+id/CancBn"
+        android:layout_above="@+id/bk"
         android:layout_alignParentLeft="true" />
 
 

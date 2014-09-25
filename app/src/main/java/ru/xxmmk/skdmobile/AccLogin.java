@@ -19,7 +19,7 @@ public class AccLogin extends Activity /*implements LoaderCallbacks<Cursor>*/{
     protected void onStart(){
         super.onStart();
         Log.d("here","us");
-        Button CnButton = (Button) findViewById(R.id.CancBn);
+        Button CnButton = (Button) findViewById(R.id.bk);
         mMobileSKDApp.SKDStep="2";
         CnButton.setOnClickListener(new View.OnClickListener() {
                                         @Override

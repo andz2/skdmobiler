@@ -15,7 +15,7 @@ import android.widget.Toast;
 
     public class SetKPPAct extends Activity {
 
-        String[] data = {"Проходная 1", "Проходная 2", "Проходная 3", "Проходная 4", "Склад 50"};
+        String[] data = {"Проходная 1", "Проходная 2", "Проходная 3", "Проходная 4", "Склад 50" , "ЭСПЦ Пост1"};
         String success;
         String kpp;
         private MobileSKDApp mMobileSKDApp;

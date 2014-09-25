@@ -19,7 +19,7 @@ public class ErrorLogin extends Activity /*implements LoaderCallbacks<Cursor>*/{
     protected void onStart(){
         super.onStart();
         Log.d("here","us");
-        Button CnButton = (Button) findViewById(R.id.CancBn);
+        Button CnButton = (Button) findViewById(R.id.bk);
         CnButton.setOnClickListener(new View.OnClickListener() {
                                         @Override
                                         public void onClick(View view) {

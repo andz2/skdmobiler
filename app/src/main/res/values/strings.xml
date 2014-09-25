@@ -19,5 +19,9 @@
     <string name="title_activity_activity_scan_off">activity_scan_off</string>
     <string name="hello"><b>Hello</b>\n<small> World  fh!</small><font face="Arial" size="10" color="red">Писееецццццц</font></string>
     <string name="title_activity_maps">Map</string>
+    <string name="title_activity_sec_cab">SecCab</string>
+    <string name="title_section1">Section 1</string>
+    <string name="title_section2">Section 2</string>
+    <string name="title_section3">Section 3</string>
 
 </resources>

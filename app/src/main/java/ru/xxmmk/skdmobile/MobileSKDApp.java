@@ -61,6 +61,7 @@ public class MobileSKDApp extends Application {
     private MobileSKDDB mDbHelper;
     private String mDataBasicURL = "https://navigator.mmk.ru/getdata.aspx";
     private String mLoginURL = "http://neptun.eco.mmk.chel.su:7777/pls/apex/XXOTA_APEX.XXHR_SKD_MOBILE.login";//"https://navigator.mmk.ru/login_kis.aspx";
+    public String mDatURL = "http://neptun.eco.mmk.chel.su:7777/pls/apex/XXOTA_APEX.MOBILE_SKD_VIEW";//"https://navigator.mmk.ru/login_kis.aspx";
     public String SKDOperator="Кто ВЫ?";
     public String SKDKPP="Укажите КПП";
     public String SKDRfId;

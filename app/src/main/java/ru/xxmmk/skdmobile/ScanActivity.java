@@ -194,7 +194,7 @@ public class ScanActivity extends Activity {
             });
 
          //   showProgress(true);
-            mWebView.loadUrl("http://neptun.eco.mmk.chel.su:7777/pls/apex/XXOTA_APEX.MOBILE_SKD_VIEW?p_card_id="+mCode);
+            mWebView.loadUrl(mMobileSKDApp.mDatURL+"?p_card_id="+mCode+"&p_kpp="+mMobileSKDApp.SKDKPP+"&p_op=1");
             mWebView.setWebViewClient(new WebViewClient() {
 
                 public void onPageFinished(WebView view, String url) {
@@ -258,14 +258,12 @@ public class ScanActivity extends Activity {
                 Intent intent = new Intent();
                 intent.setClass(ScanActivity.this, ErrorScan.class);
                 startActivity(intent);
-
                 //mWebView.loadUrl("file:///android_asset/loaderror.html");
-
             }
         });
 
         //showProgress(true);
-        mWebView.loadUrl("http://neptun.eco.mmk.chel.su:7777/pls/apex/XXOTA_APEX.MOBILE_SKD_VIEW?p_card_id="+CardId);
+        mWebView.loadUrl(mMobileSKDApp.mDatURL+"?p_card_id="+CardId+"&p_kpp="+mMobileSKDApp.SKDKPP+"&p_op=1");
    /*     mWebView.setWebViewClient(new WebViewClient() {
 
             public void onPageFinished(WebView view, String url) {

@@ -702,6 +702,9 @@ public class MyActivity extends Activity {
                                               if (mMobileSKDApp.SKDStep=="3")
                                               {
                                                   Log.d("exit","exit");
+                                                  mMobileSKDApp.SKDStep="1";
+                                                  mMobileSKDApp.SKDKPP="Укажите КПП";
+                                                  mMobileSKDApp.SKDOperator="Кто ВЫ?";
                                                   finish();
                                               }
                                           }

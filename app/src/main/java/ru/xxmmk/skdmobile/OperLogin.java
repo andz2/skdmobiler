@@ -4,31 +4,19 @@ package ru.xxmmk.skdmobile;
         import android.annotation.TargetApi;
         import android.app.ActionBar;
         import android.app.Activity;
-        import android.app.LoaderManager.LoaderCallbacks;
         import android.app.PendingIntent;
-        import android.content.ContentResolver;
         import android.content.Context;
-        import android.content.CursorLoader;
         import android.content.Intent;
         import android.content.IntentFilter;
-        import android.content.Loader;
         import android.content.pm.ActivityInfo;
-        import android.database.Cursor;
-        import android.net.Uri;
         import android.nfc.NfcAdapter;
         import android.os.AsyncTask;
 
         import android.os.Build;
         import android.os.Bundle;
         import android.os.Vibrator;
-        import android.provider.ContactsContract;
-        import android.text.TextUtils;
         import android.util.Log;
-        import android.view.KeyEvent;
         import android.view.View;
-        import android.view.View.OnClickListener;
-        import android.view.inputmethod.EditorInfo;
-        import android.widget.ArrayAdapter;
         import android.widget.AutoCompleteTextView;
         import android.widget.Button;
         import android.widget.EditText;
@@ -36,22 +24,10 @@ package ru.xxmmk.skdmobile;
 
         import org.apache.http.HttpEntity;
         import org.apache.http.HttpResponse;
-        import org.apache.http.HttpVersion;
         import org.apache.http.StatusLine;
         import org.apache.http.client.ClientProtocolException;
         import org.apache.http.client.HttpClient;
         import org.apache.http.client.methods.HttpGet;
-        import org.apache.http.conn.ClientConnectionManager;
-        import org.apache.http.conn.scheme.PlainSocketFactory;
-        import org.apache.http.conn.scheme.Scheme;
-        import org.apache.http.conn.scheme.SchemeRegistry;
-        import org.apache.http.conn.ssl.SSLSocketFactory;
-        import org.apache.http.impl.client.DefaultHttpClient;
-        import org.apache.http.impl.conn.tsccm.ThreadSafeClientConnManager;
-        import org.apache.http.params.BasicHttpParams;
-        import org.apache.http.params.HttpParams;
-        import org.apache.http.params.HttpProtocolParams;
-        import org.apache.http.protocol.HTTP;
         import org.json.JSONArray;
         import org.json.JSONException;
         import org.json.JSONObject;
@@ -60,9 +36,7 @@ package ru.xxmmk.skdmobile;
         import java.io.IOException;
         import java.io.InputStream;
         import java.io.InputStreamReader;
-        import java.util.ArrayList;
-        import java.util.List;
-        import ru.xxmmk.skdmobile.R;
+
         import android.nfc.Tag;
 
 /**
@@ -96,7 +70,7 @@ public class OperLogin extends Activity /*implements LoaderCallbacks<Cursor>*/{
     @Override
     protected void onStart(){
         super.onStart();
-        Button CnButton = (Button) findViewById(R.id.CancBn);
+        Button CnButton = (Button) findViewById(R.id.bk);
         CnButton.setOnClickListener(new View.OnClickListener() {
                                            @Override
                                            public void onClick(View view) {
