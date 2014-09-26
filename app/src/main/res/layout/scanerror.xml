@@ -58,7 +58,9 @@
     <RelativeLayout
         android:orientation="vertical"
         android:layout_width="fill_parent"
-        android:layout_height="140dp">
+        android:layout_height="140dp"
+        android:gravity="bottom"
+        android:layout_gravity="bottom">
 
         <Button
             android:layout_width="fill_parent"

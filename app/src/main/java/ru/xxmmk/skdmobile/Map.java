@@ -42,11 +42,11 @@ public class Map extends FragmentActivity implements OnClickListener {
 
         mMobileSKDApp = ((MobileSKDApp) this.getApplication());
         setContentView(R.layout.maps);
-        ActionBar myAB = getActionBar();
+    /*    ActionBar myAB = getActionBar();
         myAB.setTitle(mMobileSKDApp.SKDOperator);
         myAB.setSubtitle(mMobileSKDApp.SKDKPP);
         myAB.setDisplayShowHomeEnabled(false);
-        myAB.setDisplayHomeAsUpEnabled(false);
+        myAB.setDisplayHomeAsUpEnabled(false);*/
 
         setUpMapIfNeeded();
         locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);

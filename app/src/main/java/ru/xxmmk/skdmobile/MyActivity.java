@@ -18,6 +18,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.os.Vibrator;
+import android.text.Html;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -624,7 +625,8 @@ public class MyActivity extends Activity {
                 KPPbutton.setTextColor(Color.rgb(0,0,0));
                 Button Logbutton=(Button)findViewById(R.id.Loginbutton);
                 Logbutton.setBackgroundDrawable(getResources().getDrawable(R.drawable.btn_inact)); //setBackgroundResource
-                Logbutton.setTextColor(Color.rgb(65,169,4));
+                Logbutton.setTextColor(Color.rgb(65, 169, 4));
+                Logbutton.setText(Html.fromHtml(getResources().getString(R.string.seccabstr)));
                 mMobileSKDApp.SKDStep = "2";
                 //finish();
             } else {
@@ -654,7 +656,8 @@ public class MyActivity extends Activity {
         if (NfcAdapter.ACTION_TAG_DISCOVERED.equals(intent.getAction())) {
             Tag myTag = intent.getParcelableExtra(NfcAdapter.EXTRA_TAG);
             mMobileSKDApp.SKDRfId=bytesToHex(myTag.getId());
-            Log.d( mMobileSKDApp.SKDRfId, "=mCode");
+            mMobileSKDApp.SKDOperRfId=bytesToHex(myTag.getId());
+            Log.d( mMobileSKDApp.SKDOperRfId, "=mCode");
             attemptLogin();
             Log.d(mMobileSKDApp.SKDOperator,"operator !!!!!!");
             vibrate();
@@ -695,6 +698,7 @@ public class MyActivity extends Activity {
         Button Scanbutton=(Button)findViewById(R.id.ScanBtn);
         Button Exitbutton=(Button)findViewById(R.id.ExitBtn);
 
+
         Exitbutton.setOnClickListener(new View.OnClickListener() {
                                           @Override
                                           public void onClick(View view) {
@@ -711,10 +715,23 @@ public class MyActivity extends Activity {
                                       }
         );
 
+        Logbutton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+              //  Log.d("Go KPP","Go KPP");
+                if (mMobileSKDApp.SKDStep == "2") {
+                    Intent intent = new Intent(view.getContext(), SecCab.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    view.getContext().startActivity(intent);
+                }
+
+            }
+        });
+
         KPPbutton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Log.d("Go KPP","Go KPP");
+       //         Log.d("Go KPP","Go KPP");
                 if (mMobileSKDApp.SKDStep == "2") {
                     Intent intent = new Intent(view.getContext(), SetKPPAct.class);
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);

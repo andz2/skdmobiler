@@ -65,6 +65,7 @@ public class MobileSKDApp extends Application {
     public String SKDOperator="Кто ВЫ?";
     public String SKDKPP="Укажите КПП";
     public String SKDRfId;
+    public String SKDOperRfId;
     public String SKDRfIdCard;
     public String    SKDStep;
 
