@@ -72,7 +72,7 @@ public class SecCab extends  ActivityGroup  {
 
         tabSpec = tabHost.newTabSpec("tag2");
         tabSpec.setIndicator("Где ВЫ?");
-        tabSpec.setContent(new Intent(this, Map.class));
+        tabSpec.setContent(new Intent(this, MapSecCab.class));
         tabHost.addTab(tabSpec);
 
 

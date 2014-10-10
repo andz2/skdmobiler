@@ -50,7 +50,7 @@ public class OperLogin extends Activity /*implements LoaderCallbacks<Cursor>*/{
     /**
      * Keep track of the login task to ensure we can cancel it if requested.
      */
-    private UserLoginTask mAuthTask = null;
+    //private UserLoginTask mAuthTask = null;
 
     protected NfcAdapter nfcAdapter;
     protected PendingIntent nfcPendingIntent;
@@ -63,8 +63,11 @@ public class OperLogin extends Activity /*implements LoaderCallbacks<Cursor>*/{
     private MobileSKDApp mMobileSKDApp;
     private String mCode;
     private TextView ScanText4;
+    public String mCargo;
 
     private static final String TAG = OperLogin.class.getName();
+
+
 
 
     @Override
@@ -96,27 +99,7 @@ public class OperLogin extends Activity /*implements LoaderCallbacks<Cursor>*/{
     }
 
 
-    /**
-     * Attempts to sign in or register the account specified by the login form.
-     * If there are form errors (invalid email, missing fields, etc.), the
-     * errors are presented and no actual login attempt is made.
-     */
-    public void attemptLogin() {
-        if (mAuthTask != null) {
-            return;
-        }
 
-        boolean cancel = false;
-        View focusView = null;
-
-        if (cancel) {
-            focusView.requestFocus();
-        } else {
-//            showProgress(true); *************************************************************************подменить на показ окна
-            mAuthTask = new UserLoginTask(mMobileSKDApp.SKDRfId);
-            mAuthTask.execute((Void) null);
-        }
-    }
     private boolean isEmailValid(String email) {
         return true; //email.contains("@");
     }
@@ -162,115 +145,7 @@ public class OperLogin extends Activity /*implements LoaderCallbacks<Cursor>*/{
         }
     }
 
-    /**
-     * Represents an asynchronous login/registration task used to authenticate
-     * the user.
-     */
-    public class UserLoginTask extends AsyncTask<Void, Void, Boolean> {
 
-
-        private String mToken = "null";
-
-        UserLoginTask(String rfId) {
-                    }
-
-        @Override
-        protected Boolean doInBackground(Void... params) {
-            Boolean vStatus = false;
-            try {
-                StringBuilder builder = new StringBuilder();
-                HttpClient client =mMobileSKDApp.getNewHttpClient(); //new DefaultHttpClient();
-                HttpGet httpGet = new HttpGet(mMobileSKDApp.getLoginDataURL(mMobileSKDApp.SKDRfId));
-
-                Log.d(mMobileSKDApp.getLOG_TAG(), "OperLogin.UserLoginTask " +mMobileSKDApp.getLoginDataURL(mMobileSKDApp.SKDRfId));
-
-                try {
-                    HttpResponse response = client.execute(httpGet);
-                    StatusLine statusLine = response.getStatusLine();
-                    int statusCode = statusLine.getStatusCode();
-                    if (statusCode == 200 )
-                    {
-                        HttpEntity entity = response.getEntity();
-                        InputStream content = entity.getContent();
-                        BufferedReader reader = new BufferedReader(new InputStreamReader(content));
-                        String line;
-                        while ((line = reader.readLine()) != null) {
-                            builder.append(line);
-                        }
-                        try {
-                            //Toast.makeText(this.getBaseContext(), builder.toString(), Toast.LENGTH_LONG).show();
-                            JSONArray jsonArray = new JSONArray(builder.toString());
-                            for (int i=0;i<jsonArray.length();i++) {
-                                JSONObject jsonObject = jsonArray.getJSONObject(i);
-
-                                mToken = jsonObject.getString("token");
-                                mMobileSKDApp.SKDOperator = jsonObject.getString("oper");
-                                vStatus = true;
-                             //   Log.d(jsonObject.getString("oper"),"Tst");
-
-                            }
-                            //Toast.makeText(this.getBaseContext(),clientID, Toast.LENGTH_LONG).show();
-                        }
-                        catch (JSONException e) {
-                            e.printStackTrace();
-
-                        }
-                    }
-                    else {
-                        //Log.e("Login fail", "Login fail");
-                    }
-                }
-                catch (ClientProtocolException e) {
-                    e.printStackTrace();
-                }
-                catch (IOException e) {
-                    e.printStackTrace();
-                }
-
-                Thread.sleep(10);
-                vStatus = vStatus && !mToken.equals("null");
-                if (vStatus) {
-
-                       mMobileSKDApp.setmHASH(mToken);
-                    //  mMobileSKDApp.getmDbHelper().refreshOrgs(builder.toString());
-                    return true;
-                } else {
-                    return false;
-                }
-
-            } catch (InterruptedException e) {
-                return false;
-            }
-        }
-
-        @Override
-        protected void onPostExecute(final Boolean success) {
-            mAuthTask = null;
-           // showProgress(false); ******************************************************заменим потом
-
-            if (success) {
-                finish();
-            } else {
-             //   super.onCreate(savedInstanceState);
-                Log.d("go error page","way");
-                Intent intent = new Intent();
-                intent.setClass(OperLogin.this, ErrorLogin.class);
-
-                startActivity(intent);
-                finish();
-              //  setContentView(R.layout.error_l);
-
-            }
-        }
-
-        @Override
-        protected void onCancelled() {
-            mAuthTask = null;
-         //   showProgress(false);****************************************************тоже
-        }
-
-
-    }
     public void enableForegroundMode() {
         IntentFilter tagDetected = new IntentFilter(NfcAdapter.ACTION_TAG_DISCOVERED); // filter for all
         IntentFilter[] writeTagFilters = new IntentFilter[] {tagDetected};
@@ -311,17 +186,74 @@ public class OperLogin extends Activity /*implements LoaderCallbacks<Cursor>*/{
             mMobileSKDApp.SKDRfIdCard=bytesToHex(myTag.getId());
             Log.d( mMobileSKDApp.SKDRfIdCard, "=mCode");
             //attemptLogin();
+            Boolean vStatus = false;
+            try {
+                StringBuilder builder = new StringBuilder();
+                HttpClient client =mMobileSKDApp.getNewHttpClient(); //new DefaultHttpClient();
+                HttpGet httpGet = new HttpGet(mMobileSKDApp.getisCargoDataURL(mMobileSKDApp.SKDRfIdCard));
+                     Log.d(mMobileSKDApp.getLOG_TAG(), "OperLogin.UserLoginTask " +mMobileSKDApp.getLoginDataURL(mMobileSKDApp.SKDRfIdCard));
+                try {
+                    HttpResponse response = client.execute(httpGet);
+                    StatusLine statusLine = response.getStatusLine();
+                    int statusCode = statusLine.getStatusCode();
+                    if (statusCode == 200 )
+                    {
+                        HttpEntity entity = response.getEntity();
+                        InputStream content = entity.getContent();
+                        BufferedReader reader = new BufferedReader(new InputStreamReader(content));
+                        String line;
+                        while ((line = reader.readLine()) != null) {
+                            builder.append(line);
+                        }
+                        try {
+                            //Toast.makeText(this.getBaseContext(), builder.toString(), Toast.LENGTH_LONG).show();
+                            JSONArray jsonArray = new JSONArray(builder.toString());
+                            for (int i=0;i<jsonArray.length();i++) {
+                                JSONObject jsonObject = jsonArray.getJSONObject(i);
 
-        //    Log.d(mMobileSKDApp.SKDOperator,"operator !!!!!!");
+                                mCargo = jsonObject.getString("cargo");
+                                vStatus = true;
+                                  // Log.d(mCargo,"*******************************************************************");
+                            }
+                            //Toast.makeText(this.getBaseContext(),clientID, Toast.LENGTH_LONG).show();
+                        }
+                        catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    else {
+                        //Log.e("Login fail", "Login fail");
+                    }
+                }
+                catch (ClientProtocolException e) {
+                    e.printStackTrace();
+                }
+                catch (IOException e) {
+                    e.printStackTrace();
+                }
+                Thread.sleep(10);
+               // Log.d(mCargo,mCargo);
+                vStatus = vStatus && mCargo.equals("Y");
+                if (vStatus) {
+                    Log.d("Cargo way",mCargo);
+                    intent.setClass(OperLogin.this, CargoA.class);
+                    startActivity(intent);
+
+                } else {
+                    //intent.setClass(OperLogin.this, ScanActivity.class);
+                    intent.setClass(OperLogin.this, ScanActAll.class);
+                    startActivity(intent);
+                }
+
+            } catch (InterruptedException e) {
+
+            }
             vibrate();
-            Log.d("Поехали","action !!!!!!");
-        //    Intent intentSt = new Intent(this, MyActivity.class);
-        //    startActivityForResult(intentSt, 1);
-
+            //Log.d("Поехали","action !!!!!!");
+/*
             intent.setClass(OperLogin.this, ScanActivity.class);
-//            intent.setClass(OperLogin.this, ErrorScan.class);
             startActivity(intent);
-
+*/
         }
     }
 

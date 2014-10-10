@@ -37,7 +37,7 @@
                  android:layout_width="fill_parent"
                  android:layout_height="wrap_content"
                  android:text="Сканирование оффлайн"
-                 android:id="@+id/textView"
+                 android:id="@+id/x101"
                  android:textStyle="bold"
                  android:layout_gravity="center_horizontal"
                  android:textSize="40dp"

@@ -13,7 +13,7 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:text="Выбор КПП "
-            android:id="@+id/textView"
+            android:id="@+id/xx111"
             android:textStyle="bold"
             android:layout_gravity="center_horizontal"
             android:textSize="40dp"
@@ -32,9 +32,9 @@
             android:textSize="16dp"
 
             android:layout_weight="0.12"
-            android:layout_marginTop="33dp"
-            android:layout_below="@+id/textView"
-            android:layout_alignParentLeft="true" />
+            android:layout_below="@+id/xx111"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
 
         <View
             android:layout_width="fill_parent"

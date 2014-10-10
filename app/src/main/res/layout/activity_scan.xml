@@ -10,7 +10,8 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="xxmmk.mobileskd.LoginActivity"
     android:background="@android:color/white"
-    android:baselineAligned="false">
+    android:baselineAligned="false"
+    android:weightSum="1">
 
     <!-- Login progress -->
     <ProgressBar
@@ -22,29 +23,35 @@
         android:visibility="gone"
         android:clickable="false" />
 
-    <ScrollView
-        android:id="@+id/login_form"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        style="@style/_SKDApp" >
-
-    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-
-    tools:context="xxmmk.mobileskd.ScanActivity"
-    android:id="@+id/ScanText3"
-    android:background="@android:color/white">
-
         <WebView
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
+        android:layout_height="250dp"
         android:id="@+id/webView1"
-        android:layout_alignParentLeft="true" />
+        android:layout_alignParentLeft="true"
+            android:layout_weight="0.07" />
 
-        </RelativeLayout>
-    </ScrollView>
+    <TabHost
+        android:id="@+id/tabhostscan"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:weightSum="1">
+
+            <TabWidget
+                android:id="@android:id/tabs"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <FrameLayout
+                android:id="@android:id/tabcontent"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.86" />
+        </LinearLayout>
+    </TabHost>
 </LinearLayout>

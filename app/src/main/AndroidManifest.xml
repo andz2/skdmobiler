@@ -58,6 +58,10 @@
             android:label="@string/title_activity_maps" >
         </activity>
         <activity
+            android:name=".MapSecCab"
+            android:label="@string/title_activity_maps" >
+        </activity>
+        <activity
             android:name=".MapsActivity"
             android:label="@string/title_activity_maps"
             android:parentActivityName=".MyActivity" >
@@ -70,6 +74,10 @@
             android:name=".LastKpp"
             android:label="Последние КПП" >
         </activity>
+        <activity
+            android:name=".MatIt"
+            android:label="Мат. ценности" >
+        </activity>
 
         <meta-data
             android:name="com.google.android.gms.version"
@@ -78,6 +86,22 @@
             android:name="com.google.android.maps.v2.API_KEY"
             android:value="@string/google_maps_key" />
 
+        <activity
+            android:name=".ListKpp"
+            android:label="@string/title_activity_list_kpp" >
+        </activity>
+        <activity
+            android:name=".CargoA"
+            android:label="@string/title_activity_cargo" >
+        </activity>
+        <activity
+            android:name=".ScanActAll"
+            android:label="@string/title_activity_scan_act_all" >
+        </activity>
+        <activity
+            android:name=".SecCabAll"
+            android:label="@string/title_activity_sec_cab_all" >
+        </activity>
     </application>
 
     <uses-permission android:name="android.permission.INTERNET" />

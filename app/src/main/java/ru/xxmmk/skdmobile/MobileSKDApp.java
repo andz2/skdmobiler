@@ -62,12 +62,13 @@ public class MobileSKDApp extends Application {
     private String mDataBasicURL = "https://navigator.mmk.ru/getdata.aspx";
     private String mLoginURL = "http://neptun.eco.mmk.chel.su:7777/pls/apex/XXOTA_APEX.XXHR_SKD_MOBILE.login";//"https://navigator.mmk.ru/login_kis.aspx";
     public String mDatURL = "http://neptun.eco.mmk.chel.su:7777/pls/apex/XXOTA_APEX.MOBILE_SKD_VIEW";//"https://navigator.mmk.ru/login_kis.aspx";
+    public String mDatURL2 = "http://neptun.eco.mmk.chel.su:7777/pls/apex/XXOTA_APEX.XXHR_SKD_MOBILE.is_cargo";//"https://navigator.mmk.ru/login_kis.aspx";
     public String SKDOperator="Кто ВЫ?";
     public String SKDKPP="Укажите КПП";
     public String SKDRfId;
     public String SKDOperRfId;
     public String SKDRfIdCard;
-    public String    SKDStep;
+    public String    SKDStep = "1";
 
 
     public String getDataURL(String mCode) {
@@ -91,6 +92,9 @@ public class MobileSKDApp extends Application {
     }
     public String getLoginDataURL(String rfId) {
         return this.mLoginURL+"?rfid="+rfId;
+    }
+    public String getisCargoDataURL(String rfId) {
+        return this.mDatURL2+"?p_card_id="+rfId;
     }
 
     public String getmHASH() {

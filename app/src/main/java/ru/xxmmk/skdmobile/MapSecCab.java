@@ -1,31 +1,26 @@
 package ru.xxmmk.skdmobile;
 
 import android.app.ActionBar;
-import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.location.Location;
-import android.support.v4.app.FragmentActivity;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
+import android.util.Log;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.Button;
 
-import com.google.android.gms.maps.CameraUpdate;
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.android.gms.maps.CameraUpdateFactory;
-import android.location.Location;
-import android.location.LocationListener;
-import android.view.View.OnClickListener;
-import android.location.LocationManager;
-import android.util.Log;
-import android.view.KeyEvent;
-import android.view.MenuItem;
-import android.view.View;
-import android.widget.Button;
 
 
-public class Map extends FragmentActivity implements OnClickListener {
+public class MapSecCab extends FragmentActivity implements OnClickListener {
     private MobileSKDApp mMobileSKDApp;
     private GoogleMap mMap; // Might be null if Google Play services APK is not available.
     private LocationManager locationManager;
@@ -41,17 +36,18 @@ public class Map extends FragmentActivity implements OnClickListener {
 
 
         mMobileSKDApp = ((MobileSKDApp) this.getApplication());
-        setContentView(R.layout.maps);
+        setContentView(R.layout.maps_sec_cab);
         ActionBar myAB = getActionBar();
         myAB.setTitle(mMobileSKDApp.SKDOperator);
         myAB.setSubtitle(mMobileSKDApp.SKDKPP);
         myAB.setDisplayShowHomeEnabled(false);
-       /* myAB.setDisplayHomeAsUpEnabled(false);*/
+        myAB.setDisplayHomeAsUpEnabled(false);
 
         setUpMapIfNeeded();
         locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
+
         button=(Button)findViewById(R.id.bk);
-        button.setOnClickListener(new View.OnClickListener() {
+        button.setOnClickListener(new OnClickListener() {
             public void onClick(View v) {
                 finish();
             }
@@ -87,7 +83,8 @@ public class Map extends FragmentActivity implements OnClickListener {
         @Override
         public void onLocationChanged(Location location) {
            // showLocation(location);
-           drawMarker(location);
+
+     //      drawMarker(location);
         }
 
         @Override
@@ -150,14 +147,14 @@ public class Map extends FragmentActivity implements OnClickListener {
      * installed) and the map has not already been instantiated.. This will ensure that we only ever
      * call {@link #setUpMap()} once when {@link #mMap} is not null.
      * <p>
-     * If it isn't installed {@link SupportMapFragment} (and
+     * If it isn't installed {@link com.google.android.gms.maps.SupportMapFragment} (and
      * {@link com.google.android.gms.maps.MapView MapView}) will show a prompt for the user to
      * install/update the Google Play services APK on their device.
      * <p>
      * A user can return to this FragmentActivity after following the prompt and correctly
      * installing/updating/enabling the Google Play services. Since the FragmentActivity may not
      * have been completely destroyed during this process (it is likely that it would only be
-     * stopped or paused), {@link #onCreate(Bundle)} may not be called again so we should call this
+     * stopped or paused), {@link #onCreate(android.os.Bundle)} may not be called again so we should call this
      * method in {@link #onResume()} to guarantee that it will be called.
      */
     private void setUpMapIfNeeded() {
@@ -185,8 +182,13 @@ public class Map extends FragmentActivity implements OnClickListener {
         CameraUpdate zoom=CameraUpdateFactory.zoomTo(10);
         mMap.moveCamera(center);
         mMap.animateCamera(zoom);*/
-        mMap.moveCamera( CameraUpdateFactory.newLatLngZoom(new LatLng(/*53.4104, 59.0570*/53.383333, 59.033333) ,12) );
-     /*  mMap.addMarker(new MarkerOptions().position(new LatLng(0, 0)).title("Marker"));*/
+        mMap.moveCamera( CameraUpdateFactory.newLatLngZoom(new LatLng(53.416139, 59.055231) ,12) );
+        mMap.addMarker(new MarkerOptions().position(new LatLng(53.415535, 59.053512)).title("Проходная 1"));
+        mMap.addMarker(new MarkerOptions().position(new LatLng(53.411036, 59.051030)).title("Проходная 2"));/*53.418677, 59.047866*/
+        mMap.addMarker(new MarkerOptions().position(new LatLng(53.421936, 59.066590)).title("Проходная 3"));
+        mMap.addMarker(new MarkerOptions().position(new LatLng(53.444358, 59.058343)).title("Проходная 4"));
+        mMap.addMarker(new MarkerOptions().position(new LatLng(53.413929, 59.036165)).title("Склад 50"));
+        mMap.addMarker(new MarkerOptions().position(new LatLng(53.418024, 59.046422)).title("ЭСПЦ Пост 1"));
     }
 
     /* Вычисляем координаты и приближаемся */
@@ -194,7 +196,7 @@ public class Map extends FragmentActivity implements OnClickListener {
         mMap.clear();
         LatLng currentPosition = new LatLng(location.getLatitude(), location.getLongitude());
        Log.d("***********************************************************************", formatLocation(location));
-        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(currentPosition,18));
+        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(currentPosition,16));
         mMap.addMarker(new MarkerOptions()
                 .position(currentPosition)
                 .snippet("Lat:" + location.getLatitude() + "Lng:"+ location.getLongitude()));

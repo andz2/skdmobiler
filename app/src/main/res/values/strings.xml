@@ -6,10 +6,11 @@
     <string name="action_settings">Настройки</string>
     <string name="LoginText">Информация о логине</string>
     <string name="LoginBtn"><b>Авторизоваться</b>\n<font face="Arial" size="15">\nПоднесите личную карту к устройству</font></string>
-    <string name="seccabstr"><font face="Arial" size="15"><b>Личный кабинет</b></font><br></br><br></br><font face="Arial" size="12">\nНажмите для информации</font></string>
-    <string name="getKPP"><b>Выбрать КПП</b>\n<font face="Arial" size="15">\nВоспользуйтесь поиском он быстрее поможет найти искомый пункт</font></string>
+    <string name="seccabstr"><b>Личный кабинет</b><br /><small>Нажмите для информации</small></string>
+    <string name="seccabstr1">&lt;b>Личный кабинет&lt;/b></string>
+    <string name="getKPP"><b>Выбрать КПП</b>\n<font face="Arial" size="15">\nИз списка</font></string>
     <string name="ScanBtn"><b>Сканировать карту</b>\n<font face="Arial" size="15">\nНажмите на кнопку и приложите считываемую карту к устройству</font></string>
-    <string name="ExitBtn"><b>Выход</b>\n<font face="Arial" size="15">\nЗакрытие смены и сихронизация с базой</font></string>
+    <string name="ExitBtn"><b>Выход</b>\n<font face="Arial" size="15">\nЗакрытие смены</font></string>
     <string name="title_activity_login_activity1">Вход в систему</string>
     <string name="ScanText">Сканировать карту</string>
     <string name="CancBtnText">Отмена</string>
@@ -24,5 +25,9 @@
     <string name="title_section1">Section 1</string>
     <string name="title_section2">Section 2</string>
     <string name="title_section3">Section 3</string>
+    <string name="title_activity_list_kpp">list_kpp</string>
+    <string name="title_activity_cargo">CargoA</string>
+    <string name="title_activity_scan_act_all">ScanActAll</string>
+    <string name="title_activity_sec_cab_all">SecCabAll</string>
 
 </resources>

@@ -79,6 +79,22 @@ public class MyActivity extends Activity {
 
         }
     @Override
+    public void onBackPressed() {
+        new AlertDialog.Builder(this)
+                .setTitle("Выйти из приложения?")
+                .setMessage("Вы действительно хотите выйти?")
+                .setNegativeButton(android.R.string.no, null)
+                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface arg0, int arg1) {
+                        mMobileSKDApp.SKDStep="1";
+                        mMobileSKDApp.SKDKPP="Укажите КПП";
+                        mMobileSKDApp.SKDOperator="Кто ВЫ?";
+                        MyActivity.super.onBackPressed();
+                    }
+                }).create().show();
+    }
+
+    @Override
     protected void onStart(){
      //   Log.d("start","Start");
         super.onStart();
@@ -162,7 +178,7 @@ public class MyActivity extends Activity {
         startActivity(intent);
 
         /*switch (item.getItemId()) {
-            case R.id.new_game:
+            case R.id.item1:
                 newGame();
                 return true;
             case R.id.help:
@@ -318,97 +334,6 @@ public class MyActivity extends Activity {
 
 
     }
-
-/*
-    public String statusConnect() {
-        MobileSKDApp app = ((MobileSKDApp) this.getApplication());
-
-        Log.d(app.getLOG_TAG(), "StartActivity.statusConnect");
-        StringBuilder builder = new StringBuilder();
-        Button btn=(Button) findViewById(R.id.ScanBtn);
-        Button btnOff=(Button) findViewById(R.id.OffBt);
-
-        HttpClient client = app.getNewHttpClient(); //createHttpClient(); // new DefaultHttpClient();
-        HttpGet httpGet = new HttpGet(app.getDataURL("400"));
-        Log.d(app.getLOG_TAG(), "StartActivity.statusConnect " + app.getDataURL("400"));
-        String vErrorToken="Аутентификация OK";
-        btn.setEnabled(true);
-        btnOff.setEnabled(false);
-        String vErrorNetwork="Сеть OK";
-        try {
-            HttpResponse response = client.execute(httpGet);
-            StatusLine statusLine = response.getStatusLine();
-            int statusCode = statusLine.getStatusCode();
-            if (statusCode == 200 || statusCode == 500)
-            {
-                HttpEntity entity = response.getEntity();
-                InputStream content = entity.getContent();
-                BufferedReader reader = new BufferedReader(new InputStreamReader(content));
-                String line;
-                while ((line = reader.readLine()) != null) {
-                    builder.append(line);
-                }
-                try {
-                    //Toast.makeText(this.getBaseContext(), builder.toString(), Toast.LENGTH_LONG).show();
-                    JSONArray jsonArray = new JSONArray(builder.toString());
-                    for (int i=0;i<jsonArray.length();i++) {
-                        JSONObject jsonObject = jsonArray.getJSONObject(i);
-
-                        vErrorToken = jsonObject.getString("ERROR");
-                        btn.setEnabled(false);
-                        btnOff.setEnabled(true);
-                    }
-                    //Toast.makeText(this.getBaseContext(),clientID, Toast.LENGTH_LONG).show();
-                }
-                catch (JSONException e) {
-                    vErrorToken="Аутентификация OK";
-                 //   vErrorToken="Аутентификация ERROR";
-                //    app.getmDbHelper().refreshOrgs(builder.toString());
-                    btn.setEnabled(true);
-                    btnOff.setEnabled(false);
-                    //e.printStackTrace();
-                }
-            }
-            else {
-                vErrorNetwork = "Сеть ERROR";
-
-                vErrorToken="Аутентификация ERROR";
-                btn.setEnabled(false);
-                btnOff.setEnabled(true);
-                //Log.e("Login fail", "Login fail");
-            }
-        }
-        catch (ClientProtocolException e) {
-            vErrorNetwork = "Сеть ERROR";
-            vErrorToken="Аутентификация ERROR";
-            btn.setEnabled(false);
-            btnOff.setEnabled(true);
-            e.printStackTrace();
-        }
-        catch (IOException e) {
-            vErrorNetwork = "Сеть ERROR";
-            vErrorToken="Аутентификация ERROR";
-            btn.setEnabled(false);
-            btnOff.setEnabled(true);
-            e.printStackTrace();
-        }
-
-
-
-        if (app.getToken()==null)
-        {
-            vErrorToken="Аутентификация  ERROR";
-            if (vErrorNetwork=="Сеть OK") //Если без авторизации сеть ок то блокируем кнопки
-            {
-                btn.setEnabled(false);
-            }
-        }
-
- btnOff.setEnabled(true); //потом убрать
-        return vErrorNetwork+"; "+vErrorToken;
-    }*/
-
-
     class MyTask extends AsyncTask<Void, Void, Void> {
 
         @Override
@@ -540,71 +465,68 @@ public class MyActivity extends Activity {
         @Override
         protected Boolean doInBackground(Void... params) {
             Boolean vStatus = false;
-            try {
-                StringBuilder builder = new StringBuilder();
-                HttpClient client =mMobileSKDApp.getNewHttpClient(); //new DefaultHttpClient();
-                HttpGet httpGet = new HttpGet(mMobileSKDApp.getLoginDataURL(mMobileSKDApp.SKDRfId));
-
-                Log.d(mMobileSKDApp.getLOG_TAG(), "OperLogin.UserLoginTask " +mMobileSKDApp.getLoginDataURL(mMobileSKDApp.SKDRfId));
-
+            if ( mMobileSKDApp.SKDStep=="1" ) {
                 try {
-                    HttpResponse response = client.execute(httpGet);
-                    StatusLine statusLine = response.getStatusLine();
-                    int statusCode = statusLine.getStatusCode();
-                    if (statusCode == 200 )
-                    {
-                        HttpEntity entity = response.getEntity();
-                        InputStream content = entity.getContent();
-                        BufferedReader reader = new BufferedReader(new InputStreamReader(content));
-                        String line;
-                        while ((line = reader.readLine()) != null) {
-                            builder.append(line);
-                        }
-                        try {
-                            //Toast.makeText(this.getBaseContext(), builder.toString(), Toast.LENGTH_LONG).show();
-                            JSONArray jsonArray = new JSONArray(builder.toString());
-                            for (int i=0;i<jsonArray.length();i++) {
-                                JSONObject jsonObject = jsonArray.getJSONObject(i);
+                    StringBuilder builder = new StringBuilder();
+                    HttpClient client = mMobileSKDApp.getNewHttpClient(); //new DefaultHttpClient();
+                    HttpGet httpGet = new HttpGet(mMobileSKDApp.getLoginDataURL(mMobileSKDApp.SKDRfId));
+                    Log.d(mMobileSKDApp.getLOG_TAG(), "OperLogin.UserLoginTask " + mMobileSKDApp.getLoginDataURL(mMobileSKDApp.SKDRfId));
+                    try {
+                        HttpResponse response = client.execute(httpGet);
+                        StatusLine statusLine = response.getStatusLine();
+                        int statusCode = statusLine.getStatusCode();
+                        if (statusCode == 200) {
+                            HttpEntity entity = response.getEntity();
+                            InputStream content = entity.getContent();
+                            BufferedReader reader = new BufferedReader(new InputStreamReader(content));
+                            String line;
+                            while ((line = reader.readLine()) != null) {
+                                builder.append(line);
+                            }
+                            try {
+                                //Toast.makeText(this.getBaseContext(), builder.toString(), Toast.LENGTH_LONG).show();
+                                JSONArray jsonArray = new JSONArray(builder.toString());
+                                for (int i = 0; i < jsonArray.length(); i++) {
+                                    JSONObject jsonObject = jsonArray.getJSONObject(i);
 
-                                mToken = jsonObject.getString("token");
-                                mMobileSKDApp.SKDOperator = jsonObject.getString("oper");
-                                vStatus = true;
-                                //   Log.d(jsonObject.getString("oper"),"Tst");
+                                    mToken = jsonObject.getString("token");
+                                    mMobileSKDApp.SKDOperator = jsonObject.getString("oper");
+                                    vStatus = true;
+                                    //   Log.d(jsonObject.getString("oper"),"Tst");
+
+                                }
+                                //Toast.makeText(this.getBaseContext(),clientID, Toast.LENGTH_LONG).show();
+                            } catch (JSONException e) {
+                                e.printStackTrace();
 
                             }
-                            //Toast.makeText(this.getBaseContext(),clientID, Toast.LENGTH_LONG).show();
+                        } else {
+                            //Log.e("Login fail", "Login fail");
                         }
-                        catch (JSONException e) {
-                            e.printStackTrace();
-
-                        }
+                    } catch (ClientProtocolException e) {
+                        e.printStackTrace();
+                    } catch (IOException e) {
+                        e.printStackTrace();
                     }
-                    else {
-                        //Log.e("Login fail", "Login fail");
+
+                    Thread.sleep(10);
+                    vStatus = vStatus && !mToken.equals("null");
+                    if (vStatus) {
+
+                        mMobileSKDApp.setmHASH(mToken);
+                        //  mMobileSKDApp.getmDbHelper().refreshOrgs(builder.toString());
+                        return true;
+                    } else {
+                        return false;
                     }
-                }
-                catch (ClientProtocolException e) {
-                    e.printStackTrace();
-                }
-                catch (IOException e) {
-                    e.printStackTrace();
-                }
 
-                Thread.sleep(10);
-                vStatus = vStatus && !mToken.equals("null");
-                if (vStatus) {
-
-                    mMobileSKDApp.setmHASH(mToken);
-                    //  mMobileSKDApp.getmDbHelper().refreshOrgs(builder.toString());
-                    return true;
-                } else {
+                } catch (InterruptedException e) {
                     return false;
                 }
-
-            } catch (InterruptedException e) {
-                return false;
             }
+            return false;
         }
+
 
         @Override
         protected void onPostExecute(final Boolean success) {
@@ -626,18 +548,21 @@ public class MyActivity extends Activity {
                 Button Logbutton=(Button)findViewById(R.id.Loginbutton);
                 Logbutton.setBackgroundDrawable(getResources().getDrawable(R.drawable.btn_inact)); //setBackgroundResource
                 Logbutton.setTextColor(Color.rgb(65, 169, 4));
-                Logbutton.setText(Html.fromHtml(getResources().getString(R.string.seccabstr)));
+
+                Logbutton.setText(Html.fromHtml(/*getResources().getString(R.string.seccabstr)*/"<b>Личный кабинет</b><br><br><sup><small>Нажмите для информации</small></sup>"));
                 mMobileSKDApp.SKDStep = "2";
                 //finish();
             } else {
                 //   super.onCreate(savedInstanceState);
                 Log.d("go error page","way");
-                Intent intent = new Intent();
-                intent.setClass(MyActivity.this, ErrorLogin.class);
+                if ( mMobileSKDApp.SKDStep=="1" ) {
+                    Intent intent = new Intent();
+                    intent.setClass(MyActivity.this, ErrorLogin.class);
 
-                startActivity(intent);
+                    startActivity(intent);
 
-                //  setContentView(R.layout.error_l);
+                    //  setContentView(R.layout.error_l);
+                }
 
             }
         }
@@ -652,7 +577,7 @@ public class MyActivity extends Activity {
     }
     @Override
     protected void onNewIntent(Intent intent) {
-
+       if (mMobileSKDApp.SKDStep=="1" ) {
         if (NfcAdapter.ACTION_TAG_DISCOVERED.equals(intent.getAction())) {
             Tag myTag = intent.getParcelableExtra(NfcAdapter.EXTRA_TAG);
             mMobileSKDApp.SKDRfId=bytesToHex(myTag.getId());
@@ -660,12 +585,14 @@ public class MyActivity extends Activity {
             Log.d( mMobileSKDApp.SKDOperRfId, "=mCode");
             attemptLogin();
             Log.d(mMobileSKDApp.SKDOperator,"operator !!!!!!");
-            vibrate();
+
+                vibrate();
+
             Log.d("Поехали","action !!!!!!");
             //    Intent intentSt = new Intent(this, MyActivity.class);
             //    startActivityForResult(intentSt, 1);
 
-        }
+        }}
     }
 
     final protected static char[] hexArray = {'0','1','2','3','4','5','6','7','8','9','A','B','C','D','E','F'};
@@ -702,7 +629,7 @@ public class MyActivity extends Activity {
         Exitbutton.setOnClickListener(new View.OnClickListener() {
                                           @Override
                                           public void onClick(View view) {
-                                              finish();
+                                              //finish();
                                               if (mMobileSKDApp.SKDStep=="3")
                                               {
                                                   Log.d("exit","exit");
@@ -719,8 +646,8 @@ public class MyActivity extends Activity {
             @Override
             public void onClick(View view) {
               //  Log.d("Go KPP","Go KPP");
-                if (mMobileSKDApp.SKDStep == "2") {
-                    Intent intent = new Intent(view.getContext(), SecCab.class);
+                if ((mMobileSKDApp.SKDStep == "2") || (mMobileSKDApp.SKDStep == "3")){
+                    Intent intent = new Intent(view.getContext(), SecCabAll/*SecCab*/.class);
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     view.getContext().startActivity(intent);
                 }
@@ -732,7 +659,7 @@ public class MyActivity extends Activity {
             @Override
             public void onClick(View view) {
        //         Log.d("Go KPP","Go KPP");
-                if (mMobileSKDApp.SKDStep == "2") {
+                if ((mMobileSKDApp.SKDStep == "2") || (mMobileSKDApp.SKDStep == "3")) {
                     Intent intent = new Intent(view.getContext(), SetKPPAct.class);
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     view.getContext().startActivity(intent);
@@ -748,9 +675,11 @@ public class MyActivity extends Activity {
         Scanbutton.setOnClickListener(new View.OnClickListener() {
                                           @Override
                                           public void onClick(View view) {
-                                              Intent intent = new Intent(view.getContext(),OperLogin.class);
-                                              intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                                              view.getContext().startActivity(intent);
+                                              if (mMobileSKDApp.SKDStep == "3") {
+                                                  Intent intent = new Intent(view.getContext(), OperLogin.class);
+                                                  intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                                  view.getContext().startActivity(intent);
+                                              }
                                           }
                                       }
         );
@@ -769,6 +698,22 @@ public class MyActivity extends Activity {
             Scanbutton.setTextColor(Color.rgb(0,0,0));
 
             Exitbutton.setTextColor(Color.rgb(0,0,0));
+        }
+        if (mMobileSKDApp.SKDStep=="2")
+        {
+
+            //    setContentView(R.layout.activity_my);
+            //LinearLayout mainLayout=(LinearLayout)findViewById(R.id.M);
+            KPPbutton.setBackgroundDrawable(getResources().getDrawable(R.drawable.btm_aut)); //setBackgroundResource
+            KPPbutton.setTextColor(Color.rgb(0,0,0));
+
+            Logbutton.setBackgroundDrawable(getResources().getDrawable(R.drawable.btn_inact)); //setBackgroundResource
+            Logbutton.setTextColor(Color.rgb(65,169,4));
+
+            Scanbutton.setBackgroundDrawable(getResources().getDrawable(R.drawable.btn_inact)); //setBackgroundResource
+            Scanbutton.setTextColor(Color.LTGRAY);/*Color.rgb(0,0,0)*/
+
+            Exitbutton.setTextColor(Color.LTGRAY);
         }
 Log.d(mMobileSKDApp.SKDStep,"zzzzzzzzzzzzzzzzmMobileSKDApp.SKDStep");
 

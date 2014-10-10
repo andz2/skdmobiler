@@ -20,15 +20,29 @@
 
         <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="213dp"
-            android:layout_gravity="center_horizontal">
+            android:layout_height="272dp"
+            android:layout_gravity="center_horizontal"
+            android:id="@+id/f"
+            android:background="#00ff5200">
 
             <ImageView
-                android:layout_width="100dp"
-                android:layout_height="100dp"
+                android:layout_width="120dp"
+                android:layout_height="120dp"
                 android:id="@+id/imageView"
-                android:layout_gravity="center"
-                android:src="@drawable/ok" />
+                android:layout_gravity="center|top"
+                android:src="@drawable/ok"
+                android:maxHeight="100dp"
+                android:maxWidth="100dp"
+                android:longClickable="false"
+                android:minHeight="100dp"
+                android:minWidth="100dp"
+                android:layout_marginTop="@dimen/abc_action_bar_icon_vertical_padding" />
+
+            <ImageView
+                android:layout_width="130dp"
+                android:layout_height="130dp"
+                android:id="@+id/photoim"
+                android:layout_gravity="center_horizontal|bottom" />
         </FrameLayout>
     </LinearLayout>
 
@@ -36,8 +50,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="ДОСТУП РАЗРЕШЕН\n"
-        android:id="@+id/textView"
+        android:text="ДОСТУП РАЗРЕШЕН"
+        android:id="@+id/x1000"
         android:gravity="center_horizontal|bottom"
         android:layout_gravity="center_horizontal|bottom"
         android:textColor="#66CC66"
