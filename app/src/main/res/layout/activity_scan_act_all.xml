@@ -15,14 +15,14 @@
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_above="@+id/bksam" />
+        android:layout_above="@+id/bkscan" />
 
     <Button
         android:layout_width="fill_parent"
         android:layout_height="60dp"
         android:text="Назад"
         android:id="@+id/bkscan"
-        android:background="#999999"
+        android:background="#ff55cf62"
         android:layout_gravity="center_horizontal|bottom"
         android:gravity="center"
         android:textSize="25dp"

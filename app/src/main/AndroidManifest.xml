@@ -102,6 +102,10 @@
             android:name=".SecCabAll"
             android:label="@string/title_activity_sec_cab_all" >
         </activity>
+        <activity
+            android:name=".ScanBarCode"
+            android:label="@string/title_activity_scan_bar_code" >
+        </activity>
     </application>
 
     <uses-permission android:name="android.permission.INTERNET" />

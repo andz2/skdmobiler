@@ -66,6 +66,6 @@
         android:width="150dp"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:background="#999999" />
+        android:background="#ff55cf62" />
 
 </LinearLayout>

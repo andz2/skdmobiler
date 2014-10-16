@@ -4,6 +4,7 @@ package ru.xxmmk.skdmobile;
         import android.annotation.TargetApi;
         import android.app.ActionBar;
         import android.app.Activity;
+        import android.app.Fragment;
         import android.app.PendingIntent;
         import android.content.Context;
         import android.content.Intent;
@@ -16,7 +17,9 @@ package ru.xxmmk.skdmobile;
         import android.os.Bundle;
         import android.os.Vibrator;
         import android.util.Log;
+        import android.view.LayoutInflater;
         import android.view.View;
+        import android.view.ViewGroup;
         import android.widget.AutoCompleteTextView;
         import android.widget.Button;
         import android.widget.EditText;
@@ -38,6 +41,10 @@ package ru.xxmmk.skdmobile;
         import java.io.InputStreamReader;
 
         import android.nfc.Tag;
+        import android.widget.Toast;
+
+        import com.google.zxing.integration.android.IntentIntegrator;
+        import com.google.zxing.integration.android.IntentResult;
 
 /**
  * A login screen that offers login via email/password.
@@ -98,7 +105,35 @@ public class OperLogin extends Activity /*implements LoaderCallbacks<Cursor>*/{
         nfcPendingIntent = PendingIntent.getActivity(this, 0, new Intent(this, this.getClass()).addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP), 0);
     }
 
+    public void scanBarcode(View view) {
+        new IntentIntegrator((Activity)this).initiateScan();
+    }
 
+    public void scanBarcodeCustomOptions(View view) {
+        IntentIntegrator integrator = new IntentIntegrator(this);
+        integrator.setDesiredBarcodeFormats(IntentIntegrator.ONE_D_CODE_TYPES);
+        integrator.autoWide();
+        integrator.initiateScan();
+    }
+
+    public void encodeBarcode(View view) {
+        new IntentIntegrator(this).shareText("Test Barcode");
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        IntentResult result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
+        if(result != null) {
+            if(result.getContents() == null) {
+                Toast.makeText(this, "Cancelled", Toast.LENGTH_LONG).show();
+            } else {
+                Toast.makeText(this, "Scanned: " + result.getContents(), Toast.LENGTH_LONG).show();
+            }
+        } else {
+            // This is important, otherwise the result will not be passed to the fragment
+            super.onActivityResult(requestCode, resultCode, data);
+        }
+    }
 
     private boolean isEmailValid(String email) {
         return true; //email.contains("@");
@@ -280,7 +315,59 @@ public class OperLogin extends Activity /*implements LoaderCallbacks<Cursor>*/{
         }
         return new String(hexChars);
     }
+    public static class ScanFragment extends Fragment {
+        private String toast;
 
+        public ScanFragment() {
+        }
+
+        @Override
+        public void onActivityCreated(Bundle savedInstanceState) {
+            super.onActivityCreated(savedInstanceState);
+
+            displayToast();
+        }
+
+        @Override
+        public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                                 Bundle savedInstanceState) {
+            View view = inflater.inflate(R.layout.fragment_scan, container, false);
+            Button scan = (Button) view.findViewById(R.id.scan_from_fragment);
+            scan.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    scanFromFragment();
+                }
+            });
+            return view;
+        }
+
+        public void scanFromFragment() {
+            IntentIntegrator.forFragment(this).initiateScan();
+        }
+
+        private void displayToast() {
+            if(getActivity() != null && toast != null) {
+                Toast.makeText(getActivity(), toast, Toast.LENGTH_LONG).show();
+                toast = null;
+            }
+        }
+
+        @Override
+        public void onActivityResult(int requestCode, int resultCode, Intent data) {
+            IntentResult result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
+            if(result != null) {
+                if(result.getContents() == null) {
+                    toast = "Cancelled from fragment";
+                } else {
+                    toast = "Scanned from fragment: " + result.getContents();
+                }
+
+                // At this point we may or may not have a reference to the activity
+                displayToast();
+            }
+        }
+    }
 }
 
 

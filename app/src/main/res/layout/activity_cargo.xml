@@ -51,14 +51,15 @@
             <WebView
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent"
-                android:id="@+id/cargoweb" />
+                android:id="@+id/cargoweb"
+                android:layout_above="@+id/bksam" />
 
             <Button
                 android:layout_width="fill_parent"
                 android:layout_height="60dp"
                 android:text="Назад"
                 android:id="@+id/bksam"
-                android:background="#999999"
+                android:background="#ff55cf62"
                 android:gravity="center"
                 android:textSize="25dp"
                 android:width="150dp"

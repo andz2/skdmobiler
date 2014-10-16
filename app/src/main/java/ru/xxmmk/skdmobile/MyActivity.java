@@ -18,6 +18,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.os.Vibrator;
+import android.support.v7.app.ActionBarActivity;
 import android.text.Html;
 import android.util.Log;
 import android.view.Menu;
@@ -45,6 +46,9 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.concurrent.TimeUnit;
 
+import com.google.zxing.integration.android.IntentIntegrator;
+import com.google.zxing.integration.android.IntentResult;
+
 
 
 
@@ -61,8 +65,6 @@ public class MyActivity extends Activity {
     ProgressDialog ringProgressDialog;
     private LoadObjects mLoadTask = null;
     MyTask mt;
-
-
 
         //private SaveObjects mSaveTask = null;
         @Override
@@ -106,11 +108,7 @@ public class MyActivity extends Activity {
         myAB.setSubtitle(mMobileSKDApp.SKDKPP);
         myAB.setDisplayShowHomeEnabled(false);
         StartScreen ();
-
-
-
     }
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -629,7 +627,8 @@ public class MyActivity extends Activity {
         Exitbutton.setOnClickListener(new View.OnClickListener() {
                                           @Override
                                           public void onClick(View view) {
-                                              //finish();
+
+                                              finish();
                                               if (mMobileSKDApp.SKDStep=="3")
                                               {
                                                   Log.d("exit","exit");
@@ -647,7 +646,7 @@ public class MyActivity extends Activity {
             public void onClick(View view) {
               //  Log.d("Go KPP","Go KPP");
                 if ((mMobileSKDApp.SKDStep == "2") || (mMobileSKDApp.SKDStep == "3")){
-                    Intent intent = new Intent(view.getContext(), SecCabAll/*SecCab*/.class);
+                    Intent intent = new Intent(view.getContext(), /*ScanBarCode*/SecCabAll/*SecCab*/.class);
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     view.getContext().startActivity(intent);
                 }
