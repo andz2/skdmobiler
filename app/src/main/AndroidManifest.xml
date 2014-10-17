@@ -106,6 +106,10 @@
             android:name=".ScanBarCode"
             android:label="@string/title_activity_scan_bar_code" >
         </activity>
+        <activity
+            android:name=".BarCodeRes"
+            android:label="@string/title_activity_bar_code_res" >
+        </activity>
     </application>
 
     <uses-permission android:name="android.permission.INTERNET" />

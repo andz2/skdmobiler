@@ -123,11 +123,15 @@ public class OperLogin extends Activity /*implements LoaderCallbacks<Cursor>*/{
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         IntentResult result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
+        mMobileSKDApp.SKDBarCode=result.getContents();
         if(result != null) {
             if(result.getContents() == null) {
-                Toast.makeText(this, "Cancelled", Toast.LENGTH_LONG).show();
+                Toast.makeText(this, "Сканирование отменено", Toast.LENGTH_LONG).show();
             } else {
-                Toast.makeText(this, "Scanned: " + result.getContents(), Toast.LENGTH_LONG).show();
+            //    Toast.makeText(this, "Scanned: " + result.getContents(), Toast.LENGTH_LONG).show();
+                Intent intent = new Intent();
+                intent.setClass(OperLogin.this, BarCodeRes.class);
+                startActivity(intent);
             }
         } else {
             // This is important, otherwise the result will not be passed to the fragment

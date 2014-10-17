@@ -74,13 +74,13 @@
         android:text="Сканирование штрих кода"
         android:onClick="scanBarcodeCustomOptions"
 
-        android:background="#ffff9d0a"
         android:height="60dp"
         android:layout_gravity="bottom"
         android:id="@+id/button"
         android:layout_above="@+id/sp"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:layout_alignParentStart="true"
+        android:background="@drawable/scbc" />
 
     <TextView
         android:layout_width="wrap_content"

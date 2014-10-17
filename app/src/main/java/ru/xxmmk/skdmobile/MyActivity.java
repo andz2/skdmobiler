@@ -170,21 +170,18 @@ public class MyActivity extends Activity {
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle item selection
         Log.d("actionBarIttem","xxxxxxx");
-        Intent intent = new Intent();
+
+       /* Intent intent = new Intent();
+        intent.setAction("com.bitrix24.android.BX24AuthActivity");
+        context.startActivity(intent);*/
+
+       /* ---------------------------------------------------*/
+       Intent intent = new Intent();
         intent.setClass(MyActivity.this, Map.class);
 
         startActivity(intent);
+        /*----------------------------------------------------------*/
 
-        /*switch (item.getItemId()) {
-            case R.id.item1:
-                newGame();
-                return true;
-            case R.id.help:
-                showHelp();
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-        }*/
         return true;
     }
     /*   @Override
