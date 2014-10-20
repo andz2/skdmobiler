@@ -103,6 +103,13 @@ public class OperLogin extends Activity /*implements LoaderCallbacks<Cursor>*/{
         //myAB.setSubtitle("Проходная 7");
         nfcAdapter = NfcAdapter.getDefaultAdapter(this);
         nfcPendingIntent = PendingIntent.getActivity(this, 0, new Intent(this, this.getClass()).addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP), 0);
+       /* Button scan = (Button) findViewById(R.id.button);
+        scan.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                vibrate();
+            }
+        });*/
     }
 
     public void scanBarcode(View view) {
@@ -124,66 +131,24 @@ public class OperLogin extends Activity /*implements LoaderCallbacks<Cursor>*/{
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         IntentResult result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
         mMobileSKDApp.SKDBarCode=result.getContents();
+        /*временно присваиваем штриход в самовывоз*/
+        mMobileSKDApp.SKDRfId=result.getContents();
         if(result != null) {
             if(result.getContents() == null) {
                 Toast.makeText(this, "Сканирование отменено", Toast.LENGTH_LONG).show();
             } else {
-            //    Toast.makeText(this, "Scanned: " + result.getContents(), Toast.LENGTH_LONG).show();
                 Intent intent = new Intent();
+
+                /*Уходим на другой экран*/
+
+             //   intent.setClass(OperLogin.this, CargoA.class);
                 intent.setClass(OperLogin.this, BarCodeRes.class);
                 startActivity(intent);
             }
         } else {
-            // This is important, otherwise the result will not be passed to the fragment
             super.onActivityResult(requestCode, resultCode, data);
         }
     }
-
-    private boolean isEmailValid(String email) {
-        return true; //email.contains("@");
-    }
-
-    private boolean isPasswordValid(String password) {
-        return password.length() > 4;
-    }
-
-    /**
-     * Shows the progress UI and hides the login form.
-     */
-    @TargetApi(Build.VERSION_CODES.HONEYCOMB_MR2)
-    public void showProgress(final boolean show) {
-        // On Honeycomb MR2 we have the ViewPropertyAnimator APIs, which allow
-        // for very easy animations. If available, use these APIs to fade-in
-        // the progress spinner.
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR2) {
-            int shortAnimTime = getResources().getInteger(android.R.integer.config_shortAnimTime);
-
-            mLoginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
-            mLoginFormView.animate().setDuration(shortAnimTime).alpha(
-                    show ? 0 : 1).setListener(new AnimatorListenerAdapter() {
-                @Override
-                public void onAnimationEnd(Animator animation) {
-                    mLoginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
-                }
-            });
-
-            mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
-            mProgressView.animate().setDuration(shortAnimTime).alpha(
-                    show ? 1 : 0).setListener(new AnimatorListenerAdapter() {
-                @Override
-                public void onAnimationEnd(Animator animation) {
-                    mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
-                }
-            });
-        } else {
-            // The ViewPropertyAnimator APIs are not available, so simply show
-            // and hide the relevant UI components.
-            mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
-            mLoginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
-        }
-    }
-
 
     public void enableForegroundMode() {
         IntentFilter tagDetected = new IntentFilter(NfcAdapter.ACTION_TAG_DISCOVERED); // filter for all
@@ -319,7 +284,7 @@ public class OperLogin extends Activity /*implements LoaderCallbacks<Cursor>*/{
         }
         return new String(hexChars);
     }
-    public static class ScanFragment extends Fragment {
+    public  static class ScanFragment extends Fragment {
         private String toast;
 
         public ScanFragment() {
@@ -366,7 +331,6 @@ public class OperLogin extends Activity /*implements LoaderCallbacks<Cursor>*/{
                 } else {
                     toast = "Scanned from fragment: " + result.getContents();
                 }
-
                 // At this point we may or may not have a reference to the activity
                 displayToast();
             }

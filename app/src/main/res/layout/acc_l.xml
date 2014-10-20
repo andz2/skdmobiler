@@ -84,6 +84,6 @@
         android:width="150dp"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:background="#66CC33" />
+        android:background="@drawable/btn_bk_state" />
 
 </RelativeLayout>

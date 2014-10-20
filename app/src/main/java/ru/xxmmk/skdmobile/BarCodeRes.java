@@ -55,7 +55,7 @@ public class BarCodeRes extends Activity {
         }*/
 
         mWebView.setWebViewClient(new MyWebViewClient());
-        mWebView.loadUrl(mMobileSKDApp.mDatURL3+"?p_code="+mMobileSKDApp.SKDBarCode);
+        mWebView.loadUrl(mMobileSKDApp.mDatURL3+"?p_code="+mMobileSKDApp.SKDBarCode+"&p_kpp="+mMobileSKDApp.SKDKPP);
         nfcAdapter = NfcAdapter.getDefaultAdapter(this);
         nfcPendingIntent = PendingIntent.getActivity(this, 0, new Intent(this, this.getClass()).addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP), 0);
 

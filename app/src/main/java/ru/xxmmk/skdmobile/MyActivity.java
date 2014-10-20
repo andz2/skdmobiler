@@ -619,7 +619,9 @@ public class MyActivity extends Activity {
         Button Logbutton=(Button)findViewById(R.id.Loginbutton);
         Button Scanbutton=(Button)findViewById(R.id.ScanBtn);
         Button Exitbutton=(Button)findViewById(R.id.ExitBtn);
-
+        if (mMobileSKDApp.SKDStep!="1") {
+        Logbutton.setText(Html.fromHtml(/*getResources().getString(R.string.seccabstr)*/"<b>Личный кабинет</b><br><br><sup><small>Нажмите для информации</small></sup>"));
+    }
 
         Exitbutton.setOnClickListener(new View.OnClickListener() {
                                           @Override

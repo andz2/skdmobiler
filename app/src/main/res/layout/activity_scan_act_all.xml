@@ -22,7 +22,7 @@
         android:layout_height="60dp"
         android:text="Назад"
         android:id="@+id/bkscan"
-        android:background="#ff55cf62"
+        android:background="@drawable/btn_bk_state"
         android:layout_gravity="center_horizontal|bottom"
         android:gravity="center"
         android:textSize="25dp"

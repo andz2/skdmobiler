@@ -4,6 +4,7 @@ package ru.xxmmk.skdmobile;
         import android.content.Context;
         import android.database.sqlite.SQLiteDatabase;
         import android.database.sqlite.SQLiteOpenHelper;
+        import android.os.Vibrator;
         import android.util.Log;
 
         import org.apache.http.HttpVersion;
@@ -76,6 +77,12 @@ public class MobileSKDApp extends Application {
     public String getDataURL(String mCode) {
         return this.mDataBasicURL+"?s="+mCode+"&token="+this.getmHASH();
     }
+
+    public void vibrate() {
+        Vibrator vibe = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE) ;
+        vibe.vibrate(500);
+    }
+
     public String getToken() {
         return this.getmHASH();
     }

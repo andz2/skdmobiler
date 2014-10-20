@@ -59,7 +59,7 @@
                 android:layout_height="60dp"
                 android:text="Назад"
                 android:id="@+id/bksam"
-                android:background="#ff55cf62"
+                android:background="@drawable/btn_bk_state"
                 android:gravity="center"
                 android:textSize="25dp"
                 android:width="150dp"
