@@ -10,7 +10,7 @@
     <string name="seccabstr1">&lt;b>Личный кабинет&lt;/b></string>
     <string name="getKPP"><b>Выбрать КПП</b>\n<font face="Arial" size="15">\nИз списка</font></string>
     <string name="ScanBtn"><b>Сканировать карту</b>\n<font face="Arial" size="15">\nНажмите на кнопку и приложите считываемую карту к устройству</font></string>
-    <string name="ExitBtn"><b>Выход</b>\n<font face="Arial" size="15">\nЗакрытие смены</font></string>
+    <string name="ExitBtn"><b>Выход</b>\n<font face="Arial" size="15">\nВыход из программы</font></string>
     <string name="title_activity_login_activity1">Вход в систему</string>
     <string name="ScanText">Сканировать карту</string>
     <string name="CancBtnText">Отмена</string>
@@ -36,5 +36,6 @@
     <string name="encode_text">Encode Text</string>
     <string name="custom_options">Custom Options</string>
     <string name="title_activity_bar_code_res">BarCodeRes</string>
+    <string name="title_activity_net_error">NetError</string>
 
 </resources>

@@ -15,13 +15,13 @@
     android:id="@+id/map"
     tools:context=".MapsActivity"
     android:name="com.google.android.gms.maps.SupportMapFragment"
-        android:layout_above="@+id/bk" />
+        android:layout_above="@+id/bkerr" />
 
     <Button
         android:layout_width="fill_parent"
         android:layout_height="60dp"
         android:text="Назад"
-        android:id="@+id/bk"
+        android:id="@+id/bkerr"
         android:background="@drawable/btn_bk_state"
         android:layout_gravity="center_horizontal|bottom"
         android:gravity="center"

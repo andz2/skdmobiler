@@ -1,6 +1,5 @@
 package ru.xxmmk.skdmobile;
 import android.app.Activity;
-import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -8,18 +7,8 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.webkit.WebView;
-import android.webkit.WebViewClient;
 import android.widget.Button;
 import android.widget.ImageView;
-
-import org.apache.http.HttpResponse;
-import org.apache.http.client.ClientProtocolException;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.xmlpull.v1.XmlPullParser;
-import org.xmlpull.v1.XmlPullParserException;
-import org.xmlpull.v1.XmlPullParserFactory;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -39,7 +28,7 @@ public class AccLogin extends Activity /*implements LoaderCallbacks<Cursor>*/{
     protected void onStart(){
         super.onStart();
      //   Log.d("here","us");
-        Button CnButton = (Button) findViewById(R.id.bk);
+        Button CnButton = (Button) findViewById(R.id.bkerr);
         mMobileSKDApp.SKDStep="2";
         CnButton.setOnClickListener(new View.OnClickListener() {
                                         @Override
@@ -55,7 +44,7 @@ public class AccLogin extends Activity /*implements LoaderCallbacks<Cursor>*/{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.acc_l);
         mMobileSKDApp = ((MobileSKDApp) this.getApplication());
-        Log.d("here1","us1");
+   //     Log.d("here1","us1");
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
         ImageView imgView = (ImageView) findViewById(R.id.photoim);

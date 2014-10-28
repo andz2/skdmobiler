@@ -215,7 +215,7 @@ public class ScanActivity extends ActivityGroup {
         public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
             finish();
             Intent intent = new Intent();
-            intent.setClass(ScanActivity.this, ErrorScan.class);
+            intent.setClass(ScanActivity.this, NetError.class);
             startActivity(intent);
             //mWebView.loadUrl("file:///android_asset/loaderror.html");
         }

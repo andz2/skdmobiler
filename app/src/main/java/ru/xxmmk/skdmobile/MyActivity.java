@@ -21,6 +21,7 @@ import android.os.Vibrator;
 import android.support.v7.app.ActionBarActivity;
 import android.text.Html;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -82,7 +83,7 @@ public class MyActivity extends Activity {
         }
     @Override
     public void onBackPressed() {
-        new AlertDialog.Builder(this)
+      /*  new AlertDialog.Builder(this)
                 .setTitle("Выйти из приложения?")
                 .setMessage("Вы действительно хотите выйти?")
                 .setNegativeButton(android.R.string.no, null)
@@ -93,7 +94,7 @@ public class MyActivity extends Activity {
                         mMobileSKDApp.SKDOperator="Кто ВЫ?";
                         MyActivity.super.onBackPressed();
                     }
-                }).create().show();
+                }).create().show();*/
     }
 
     @Override
@@ -460,6 +461,7 @@ public class MyActivity extends Activity {
         @Override
         protected Boolean doInBackground(Void... params) {
             Boolean vStatus = false;
+            mMobileSKDApp.NetErr=false;
             if ( mMobileSKDApp.SKDStep=="1" ) {
                 try {
                     StringBuilder builder = new StringBuilder();
@@ -497,11 +499,16 @@ public class MyActivity extends Activity {
                             }
                         } else {
                             //Log.e("Login fail", "Login fail");
+
                         }
                     } catch (ClientProtocolException e) {
                         e.printStackTrace();
+
+
                     } catch (IOException e) {
-                        e.printStackTrace();
+                       e.printStackTrace();
+                        mMobileSKDApp.NetErr=true;
+
                     }
 
                     Thread.sleep(10);
@@ -550,11 +557,15 @@ public class MyActivity extends Activity {
             } else {
                 //   super.onCreate(savedInstanceState);
                 Log.d("go error page","way");
+                Intent intent = new Intent();
                 if ( mMobileSKDApp.SKDStep=="1" ) {
-                    Intent intent = new Intent();
+                    if (mMobileSKDApp.NetErr==true)
+                        intent.setClass(MyActivity.this, NetError.class);
+                    else
                     intent.setClass(MyActivity.this, ErrorLogin.class);
 
                     startActivity(intent);
+
 
                     //  setContentView(R.layout.error_l);
                 }
@@ -620,22 +631,24 @@ public class MyActivity extends Activity {
         Button Scanbutton=(Button)findViewById(R.id.ScanBtn);
         Button Exitbutton=(Button)findViewById(R.id.ExitBtn);
         if (mMobileSKDApp.SKDStep!="1") {
-        Logbutton.setText(Html.fromHtml(/*getResources().getString(R.string.seccabstr)*/"<b>Личный кабинет</b><br><br><sup><small>Нажмите для информации</small></sup>"));
+      //  Logbutton.setText(Html.fromHtml(/*getResources().getString(R.string.seccabstr)*/"<b>Личный кабинет</b><br><br><sup><small>Нажмите для информации</small></sup>"));
+        Logbutton.setText(Html.fromHtml(/*getResources().getString(R.string.seccabstr)*/"<b>Вход выполнен</b><br><br><sup><small>Выберите КПП и приступайте к сканированию</small></sup>"));
     }
 
         Exitbutton.setOnClickListener(new View.OnClickListener() {
                                           @Override
                                           public void onClick(View view) {
-
-                                              finish();
-                                              if (mMobileSKDApp.SKDStep=="3")
+                                              if ((mMobileSKDApp.SKDStep == "2") || (mMobileSKDApp.SKDStep == "3"))
                                               {
                                                   Log.d("exit","exit");
                                                   mMobileSKDApp.SKDStep="1";
                                                   mMobileSKDApp.SKDKPP="Укажите КПП";
                                                   mMobileSKDApp.SKDOperator="Кто ВЫ?";
+                                                 // StartScreen();
                                                   finish();
                                               }
+                                              finish();
+                                              StartScreen();
                                           }
                                       }
         );
@@ -643,12 +656,15 @@ public class MyActivity extends Activity {
         Logbutton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-              //  Log.d("Go KPP","Go KPP");
-                if ((mMobileSKDApp.SKDStep == "2") || (mMobileSKDApp.SKDStep == "3")){
+                //  Log.d("Go KPP","Go KPP");
+            if (1==2)
+            {
+                if ((mMobileSKDApp.SKDStep == "2") || (mMobileSKDApp.SKDStep == "3")) {
                     Intent intent = new Intent(view.getContext(), /*ScanBarCode*/SecCabAll/*SecCab*/.class);
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     view.getContext().startActivity(intent);
                 }
+            }
 
             }
         });
@@ -711,10 +727,33 @@ public class MyActivity extends Activity {
             Scanbutton.setBackgroundDrawable(getResources().getDrawable(R.drawable.btn_inact)); //setBackgroundResource
             Scanbutton.setTextColor(Color.LTGRAY);/*Color.rgb(0,0,0)*/
 
-            Exitbutton.setTextColor(Color.LTGRAY);
+            //Exitbutton.setTextColor(Color.LTGRAY);
+            Exitbutton.setTextColor(Color.rgb(0,0,0));
+        }
+        if (mMobileSKDApp.SKDStep=="1")
+        {
+             Logbutton.setText(Html.fromHtml(/*getResources().getString(R.string.seccabstr)*/"<b>Авторизоваться</b><br><br><sup><small>Поднесите личную карту к устройству</small></sup>"));
+
+            //    setContentView(R.layout.activity_my);
+            //LinearLayout mainLayout=(LinearLayout)findViewById(R.id.M);
+            KPPbutton.setBackgroundDrawable(getResources().getDrawable(R.drawable.btn_inact)); //setBackgroundResource
+            KPPbutton.setTextColor(Color.LTGRAY);
+
+            Logbutton.setBackgroundDrawable(getResources().getDrawable(R.drawable.btm_aut)); //setBackgroundResource
+            Logbutton.setTextColor(Color.rgb(0,0,0));
+
+            Scanbutton.setBackgroundDrawable(getResources().getDrawable(R.drawable.btn_inact)); //setBackgroundResource
+            Scanbutton.setTextColor(Color.LTGRAY);/*Color.rgb(0,0,0)*/
+
+            //Exitbutton.setTextColor(Color.LTGRAY);
+            Exitbutton.setTextColor(Color.rgb(0,0,0));
         }
 Log.d(mMobileSKDApp.SKDStep,"zzzzzzzzzzzzzzzzmMobileSKDApp.SKDStep");
 
+    }
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        return false;
     }
 
 }

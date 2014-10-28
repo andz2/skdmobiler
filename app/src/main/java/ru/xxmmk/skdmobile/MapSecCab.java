@@ -46,7 +46,7 @@ public class MapSecCab extends FragmentActivity implements OnClickListener {
         setUpMapIfNeeded();
         locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
 
-        button=(Button)findViewById(R.id.bk);
+        button=(Button)findViewById(R.id.bkerr);
         button.setOnClickListener(new OnClickListener() {
             public void onClick(View v) {
                 finish();

@@ -17,13 +17,28 @@ import android.widget.Spinner;
 import android.widget.Toast;
 import android.nfc.NfcAdapter;
 
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.StatusLine;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpGet;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.Arrays;
 import java.util.List;
 
 
     public class SetKPPAct extends Activity {
 
-        String[] data = {"КПП не указана", "Проходная 1", "Проходная 2", "Проходная 3", "Проходная 4", "Склад 50" , "ЭСПЦ Пост1"};
+//        String[] data = {"КПП не указана", "Проходная 1", "Проходная 2", "Проходная 3", "Проходная 4", "Склад 50" , "ЭСПЦ Пост1"};
+        String[] data = {"КПП не указана", "Проходная 45", "Проходная 46", "Проходная 47", "Проходная 50"};
         String success;
         String kpp;
         private MobileSKDApp mMobileSKDApp;
@@ -48,6 +63,8 @@ import java.util.List;
             nfcAdapter = NfcAdapter.getDefaultAdapter(this);
             nfcPendingIntent = PendingIntent.getActivity(this, 0, new Intent(this, this.getClass()).addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP), 0);
 
+            //инициализируем массив
+            GetKpp();
             // адаптер
             ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, data);
             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -56,7 +73,7 @@ import java.util.List;
             spinner.setAdapter(adapter);
 
             // заголовок
-            spinner.setPrompt("Title");
+            //spinner.setPrompt("Title");
             // выделяем элемент
             if (mMobileSKDApp.SKDKPP!="Укажите КПП")
             {
@@ -135,5 +152,76 @@ import java.util.List;
             nfcAdapter.disableForegroundDispatch(this);
         }
 
+        public void GetKpp ()
+        {
+            Boolean vStatus = false;
+            mMobileSKDApp.NetErr=false;
+
+                try {
+                    StringBuilder builder = new StringBuilder();
+                    HttpClient client = mMobileSKDApp.getNewHttpClient(); //new DefaultHttpClient();
+                    HttpGet httpGet = new HttpGet(mMobileSKDApp.ListKPP);
+                    Log.d(mMobileSKDApp.getLOG_TAG(), mMobileSKDApp.ListKPP);
+                    try {
+                 //       Log.d("kpp_name","1");
+                        HttpResponse response = client.execute(httpGet);
+                        StatusLine statusLine = response.getStatusLine();
+                        int statusCode = statusLine.getStatusCode();
+                        if (statusCode == 200) {
+                            HttpEntity entity = response.getEntity();
+                            InputStream content = entity.getContent();
+                            BufferedReader reader = new BufferedReader(new InputStreamReader(content));
+                            String line;
+                            while ((line = reader.readLine()) != null) {
+                                builder.append(line);
+                            }
+                            try {
+                                //Toast.makeText(this.getBaseContext(), builder.toString(), Toast.LENGTH_LONG).show();
+                                JSONArray jsonArray = new JSONArray(builder.toString());
+                                for (int i = 0; i < jsonArray.length(); i++) {
+                                    JSONObject jsonObject = jsonArray.getJSONObject(i);
+                //                    Log.d("kpp_name","2");
+                                    data[i] = jsonObject.getString("KPP_NAME");
+                //                    Log.d("kpp_name",data[i]);
+                                    vStatus = true;
+                                    //   Log.d(jsonObject.getString("oper"),"Tst");
+
+                                }
+                                //Toast.makeText(this.getBaseContext(),clientID, Toast.LENGTH_LONG).show();
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+
+                            }
+                        } else {
+                            Log.d("not ok","not ok");
+                            //Log.e("Login fail", "Login fail");
+
+                        }
+                    } catch (ClientProtocolException e) {
+                        e.printStackTrace();
+
+
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                        mMobileSKDApp.NetErr=true;
+
+                    }
+
+                    Thread.sleep(10);
+                    if (vStatus) {
+//                        return true;
+                        Log.d("ok","ok");
+                    } else {
+                        Log.d("not ok","not ok");
+//                        return false;
+                    }
+
+                } catch (InterruptedException e) {
+                    Log.d("not ok","not ok");
+//                    return false;
+                }
+
+//            return false;
+        }
     }
 

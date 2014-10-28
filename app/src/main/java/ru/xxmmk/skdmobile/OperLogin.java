@@ -1,7 +1,4 @@
 package ru.xxmmk.skdmobile;
-        import android.animation.Animator;
-        import android.animation.AnimatorListenerAdapter;
-        import android.annotation.TargetApi;
         import android.app.ActionBar;
         import android.app.Activity;
         import android.app.Fragment;
@@ -11,15 +8,14 @@ package ru.xxmmk.skdmobile;
         import android.content.IntentFilter;
         import android.content.pm.ActivityInfo;
         import android.nfc.NfcAdapter;
-        import android.os.AsyncTask;
 
-        import android.os.Build;
         import android.os.Bundle;
         import android.os.Vibrator;
         import android.util.Log;
         import android.view.LayoutInflater;
         import android.view.View;
         import android.view.ViewGroup;
+        import android.view.inputmethod.InputMethodManager;
         import android.widget.AutoCompleteTextView;
         import android.widget.Button;
         import android.widget.EditText;
@@ -69,8 +65,10 @@ public class OperLogin extends Activity /*implements LoaderCallbacks<Cursor>*/{
     private View mLoginFormView;
     private MobileSKDApp mMobileSKDApp;
     private String mCode;
-    private TextView ScanText4;
+    private TextView RfIdE;
     public String mCargo;
+    public Boolean kShow;
+
 
     private static final String TAG = OperLogin.class.getName();
 
@@ -80,7 +78,9 @@ public class OperLogin extends Activity /*implements LoaderCallbacks<Cursor>*/{
     @Override
     protected void onStart(){
         super.onStart();
-        Button CnButton = (Button) findViewById(R.id.bk);
+        kShow=false;
+        Button CnButton = (Button) findViewById(R.id.bkerr);
+      /*  showKey();*/
         CnButton.setOnClickListener(new View.OnClickListener() {
                                            @Override
                                            public void onClick(View view) {
@@ -98,18 +98,23 @@ public class OperLogin extends Activity /*implements LoaderCallbacks<Cursor>*/{
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         mMobileSKDApp = (MobileSKDApp) this.getApplication();
         setContentView(R.layout.operlogin);
+        kShow=false;
         ActionBar myAB = getActionBar();
         //myAB.setTitle("Иванов И.И.");
         //myAB.setSubtitle("Проходная 7");
         nfcAdapter = NfcAdapter.getDefaultAdapter(this);
         nfcPendingIntent = PendingIntent.getActivity(this, 0, new Intent(this, this.getClass()).addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP), 0);
-       /* Button scan = (Button) findViewById(R.id.button);
-        scan.setOnClickListener(new View.OnClickListener() {
+        /*Button rf = (Button) findViewById(R.id.buttonrf);
+        //кнопка для рфидов
+        rf.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                vibrate();
+               // vibrate();
+                showKey();
             }
         });*/
+       /* showKey();*/
+        InOutColor ();
     }
 
     public void scanBarcode(View view) {
@@ -117,10 +122,13 @@ public class OperLogin extends Activity /*implements LoaderCallbacks<Cursor>*/{
     }
 
     public void scanBarcodeCustomOptions(View view) {
-        IntentIntegrator integrator = new IntentIntegrator(this);
-        integrator.setDesiredBarcodeFormats(IntentIntegrator.ONE_D_CODE_TYPES);
-        integrator.autoWide();
-        integrator.initiateScan();
+        Toast.makeText(this, "Сканирование штрих кодов запрещено", Toast.LENGTH_LONG).show();
+        if (1==2) {
+            IntentIntegrator integrator = new IntentIntegrator(this);
+            integrator.setDesiredBarcodeFormats(IntentIntegrator.ONE_D_CODE_TYPES);
+            integrator.autoWide();
+            integrator.initiateScan();
+        }
     }
 
     public void encodeBarcode(View view) {
@@ -335,6 +343,53 @@ public class OperLogin extends Activity /*implements LoaderCallbacks<Cursor>*/{
                 displayToast();
             }
         }
+    }
+    public void showKey ()
+    {
+        RfIdE  =    (EditText) findViewById(R.id.rf);
+        RfIdE.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                // TODO Auto-generated method stub
+              //  if (!kShow) {
+                    InputMethodManager keyboard = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                    keyboard.showSoftInput(RfIdE, 0);
+
+            }
+        },50);
+        //kShow=true;
+    }
+    public void InOutColor ()
+    {
+        final Button inBtn = (Button) findViewById(R.id.in);
+        final Button outBtn = (Button) findViewById(R.id.out);
+        if (mMobileSKDApp.SKDTKPP=="Вход")
+        {
+            inBtn.setBackgroundDrawable(getResources().getDrawable(R.drawable.btn_act1)); //setBackgroundResource
+            outBtn.setBackgroundDrawable(getResources().getDrawable(R.drawable.btn_inact1)); //setBackgroundResource
+        }
+        if (mMobileSKDApp.SKDTKPP=="Выход")
+        {
+            outBtn.setBackgroundDrawable(getResources().getDrawable(R.drawable.btn_act1)); //setBackgroundResource
+            inBtn.setBackgroundDrawable(getResources().getDrawable(R.drawable.btn_inact1)); //setBackgroundResource
+        }
+
+        inBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                inBtn.setBackgroundDrawable(getResources().getDrawable(R.drawable.btn_act1)); //setBackgroundResource
+                outBtn.setBackgroundDrawable(getResources().getDrawable(R.drawable.btn_inact1)); //setBackgroundResource
+                mMobileSKDApp.SKDTKPP="Вход";
+            }
+        });
+        outBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                outBtn.setBackgroundDrawable(getResources().getDrawable(R.drawable.btn_act1)); //setBackgroundResource
+                inBtn.setBackgroundDrawable(getResources().getDrawable(R.drawable.btn_inact1)); //setBackgroundResource
+                mMobileSKDApp.SKDTKPP="Выход";
+            }
+        });
     }
 }
 

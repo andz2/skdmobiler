@@ -9,7 +9,7 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="xxmmk.mobileskd.ErrorLogin"
+    tools:context="xxmmk.mobileskd.NetErrror"
     android:background="#d6363636"
     android:weightSum="1">
     <LinearLayout
@@ -24,11 +24,11 @@
             android:layout_gravity="center_horizontal">
 
             <ImageView
-                android:layout_width="100dp"
-                android:layout_height="100dp"
+                android:layout_width="200dp"
+                android:layout_height="200dp"
                 android:id="@+id/imageView"
                 android:layout_gravity="center"
-                android:src="@drawable/rerr" />
+                android:src="@drawable/cloud" />
         </FrameLayout>
     </LinearLayout>
 
@@ -36,12 +36,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="ОТКАЗАНО В ДОСТУПЕ"
+        android:text="Отсутствует сетевое подключение"
         android:id="@+id/xot"
         android:gravity="center_horizontal|bottom"
         android:layout_gravity="center_horizontal|bottom"
         android:textColor="#FF6666"
-        android:textSize="60dp"
+        android:textSize="50dp"
         android:textIsSelectable="false"
         android:layout_alignParentRight="true"
         android:layout_above="@+id/textView2"
@@ -50,7 +50,7 @@
     <TextView
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:text="Сожалеем, но у Вас нет доступа к приложению\n\nПо вопросам связанным с доступом к приложению обращаться по тел. 24-14-91\n"
+        android:text="\nСервер недоступен\nПроверьте пропуск работника\n"
         android:id="@+id/textView2"
         android:textColor="#ffffffff"
         android:textSize="18dp"

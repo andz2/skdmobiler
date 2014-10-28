@@ -60,7 +60,7 @@ public class ListKpp extends Activity {
             public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
                 finish();
                 Intent intent = new Intent();
-                intent.setClass(ListKpp.this, ErrorScan.class);
+                intent.setClass(ListKpp.this, NetError.class);
                 startActivity(intent);
                 //mWebView.loadUrl("file:///android_asset/loaderror.html");
             }

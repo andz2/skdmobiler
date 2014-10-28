@@ -1,26 +1,22 @@
 package ru.xxmmk.skdmobile;
 
 import android.app.ActionBar;
-import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.location.Location;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 
-import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.CameraUpdateFactory;
-import android.location.Location;
+
 import android.location.LocationListener;
 import android.view.View.OnClickListener;
 import android.location.LocationManager;
 import android.util.Log;
-import android.view.KeyEvent;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 
@@ -50,7 +46,7 @@ public class Map extends FragmentActivity implements OnClickListener {
 
         setUpMapIfNeeded();
         locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
-        button=(Button)findViewById(R.id.bk);
+        button=(Button)findViewById(R.id.bkerr);
         button.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 finish();
