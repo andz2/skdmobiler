@@ -553,7 +553,6 @@ public class MyActivity extends Activity {
 
                 Logbutton.setText(Html.fromHtml(/*getResources().getString(R.string.seccabstr)*/"<b>Личный кабинет</b><br><br><sup><small>Нажмите для информации</small></sup>"));
                 mMobileSKDApp.SKDStep = "2";
-                //finish();
             } else {
                 //   super.onCreate(savedInstanceState);
                 Log.d("go error page","way");
@@ -645,9 +644,10 @@ public class MyActivity extends Activity {
                                                   mMobileSKDApp.SKDKPP="Укажите КПП";
                                                   mMobileSKDApp.SKDOperator="Кто ВЫ?";
                                                  // StartScreen();
-                                                  finish();
+                                                //  finish();
                                               }
-                                              finish();
+                                               Intent intent = new Intent(MyActivity.this, Activity.class); intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK)
+                                              ; finish();
                                               StartScreen();
                                           }
                                       }

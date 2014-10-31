@@ -31,6 +31,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -38,8 +39,9 @@ import java.util.List;
     public class SetKPPAct extends Activity {
 
 //        String[] data = {"КПП не указана", "Проходная 1", "Проходная 2", "Проходная 3", "Проходная 4", "Склад 50" , "ЭСПЦ Пост1"};
-        String[] data = {"КПП не указана", "Проходная 45", "Проходная 46", "Проходная 47", "Проходная 50"};
+        String[] data1 = {"КПП не указана", "Проходная 45", "Проходная 46", "Проходная 47"};
         String success;
+        ArrayList<String> data = new ArrayList<String>();
         String kpp;
         private MobileSKDApp mMobileSKDApp;
         protected NfcAdapter nfcAdapter;
@@ -117,7 +119,7 @@ import java.util.List;
                                            int position, long id) {
                     // показываем позиция нажатого элемента
                     //Toast.makeText(getBaseContext(), "Position = " + position, Toast.LENGTH_SHORT).show();
-                    kpp=  data[position];
+                    kpp=  data.get(position).toString();
                 //    Toast.makeText(getBaseContext(), "Position = " + kpp, Toast.LENGTH_SHORT).show();
 
                 }
@@ -181,7 +183,8 @@ import java.util.List;
                                 for (int i = 0; i < jsonArray.length(); i++) {
                                     JSONObject jsonObject = jsonArray.getJSONObject(i);
                 //                    Log.d("kpp_name","2");
-                                    data[i] = jsonObject.getString("KPP_NAME");
+//                                    data[i] = jsonObject.getString("KPP_NAME");
+                                    data.add(jsonObject.getString("KPP_NAME"));
                 //                    Log.d("kpp_name",data[i]);
                                     vStatus = true;
                                     //   Log.d(jsonObject.getString("oper"),"Tst");
