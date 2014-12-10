@@ -1,0 +1,67 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    tools:context="ru.xxmmk.skdmobile.BlockCard">
+
+    <Button
+        android:layout_width="fill_parent"
+        android:layout_height="60dp"
+        android:text="Заблокировать карту"
+        android:id="@+id/lockcard"
+        android:background="@drawable/btn_scan_state"
+        android:layout_gravity="center_horizontal|bottom"
+        android:gravity="center"
+        android:textSize="25dp"
+        android:width="150dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <Spinner
+        android:layout_width="wrap_content"
+        android:layout_height="80dp"
+        android:id="@+id/listBreach"
+        android:focusable="false"
+        android:layout_below="@+id/lockcard"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <WebView
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:id="@+id/scanWV"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_above="@+id/linearLayout"
+        android:layout_below="@+id/listBreach" />
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="fill_parent"
+        android:layout_height="60dp"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"
+        android:id="@+id/linearLayout"
+        android:background="#ffff000c"
+        android:gravity="bottom">
+
+        <Button
+            android:layout_width="fill_parent"
+            android:layout_height="60dp"
+            android:text="Отмена"
+            android:id="@+id/bkscanblock"
+            android:background="@drawable/btn_bk_state"
+            android:gravity="center"
+            android:textSize="25dp"
+            android:width="150dp"
+            android:layout_above="@+id/bkscan"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
+    </LinearLayout>
+
+</RelativeLayout>

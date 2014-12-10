@@ -1,26 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:weightSum="1"
     android:background="@android:color/white">
 
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="378dp">
-        <TextView
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:text="Сканирование не удалось"
-            android:id="@+id/x1"
-            android:textStyle="bold"
-            android:layout_gravity="center_horizontal"
-            android:textSize="40dp"
-            android:layout_alignParentLeft="false"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentRight="false"
-            android:gravity="center_horizontal|fill_vertical|top" />
+        android:layout_height="fill_parent"
+        android:orientation="vertical"
+
+        android:id="@+id/linearLayout"
+        android:layout_above="@+id/linearLayout2"
+        android:layout_centerVertical="true"
+        android:gravity="center_vertical">
 
         <View
             android:layout_width="fill_parent"
@@ -35,11 +29,12 @@
             android:layout_width="100dp"
             android:layout_height="100dp"
             android:id="@+id/imageView"
-            android:layout_gravity="center"
+            android:layout_gravity="center_horizontal"
             android:src="@drawable/rerr"
             android:gravity="center_horizontal|bottom"
             android:layout_centerVertical="true"
             android:layout_centerHorizontal="true" />
+
         <TextView
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
@@ -48,31 +43,19 @@
             android:textColor="#ffd82835"
             android:textSize="18dp"
             android:gravity="center_horizontal|bottom"
-            android:layout_gravity="center_horizontal|bottom"
             android:layout_alignParentBottom="true"
             android:layout_alignParentLeft="true" />
 
 
-    </RelativeLayout>
+    </LinearLayout>
 
-    <RelativeLayout
+
+    <LinearLayout
         android:orientation="vertical"
         android:layout_width="fill_parent"
-        android:layout_height="140dp"
-        android:gravity="bottom"
-        android:layout_gravity="bottom">
-
-        <Button
-            android:layout_width="fill_parent"
-            android:layout_height="60dp"
-            android:text="Попробовать ещё раз"
-            android:id="@+id/tryagain"
-            android:textSize="20dp"
-            android:width="150dp"
-            android:gravity="center_vertical|center_horizontal"
-            android:background="#65A1FD"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentLeft="true" />
+        android:layout_height="125dp"
+        android:layout_alignParentBottom="true"
+        android:id="@+id/linearLayout2">
 
         <Button
             android:layout_width="fill_parent"
@@ -81,11 +64,48 @@
             android:id="@+id/offscan"
             android:textSize="20dp"
             android:width="150dp"
-            android:layout_alignParentBottom="true"
-            android:layout_centerHorizontal="true"
             android:gravity="center_vertical|center_horizontal"
-            android:background="#65A1FD" />
+            android:background="#65A1FD"
+            android:layout_above="@+id/tryagain"
+            android:layout_toRightOf="@+id/editText"
+            android:layout_toEndOf="@+id/editText" />
 
-    </RelativeLayout>
+        <EditText
+            android:layout_width="10dp"
+            android:layout_height="10dp"
+            android:id="@+id/editText"
+            android:enabled="true"
+            android:layout_below="@+id/offscan"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:singleLine="false" />
 
-</LinearLayout>
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Попробовать ещё раз"
+            android:id="@+id/tryagain"
+            android:textSize="20dp"
+            android:width="150dp"
+            android:gravity="center_vertical|center_horizontal"
+            android:background="#65A1FD"
+            android:layout_alignParentTop="false"
+            android:layout_alignParentLeft="false"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentBottom="true" />
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="Сканирование не удалось"
+        android:id="@+id/x1"
+        android:textStyle="bold"
+        android:layout_gravity="center_horizontal"
+        android:textSize="40dp"
+        android:layout_alignParentLeft="false"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="false"
+        android:gravity="center_horizontal|fill_vertical|top" />
+
+</RelativeLayout>

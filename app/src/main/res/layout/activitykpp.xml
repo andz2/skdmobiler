@@ -43,7 +43,7 @@
             android:layout_below="@+id/textView2"
             android:layout_alignParentLeft="true" />
         <Spinner
-            android:id="@+id/spinner"
+            android:id="@+id/listkpp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="34dp"

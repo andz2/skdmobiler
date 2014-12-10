@@ -71,7 +71,7 @@ import java.util.List;
             ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, data);
             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
-            Spinner spinner = (Spinner) findViewById(R.id.spinner);
+            Spinner spinner = (Spinner) findViewById(R.id.listkpp);
             spinner.setAdapter(adapter);
 
             // заголовок

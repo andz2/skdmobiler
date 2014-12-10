@@ -1,55 +1,55 @@
 package ru.xxmmk.skdmobile;
 
-        import android.app.Application;
-        import android.content.Context;
-        import android.database.sqlite.SQLiteDatabase;
-        import android.database.sqlite.SQLiteOpenHelper;
-        import android.os.Vibrator;
-        import android.util.Log;
+import android.app.Application;
+import android.content.Context;
+import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteOpenHelper;
+import android.os.Vibrator;
+import android.util.Log;
 
-        import org.apache.http.HttpVersion;
-        import org.apache.http.client.HttpClient;
-        import org.apache.http.conn.ClientConnectionManager;
-        import org.apache.http.conn.scheme.PlainSocketFactory;
-        import org.apache.http.conn.scheme.Scheme;
-        import org.apache.http.conn.scheme.SchemeRegistry;
-        import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.HttpVersion;
+import org.apache.http.client.HttpClient;
+import org.apache.http.conn.ClientConnectionManager;
+import org.apache.http.conn.scheme.PlainSocketFactory;
+import org.apache.http.conn.scheme.Scheme;
+import org.apache.http.conn.scheme.SchemeRegistry;
+import org.apache.http.impl.client.DefaultHttpClient;
 
-        import java.security.SecureRandom;
-        import java.security.cert.CertificateException;
-        import java.security.cert.X509Certificate;
+import java.security.SecureRandom;
+import java.security.cert.CertificateException;
+import java.security.cert.X509Certificate;
 
-        import javax.net.ssl.HostnameVerifier;
-        import javax.net.ssl.HttpsURLConnection;
-        import javax.net.ssl.SSLContext;
+import javax.net.ssl.HostnameVerifier;
+import javax.net.ssl.HttpsURLConnection;
+import javax.net.ssl.SSLContext;
 //import javax.net.ssl.SSLSocketFactory;
-        import org.apache.http.conn.ssl.SSLSocketFactory;
-        import org.apache.http.impl.conn.tsccm.ThreadSafeClientConnManager;
-        import org.apache.http.params.BasicHttpParams;
-        import org.apache.http.params.HttpParams;
-        import org.apache.http.params.HttpProtocolParams;
-        import org.apache.http.protocol.HTTP;
+import org.apache.http.conn.ssl.SSLSocketFactory;
+import org.apache.http.impl.conn.tsccm.ThreadSafeClientConnManager;
+import org.apache.http.params.BasicHttpParams;
+import org.apache.http.params.HttpParams;
+import org.apache.http.params.HttpProtocolParams;
+import org.apache.http.protocol.HTTP;
 
-        import javax.net.ssl.SSLSession;
-        import javax.net.ssl.TrustManager;
-        import javax.net.ssl.X509TrustManager;
+import javax.net.ssl.SSLSession;
+import javax.net.ssl.TrustManager;
+import javax.net.ssl.X509TrustManager;
 
-        import java.io.IOException;
-        import java.net.Socket;
-        import java.net.UnknownHostException;
-        import java.security.KeyManagementException;
-        import java.security.KeyStore;
-        import java.security.KeyStoreException;
-        import java.security.NoSuchAlgorithmException;
-        import java.security.UnrecoverableKeyException;
-        import java.security.cert.CertificateException;
-        import java.security.cert.X509Certificate;
+import java.io.IOException;
+import java.net.Socket;
+import java.net.UnknownHostException;
+import java.security.KeyManagementException;
+import java.security.KeyStore;
+import java.security.KeyStoreException;
+import java.security.NoSuchAlgorithmException;
+import java.security.UnrecoverableKeyException;
+import java.security.cert.CertificateException;
+import java.security.cert.X509Certificate;
 
-        import javax.net.ssl.SSLContext;
-        import javax.net.ssl.TrustManager;
-        import javax.net.ssl.X509TrustManager;
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.TrustManager;
+import javax.net.ssl.X509TrustManager;
 
-        import org.apache.http.conn.ssl.SSLSocketFactory;
+import org.apache.http.conn.ssl.SSLSocketFactory;
 
 
 public class MobileSKDApp extends Application {
@@ -64,9 +64,12 @@ public class MobileSKDApp extends Application {
     private String mLoginURL = "http://neptun.eco.mmk.chel.su:7777/pls/apex/XXOTA_APEX.XXHR_SKD_MOBILE.login";//"https://navigator.mmk.ru/login_kis.aspx";
     public String mDatURL = "http://neptun.eco.mmk.chel.su:7777/pls/apex/XXOTA_APEX.MOBILE_SKD_VIEW";//"https://navigator.mmk.ru/login_kis.aspx";
     public String mDatURLCargo = "http://neptun.eco.mmk.chel.su:7777/pls/apex/XXOTA_APEX.XXHR_SKD_MOBILE.is_cargo";//"https://navigator.mmk.ru/login_kis.aspx";
-    public String mDatURLPerson = "http://neptun.eco.mmk.chel.su:7777/pls/apex/XXOTA_APEX.XXHR_SKD_MOBILE.person_info_all";//"https://navigator.mmk.ru/login_kis.aspx";
+    public String mDatURLBlockPerson = "http://neptun.eco.mmk.chel.su:7777/pls/apex/XXOTA_APEX.XXHR_SKD_MOBILE.person_info_lock1";//"https://navigator.mmk.ru/login_kis.aspx";
+    public String mDatURLPerson = "http://neptun.eco.mmk.chel.su:7777/pls/apex/XXOTA_APEX.XXHR_SKD_MOBILE.person_info_all1";//"https://navigator.mmk.ru/login_kis.aspx";
     public String mDatURL3 = "http://neptun.eco.mmk.chel.su:7777/pls/apex/xxota_apex.xxhr_skd_mobile.bar_code_inf";//"https://navigator.mmk.ru/login_kis.aspx";
     public String ListKPP = "http://neptun.eco.mmk.chel.su:7777/pls/apex/xxota_apex.xxhr_skd_mobile.list_kpp";
+    public String ListBreach = "http://neptun.eco.mmk.chel.su:7777/pls/apex/xxota_apex.xxhr_skd_mobile.breach_type";
+    public String BlockCard = "http://neptun.eco.mmk.chel.su:7777/pls/apex/xxota_apex.xxhr_skd_mobile.card_block";
     public String SKDOperator="Кто ВЫ?";
     public String SKDKPP="Укажите КПП";
     public String SKDTKPP="Тип КПП не выбран";

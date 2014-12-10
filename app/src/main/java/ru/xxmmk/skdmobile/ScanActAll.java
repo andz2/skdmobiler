@@ -8,17 +8,22 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.ActivityInfo;
+import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.nfc.NfcAdapter;
 import android.nfc.Tag;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Vibrator;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Button;
+import android.widget.Toast;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -44,6 +49,11 @@ public class ScanActAll extends Activity {
     protected PendingIntent nfcPendingIntent;
     Button button;
     public String mCargo;
+    Boolean ScanF = false;
+    Intent myIntent;
+    private UserNfcTask NfcTask;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,6 +61,7 @@ public class ScanActAll extends Activity {
         setContentView(R.layout.activity_scan_act_all);
         mMobileSKDApp = ((MobileSKDApp) this.getApplication());
         ActionBar myAB = getActionBar();
+        ScanF = false;
         myAB.setTitle(mMobileSKDApp.SKDOperator);
         myAB.setSubtitle(mMobileSKDApp.SKDKPP);
         myAB.setDisplayShowHomeEnabled(false);
@@ -60,21 +71,19 @@ public class ScanActAll extends Activity {
         mWebView.setVerticalScrollBarEnabled(true);
         mWebView.setHorizontalScrollBarEnabled(false);
         mWebView.getSettings().setJavaScriptEnabled(true);
-
         pd = new ProgressDialog(ScanActAll.this);
         pd.setMessage("Дождитесь окончания загрузки...");
-        pd.show();
-
-        try {
+        //    pd.show();
+      /*  try {
             Thread.sleep(100);
         }
         catch (InterruptedException e) {
             Log.d("wait","10");
-        }
+        }*/
 
         mWebView.setWebViewClient(new MyWebViewClient());
         mWebView.loadUrl(mMobileSKDApp.mDatURLPerson+"?p_card_id="+mMobileSKDApp.SKDRfIdCard+"&p_kpp="+mMobileSKDApp.SKDKPP+"&p_operator="
-                            +mMobileSKDApp.SKDOperator+"&p_kpp_type="+mMobileSKDApp.SKDTKPP);
+                +mMobileSKDApp.SKDOperator+"&p_kpp_type="+mMobileSKDApp.SKDTKPP);
         nfcAdapter = NfcAdapter.getDefaultAdapter(this);
         nfcPendingIntent = PendingIntent.getActivity(this, 0, new Intent(this, this.getClass()).addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP), 0);
 
@@ -84,106 +93,167 @@ public class ScanActAll extends Activity {
                 finish();
             }
         });
+        FloatingActionButton fabButton = new FloatingActionButton.Builder(this)
+                .withDrawable(getResources().getDrawable(R.drawable.block))
+                .withButtonColor(Color.RED)
+                .withGravity(Gravity.BOTTOM | Gravity.RIGHT)
+                .withMargins(0, 0, 10, 76)
+                .create();
+        fabButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                Intent intent = new Intent();
+                intent.setClass(ScanActAll.this, BlockCard.class);
+
+                startActivity(intent);
+            }
+        });
     }
     @Override
     protected void  onResume() {
         super.onResume();
         // Log.d("Resume","Resume");
+        ScanF = false;
         enableForegroundMode();
         ActionBar myAB = getActionBar();
         myAB.setTitle(mMobileSKDApp.SKDOperator);
         myAB.setSubtitle(mMobileSKDApp.SKDKPP);
         myAB.setDisplayShowHomeEnabled(false);
+
+
     }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        ScanF = false;
+        pd = new ProgressDialog(ScanActAll.this);
+        pd.setMessage("Дождитесь окончания загрузки...");
+        //pd.show();
+      /*  try {
+            Thread.sleep(100);
+        }
+        catch (InterruptedException e) {
+            Log.d("wait","10");
+        }*/
+        mWebView.setWebViewClient(new MyWebViewClient());
+        mWebView.loadUrl(mMobileSKDApp.mDatURLPerson+"?p_card_id="+mMobileSKDApp.SKDRfIdCard+"&p_kpp="+mMobileSKDApp.SKDKPP+"&p_operator="
+                +mMobileSKDApp.SKDOperator+"&p_kpp_type="+mMobileSKDApp.SKDTKPP);
+    }
+
+
     @Override
     protected void onNewIntent(Intent intent) {
-        if (NfcAdapter.ACTION_TAG_DISCOVERED.equals(intent.getAction())) {
-            Tag myTag = intent.getParcelableExtra(NfcAdapter.EXTRA_TAG);
-            //mMobileSKDApp.SKDRfId=bytesToHex(myTag.getId());
-            mMobileSKDApp.SKDRfIdCard=bytesToHex(myTag.getId());
-            Log.d( mMobileSKDApp.SKDRfIdCard, "=mCode");
-            //attemptLogin();
-            Boolean vStatus = false;
-            try {
-                StringBuilder builder = new StringBuilder();
-                HttpClient client =mMobileSKDApp.getNewHttpClient(); //new DefaultHttpClient();
-                HttpGet httpGet = new HttpGet(mMobileSKDApp.getisCargoDataURL(mMobileSKDApp.SKDRfIdCard));
-                Log.d(mMobileSKDApp.getLOG_TAG(), "OperLogin.UserLoginTask " +mMobileSKDApp.getLoginDataURL(mMobileSKDApp.SKDRfIdCard));
+        myIntent=intent;
+/*        if (ScanF == false) {
+            if (NfcAdapter.ACTION_TAG_DISCOVERED.equals(intent.getAction())) {
+                Tag myTag = intent.getParcelableExtra(NfcAdapter.EXTRA_TAG);
+                //mMobileSKDApp.SKDRfId=bytesToHex(myTag.getId());
+                mMobileSKDApp.SKDRfIdCard = bytesToHex(myTag.getId());
+                Log.d(mMobileSKDApp.SKDRfIdCard, "=mCode");
+                //attemptLogin();
+                Boolean vStatus = false;
+                ScanF=true;
                 try {
-                    HttpResponse response = client.execute(httpGet);
-                    StatusLine statusLine = response.getStatusLine();
-                    int statusCode = statusLine.getStatusCode();
-                    if (statusCode == 200 )
-                    {
-                        HttpEntity entity = response.getEntity();
-                        InputStream content = entity.getContent();
-                        BufferedReader reader = new BufferedReader(new InputStreamReader(content));
-                        String line;
-                        while ((line = reader.readLine()) != null) {
-                            builder.append(line);
-                        }
-                        try {
-                            //Toast.makeText(this.getBaseContext(), builder.toString(), Toast.LENGTH_LONG).show();
-                            JSONArray jsonArray = new JSONArray(builder.toString());
-                            for (int i=0;i<jsonArray.length();i++) {
-                                JSONObject jsonObject = jsonArray.getJSONObject(i);
-
-                                mCargo = jsonObject.getString("cargo");
-                                vStatus = true;
-                                // Log.d(mCargo,"*******************************************************************");
-                            }
-                            //Toast.makeText(this.getBaseContext(),clientID, Toast.LENGTH_LONG).show();
-                        }
-                        catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                    else {
-                        //Log.e("Login fail", "Login fail");
-                    }
-                }
-                catch (ClientProtocolException e) {
-                    e.printStackTrace();
-                }
-                catch (IOException e) {
-                    e.printStackTrace();
-                }
-                Thread.sleep(10);
-                // Log.d(mCargo,mCargo);
-                vStatus = vStatus && mCargo.equals("Y");
-                if (vStatus) {
-                    Log.d("Cargo way",mCargo);
-                    intent.setClass(ScanActAll.this, CargoA.class);
-                    startActivity(intent);
-
-                } else {
-                 //всё ок, мы идём на перезагрузку вебвью в окне после успешного считывания
-                    pd = new ProgressDialog(ScanActAll.this);
-                    pd.setMessage("Дождитесь окончания загрузки...");
-                    pd.show();
-
+                    StringBuilder builder = new StringBuilder();
+                    HttpClient client = mMobileSKDApp.getNewHttpClient(); //new DefaultHttpClient();
+                    HttpGet httpGet = new HttpGet(mMobileSKDApp.getisCargoDataURL(mMobileSKDApp.SKDRfIdCard));
+                   // Log.d(mMobileSKDApp.getLOG_TAG(), "OperLogin.UserLoginTask " + mMobileSKDApp.getLoginDataURL(mMobileSKDApp.SKDRfIdCard));
                     try {
-                        Thread.sleep(100);
-                    }
-                    catch (InterruptedException e) {
-                        Log.d("wait","10");
+                        HttpResponse response = client.execute(httpGet);
+                        StatusLine statusLine = response.getStatusLine();
+                        int statusCode = statusLine.getStatusCode();
+                        if (statusCode == 200) {
+                            HttpEntity entity = response.getEntity();
+                            InputStream content = entity.getContent();
+                            BufferedReader reader = new BufferedReader(new InputStreamReader(content));
+                            String line;
+                            while ((line = reader.readLine()) != null) {
+                                builder.append(line);
+                            }
+                            try {
+                                //Toast.makeText(this.getBaseContext(), builder.toString(), Toast.LENGTH_LONG).show();
+                                JSONArray jsonArray = new JSONArray(builder.toString());
+                                for (int i = 0; i < jsonArray.length(); i++) {
+                                    JSONObject jsonObject = jsonArray.getJSONObject(i);
+
+                                    mCargo = jsonObject.getString("cargo");
+                                    vStatus = true;
+                                    // Log.d(mCargo,"*******************************************************************");
+                                }
+                                //Toast.makeText(this.getBaseContext(),clientID, Toast.LENGTH_LONG).show();
+                            } catch (JSONException e) {
+                                ScanF = false;
+                                e.printStackTrace();
+                            }
+                        } else {
+                            ScanF = false;
+                            Log.e("Scan fail", "Scan fail");
+                        }
+                    } catch (ClientProtocolException e) {
+                        ScanF = false;
+                        e.printStackTrace();
+                    } catch (IOException e) {
+                        ScanF = false;
+                        e.printStackTrace();
                     }
 
-                    mWebView.setWebViewClient(new MyWebViewClient());
-                    mWebView.loadUrl(mMobileSKDApp.mDatURLPerson+"?p_card_id="+mMobileSKDApp.SKDRfIdCard+"&p_kpp="+mMobileSKDApp.SKDKPP+"&p_operator="
-                            +mMobileSKDApp.SKDOperator+"&p_kpp_type="+mMobileSKDApp.SKDTKPP);
+                    // Log.d(mCargo,mCargo);
+                    vStatus = vStatus && mCargo.equals("Y");
+                    //Это материальный пропуск
+                    if (vStatus) {
+                        //    Log.d("Cargo way",mCargo);
+                        ScanF = false;
+                        intent.setClass(ScanActAll.this, CargoA.class);
+                        startActivity(intent);
+
+                    } else {
+                        //всё ок, мы идём на перезагрузку вебвью в окне после успешного считывания
+                        mWebView.setWebViewClient(new MyWebViewClient());
+                        mWebView.loadUrl(mMobileSKDApp.mDatURLPerson + "?p_card_id=" + mMobileSKDApp.SKDRfIdCard + "&p_kpp=" + mMobileSKDApp.SKDKPP + "&p_operator="
+                                + mMobileSKDApp.SKDOperator + "&p_kpp_type=" + mMobileSKDApp.SKDTKPP);
+
+                    }
+                    Thread.sleep(1000);
+                    ScanF = false;
+
+                } catch (InterruptedException e) {
+                    ScanF = false;
                 }
+                vibrate();
+                ScanF = false;
+                //Log.d("Поехали","action !!!!!!");
 
-            } catch (InterruptedException e) {
+//            intent.setClass(OperLogin.this, ScanActivity.class);
+//            startActivity(intent);
 
             }
-             vibrate();
-            //Log.d("Поехали","action !!!!!!");
-/*
-            intent.setClass(OperLogin.this, ScanActivity.class);
-            startActivity(intent);
-*/
+            ScanF = false;
         }
+        else
+        {
+            try
+            {
+                Thread.sleep(1000);
+                ScanF = false;
+            }
+            catch (InterruptedException e) {
+                Log.d("wait","10");
+            }
+        }
+*/
+        if (NfcTask == null ||
+                NfcTask.getStatus().equals(AsyncTask.Status.FINISHED)) {
+            NfcTask = new UserNfcTask();
+            NfcTask.execute();
+     //       progressBar.setProgress(0);
+            pd = new ProgressDialog(ScanActAll.this);
+            pd.setMessage("Дождитесь окончания загрузки...");
+            pd.show();
+        } else {
+            Toast.makeText(ScanActAll.this, "Ждите завершения обработки", Toast.LENGTH_SHORT)
+                    .show();
+        }
+
     }
 
     public void enableForegroundMode() {
@@ -196,7 +266,6 @@ public class ScanActAll extends Activity {
 
     public void disableForegroundMode() {
         //Log.d(TAG, "disableForegroundMode");
-
         nfcAdapter.disableForegroundDispatch(this);
     }
 
@@ -207,14 +276,11 @@ public class ScanActAll extends Activity {
         return true;
     }
     private class MyWebViewClient extends WebViewClient {
-        @Override
-        public boolean shouldOverrideUrlLoading(WebView view, String url) {
-            view.loadUrl(url);
-            if (!pd.isShowing()) {
-                pd.show();
-            }
 
-            return true;
+        @Override
+        public void onPageStarted(WebView view, String url, Bitmap favicon)
+        {
+            pd.show();
         }
 
         @Override
@@ -234,7 +300,7 @@ public class ScanActAll extends Activity {
     }
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-    finish();
+        finish();
         int id = item.getItemId();
         if (id == R.id.action_settings) {
             return true;
@@ -257,5 +323,118 @@ public class ScanActAll extends Activity {
     private void vibrate() {
         Vibrator vibe = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE) ;
         vibe.vibrate(500);
+    }
+
+    public class UserNfcTask extends AsyncTask<Void, Void, Boolean> {
+        @Override
+        protected Boolean doInBackground(Void... params) {
+            Boolean vStatus = false;
+/*            myIntent.setClass(ScanActAll.this, CargoA.class);
+            startActivity(myIntent);
+*/
+            if (NfcAdapter.ACTION_TAG_DISCOVERED.equals(myIntent.getAction())) {
+                Tag myTag = myIntent.getParcelableExtra(NfcAdapter.EXTRA_TAG);
+                //mMobileSKDApp.SKDRfId=bytesToHex(myTag.getId());
+                mMobileSKDApp.SKDRfIdCard = bytesToHex(myTag.getId());
+                Log.d(mMobileSKDApp.SKDRfIdCard, "=mCode");
+                ScanF=true;
+                try {
+                    StringBuilder builder = new StringBuilder();
+                    HttpClient client = mMobileSKDApp.getNewHttpClient(); //new DefaultHttpClient();
+                    HttpGet httpGet = new HttpGet(mMobileSKDApp.getisCargoDataURL(mMobileSKDApp.SKDRfIdCard));
+                    // Log.d(mMobileSKDApp.getLOG_TAG(), "OperLogin.UserLoginTask " + mMobileSKDApp.getLoginDataURL(mMobileSKDApp.SKDRfIdCard));
+                    try {
+                        HttpResponse response = client.execute(httpGet);
+                        StatusLine statusLine = response.getStatusLine();
+                        int statusCode = statusLine.getStatusCode();
+                        if (statusCode == 200) {
+                            HttpEntity entity = response.getEntity();
+                            InputStream content = entity.getContent();
+                            BufferedReader reader = new BufferedReader(new InputStreamReader(content));
+                            String line;
+                            while ((line = reader.readLine()) != null) {
+                                builder.append(line);
+                            }
+                            try {
+                                //Toast.makeText(this.getBaseContext(), builder.toString(), Toast.LENGTH_LONG).show();
+                                JSONArray jsonArray = new JSONArray(builder.toString());
+                                for (int i = 0; i < jsonArray.length(); i++) {
+                                    JSONObject jsonObject = jsonArray.getJSONObject(i);
+
+                                    mCargo = jsonObject.getString("cargo");
+                                    vStatus = true;
+                                    // Log.d(mCargo,"*******************************************************************");
+                                }
+                                //Toast.makeText(this.getBaseContext(),clientID, Toast.LENGTH_LONG).show();
+                            } catch (JSONException e) {
+                                ScanF = false;
+                                e.printStackTrace();
+                            }
+                        } else {
+                            ScanF = false;
+                            Log.e("Scan fail", "Scan fail");
+                        }
+                    } catch (ClientProtocolException e) {
+                        ScanF = false;
+                        e.printStackTrace();
+                    } catch (IOException e) {
+                        ScanF = false;
+                        e.printStackTrace();
+                    }
+
+                    // Log.d(mCargo,mCargo);
+                    vStatus = vStatus && mCargo.equals("Y");
+                    //Это материальный пропуск
+                    if (vStatus) {
+                        //    Log.d("Cargo way",mCargo);
+                        ScanF = false;
+                        myIntent.setClass(ScanActAll.this, CargoA.class);
+                        startActivity(myIntent);
+
+                    } else {
+                        //всё ок, мы идём на перезагрузку вебвью в окне после успешного считывания
+                        mWebView.setWebViewClient(new MyWebViewClient());
+                        mWebView.loadUrl(mMobileSKDApp.mDatURLPerson + "?p_card_id=" + mMobileSKDApp.SKDRfIdCard + "&p_kpp=" + mMobileSKDApp.SKDKPP + "&p_operator="
+                                + mMobileSKDApp.SKDOperator + "&p_kpp_type=" + mMobileSKDApp.SKDTKPP);
+
+                    }
+                    Thread.sleep(1000);
+                    ScanF = false;
+
+                } catch (InterruptedException e) {
+                    ScanF = false;
+                }
+                vibrate();
+                ScanF = false;
+                //Log.d("Поехали","action !!!!!!");
+/*
+            intent.setClass(OperLogin.this, ScanActivity.class);
+            startActivity(intent);
+*/
+            }
+            ScanF = false;
+            return vStatus;
+        }
+
+        @Override
+        protected void onPostExecute(final Boolean success) {
+            if (pd.isShowing()) {
+                pd.dismiss();
+            }
+            /*if (success) {
+                finish();
+            } else {
+
+            }*/
+        }
+
+        @Override
+        protected void onCancelled() {
+            if (pd.isShowing()) {
+                pd.dismiss();
+            }
+        }
+
+
     }
 }
