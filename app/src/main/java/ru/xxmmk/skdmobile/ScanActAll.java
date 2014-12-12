@@ -52,6 +52,7 @@ public class ScanActAll extends Activity {
     Boolean ScanF = false;
     Intent myIntent;
     private UserNfcTask NfcTask;
+    String ErrorCode="";
 
 
 
@@ -62,6 +63,7 @@ public class ScanActAll extends Activity {
         mMobileSKDApp = ((MobileSKDApp) this.getApplication());
         ActionBar myAB = getActionBar();
         ScanF = false;
+//        mMobileSKDApp.SKDBlockBk="0";
         myAB.setTitle(mMobileSKDApp.SKDOperator);
         myAB.setSubtitle(mMobileSKDApp.SKDKPP);
         myAB.setDisplayShowHomeEnabled(false);
@@ -135,112 +137,20 @@ public class ScanActAll extends Activity {
         catch (InterruptedException e) {
             Log.d("wait","10");
         }*/
-        mWebView.setWebViewClient(new MyWebViewClient());
-        mWebView.loadUrl(mMobileSKDApp.mDatURLPerson+"?p_card_id="+mMobileSKDApp.SKDRfIdCard+"&p_kpp="+mMobileSKDApp.SKDKPP+"&p_operator="
-                +mMobileSKDApp.SKDOperator+"&p_kpp_type="+mMobileSKDApp.SKDTKPP);
+        //Возвращаемся с окна блокировки
+        if (mMobileSKDApp.SKDBlockBk=="1")
+        {
+            mWebView.setWebViewClient(new MyWebViewClient());
+            mWebView.loadUrl(mMobileSKDApp.mDatURLPerson + "?p_card_id=" + mMobileSKDApp.SKDRfIdCard + "&p_kpp=" + mMobileSKDApp.SKDKPP + "&p_operator="
+                    + mMobileSKDApp.SKDOperator + "&p_kpp_type=Проверка");
+            mMobileSKDApp.SKDBarCode="0";
+        }
     }
 
 
     @Override
     protected void onNewIntent(Intent intent) {
         myIntent=intent;
-/*        if (ScanF == false) {
-            if (NfcAdapter.ACTION_TAG_DISCOVERED.equals(intent.getAction())) {
-                Tag myTag = intent.getParcelableExtra(NfcAdapter.EXTRA_TAG);
-                //mMobileSKDApp.SKDRfId=bytesToHex(myTag.getId());
-                mMobileSKDApp.SKDRfIdCard = bytesToHex(myTag.getId());
-                Log.d(mMobileSKDApp.SKDRfIdCard, "=mCode");
-                //attemptLogin();
-                Boolean vStatus = false;
-                ScanF=true;
-                try {
-                    StringBuilder builder = new StringBuilder();
-                    HttpClient client = mMobileSKDApp.getNewHttpClient(); //new DefaultHttpClient();
-                    HttpGet httpGet = new HttpGet(mMobileSKDApp.getisCargoDataURL(mMobileSKDApp.SKDRfIdCard));
-                   // Log.d(mMobileSKDApp.getLOG_TAG(), "OperLogin.UserLoginTask " + mMobileSKDApp.getLoginDataURL(mMobileSKDApp.SKDRfIdCard));
-                    try {
-                        HttpResponse response = client.execute(httpGet);
-                        StatusLine statusLine = response.getStatusLine();
-                        int statusCode = statusLine.getStatusCode();
-                        if (statusCode == 200) {
-                            HttpEntity entity = response.getEntity();
-                            InputStream content = entity.getContent();
-                            BufferedReader reader = new BufferedReader(new InputStreamReader(content));
-                            String line;
-                            while ((line = reader.readLine()) != null) {
-                                builder.append(line);
-                            }
-                            try {
-                                //Toast.makeText(this.getBaseContext(), builder.toString(), Toast.LENGTH_LONG).show();
-                                JSONArray jsonArray = new JSONArray(builder.toString());
-                                for (int i = 0; i < jsonArray.length(); i++) {
-                                    JSONObject jsonObject = jsonArray.getJSONObject(i);
-
-                                    mCargo = jsonObject.getString("cargo");
-                                    vStatus = true;
-                                    // Log.d(mCargo,"*******************************************************************");
-                                }
-                                //Toast.makeText(this.getBaseContext(),clientID, Toast.LENGTH_LONG).show();
-                            } catch (JSONException e) {
-                                ScanF = false;
-                                e.printStackTrace();
-                            }
-                        } else {
-                            ScanF = false;
-                            Log.e("Scan fail", "Scan fail");
-                        }
-                    } catch (ClientProtocolException e) {
-                        ScanF = false;
-                        e.printStackTrace();
-                    } catch (IOException e) {
-                        ScanF = false;
-                        e.printStackTrace();
-                    }
-
-                    // Log.d(mCargo,mCargo);
-                    vStatus = vStatus && mCargo.equals("Y");
-                    //Это материальный пропуск
-                    if (vStatus) {
-                        //    Log.d("Cargo way",mCargo);
-                        ScanF = false;
-                        intent.setClass(ScanActAll.this, CargoA.class);
-                        startActivity(intent);
-
-                    } else {
-                        //всё ок, мы идём на перезагрузку вебвью в окне после успешного считывания
-                        mWebView.setWebViewClient(new MyWebViewClient());
-                        mWebView.loadUrl(mMobileSKDApp.mDatURLPerson + "?p_card_id=" + mMobileSKDApp.SKDRfIdCard + "&p_kpp=" + mMobileSKDApp.SKDKPP + "&p_operator="
-                                + mMobileSKDApp.SKDOperator + "&p_kpp_type=" + mMobileSKDApp.SKDTKPP);
-
-                    }
-                    Thread.sleep(1000);
-                    ScanF = false;
-
-                } catch (InterruptedException e) {
-                    ScanF = false;
-                }
-                vibrate();
-                ScanF = false;
-                //Log.d("Поехали","action !!!!!!");
-
-//            intent.setClass(OperLogin.this, ScanActivity.class);
-//            startActivity(intent);
-
-            }
-            ScanF = false;
-        }
-        else
-        {
-            try
-            {
-                Thread.sleep(1000);
-                ScanF = false;
-            }
-            catch (InterruptedException e) {
-                Log.d("wait","10");
-            }
-        }
-*/
         if (NfcTask == null ||
                 NfcTask.getStatus().equals(AsyncTask.Status.FINISHED)) {
             NfcTask = new UserNfcTask();
@@ -250,7 +160,7 @@ public class ScanActAll extends Activity {
             pd.setMessage("Дождитесь окончания загрузки...");
             pd.show();
         } else {
-            Toast.makeText(ScanActAll.this, "Ждите завершения обработки", Toast.LENGTH_SHORT)
+            Toast.makeText(ScanActAll.this, "Дождитесь завершения обработки либо нажмите кнопку 'Назад' ", Toast.LENGTH_SHORT)
                     .show();
         }
 
@@ -285,6 +195,7 @@ public class ScanActAll extends Activity {
 
         @Override
         public void onPageFinished(WebView view, String url) {
+            vibrate();
             if (pd.isShowing()) {
                 pd.dismiss();
             }
@@ -329,6 +240,7 @@ public class ScanActAll extends Activity {
         @Override
         protected Boolean doInBackground(Void... params) {
             Boolean vStatus = false;
+            ErrorCode="0";
 /*            myIntent.setClass(ScanActAll.this, CargoA.class);
             startActivity(myIntent);
 */
@@ -337,12 +249,11 @@ public class ScanActAll extends Activity {
                 //mMobileSKDApp.SKDRfId=bytesToHex(myTag.getId());
                 mMobileSKDApp.SKDRfIdCard = bytesToHex(myTag.getId());
                 Log.d(mMobileSKDApp.SKDRfIdCard, "=mCode");
-                ScanF=true;
                 try {
                     StringBuilder builder = new StringBuilder();
                     HttpClient client = mMobileSKDApp.getNewHttpClient(); //new DefaultHttpClient();
                     HttpGet httpGet = new HttpGet(mMobileSKDApp.getisCargoDataURL(mMobileSKDApp.SKDRfIdCard));
-                    // Log.d(mMobileSKDApp.getLOG_TAG(), "OperLogin.UserLoginTask " + mMobileSKDApp.getLoginDataURL(mMobileSKDApp.SKDRfIdCard));
+                     Log.d(mMobileSKDApp.getLOG_TAG(), "getisCargoDataURL=" + mMobileSKDApp.getisCargoDataURL(mMobileSKDApp.SKDRfIdCard));
                     try {
                         HttpResponse response = client.execute(httpGet);
                         StatusLine statusLine = response.getStatusLine();
@@ -367,21 +278,25 @@ public class ScanActAll extends Activity {
                                 }
                                 //Toast.makeText(this.getBaseContext(),clientID, Toast.LENGTH_LONG).show();
                             } catch (JSONException e) {
-                                ScanF = false;
                                 e.printStackTrace();
+                                vStatus = false;
+                                return vStatus;
                             }
                         } else {
-                            ScanF = false;
-                            Log.e("Scan fail", "Scan fail");
+                          //  Log.e("Scan fail", "Scan fail");
+                            ErrorCode="1";
+                            vStatus = false;
+                            return vStatus;
                         }
                     } catch (ClientProtocolException e) {
-                        ScanF = false;
                         e.printStackTrace();
+                        vStatus = false;
+                        return vStatus;
                     } catch (IOException e) {
-                        ScanF = false;
                         e.printStackTrace();
+                        vStatus = false;
+                        return vStatus;
                     }
-
                     // Log.d(mCargo,mCargo);
                     vStatus = vStatus && mCargo.equals("Y");
                     //Это материальный пропуск
@@ -396,23 +311,23 @@ public class ScanActAll extends Activity {
                         mWebView.setWebViewClient(new MyWebViewClient());
                         mWebView.loadUrl(mMobileSKDApp.mDatURLPerson + "?p_card_id=" + mMobileSKDApp.SKDRfIdCard + "&p_kpp=" + mMobileSKDApp.SKDKPP + "&p_operator="
                                 + mMobileSKDApp.SKDOperator + "&p_kpp_type=" + mMobileSKDApp.SKDTKPP);
+                        Log.d("URLSKDKpp=",mMobileSKDApp.mDatURLPerson + "?p_card_id=" + mMobileSKDApp.SKDRfIdCard + "&p_kpp=" + mMobileSKDApp.SKDKPP + "&p_operator="
+                                + mMobileSKDApp.SKDOperator + "&p_kpp_type=" + mMobileSKDApp.SKDTKPP);
 
                     }
-                    Thread.sleep(1000);
-                    ScanF = false;
+                    Thread.sleep(500);
 
                 } catch (InterruptedException e) {
-                    ScanF = false;
+                    vStatus = false;
+                    return vStatus;
                 }
-                vibrate();
-                ScanF = false;
-                //Log.d("Поехали","action !!!!!!");
+                /*vibrate();*/
 /*
             intent.setClass(OperLogin.this, ScanActivity.class);
             startActivity(intent);
 */
             }
-            ScanF = false;
+            vStatus = true;
             return vStatus;
         }
 
@@ -420,6 +335,10 @@ public class ScanActAll extends Activity {
         protected void onPostExecute(final Boolean success) {
             if (pd.isShowing()) {
                 pd.dismiss();
+            }
+            if (ErrorCode=="1") {
+                Toast.makeText(ScanActAll.this, "Сетевая ошибка обработки карты", Toast.LENGTH_SHORT)
+                        .show();
             }
             /*if (success) {
                 finish();

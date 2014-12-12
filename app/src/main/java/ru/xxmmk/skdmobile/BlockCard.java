@@ -54,6 +54,7 @@ public class BlockCard extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_block_card);
         mMobileSKDApp = ((MobileSKDApp) this.getApplication());
+        mMobileSKDApp.SKDBlockBk="1";
         ActionBar myAB = getActionBar();
         myAB.setTitle(mMobileSKDApp.SKDOperator);
         myAB.setSubtitle(mMobileSKDApp.SKDKPP);

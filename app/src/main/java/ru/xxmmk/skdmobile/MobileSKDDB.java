@@ -40,30 +40,25 @@ public class MobileSKDDB  extends SQLiteOpenHelper {
         db.execSQL("insert into settings (key) values ('password');");
         db.execSQL("insert into settings (key) values ('token');");
 
-        db.execSQL("create table orgs ("
+/*        db.execSQL("create table orgs ("
                 + "id integer primary key autoincrement,"
                 + "org_id text,"
                 + "org_code text" + ");");
-        db.execSQL("insert into settings (key) values ('orgs_date');");
+        db.execSQL("insert into settings (key) values ('orgs_date');");*/
 
-        db.execSQL("create table skd_people ("
-                + "cardholder_id integer primary key ,"
-                + "rf_id text,"
-                + "full_name text,"
+        db.execSQL("create table skd_people_acc ("
+                + "rfid integer ,"
                 + "employee_number text,"
-                + "spec text,"
-                + "org text,"
-                + "otdel text,"
-                + "code text"
+                + "acc_level_id integer,"
+                + "acc_kpp text,"
+                + "nm integer"
                 + ");");
 
 
         db.execSQL("create table skd_acc ("
-                + "card_id integer,"
-                + "name text,"
-                + "description text"
-                + "rf_id text,"
-                + "cardholder_id int"
+                + "acclev_id integer  primary key,"
+                + "dev_str text,"
+                + "acc_name text"
                 + ");");
     }
 
@@ -170,12 +165,12 @@ public class MobileSKDDB  extends SQLiteOpenHelper {
         }
     }
 
-     public HashMap<String,String> getSKDpeople(String rfID)
+     public HashMap<String,String> getSKDpeople/*getSKDacc*/(String rfID)
     {
         HashMap<String,String> returnList = new HashMap<String,String>();
         Cursor c=null;
         SQLiteDatabase db = this.getWritableDatabase();
-        c = db.rawQuery("select full_name ,employee_number ,spec ,org ,otdel,rf_id from skd_people where rf_id=?", new String[] { rfID });
+        c = db.rawQuery("select distinct rfid,employee_number,acc_level_id,acc_kpp,nm from skd_people where rf_id=?", new String[] { rfID });
         Log.d("select full_name ,employee_number ,spec ,org ,otdel from skd_people where rf_id="+rfID,"   select ");
         if (c.moveToFirst()) {
             do {
@@ -186,14 +181,42 @@ public class MobileSKDDB  extends SQLiteOpenHelper {
                 returnList.put("org", c.getString(3));
                 returnList.put("otdel", c.getString(4));
                 returnList.put("rf_id", c.getString(5));
-              //  returnList.add(temp);
+                //  returnList.add(temp);
             } while (c.moveToNext());
         }
         if (c != null && !c.isClosed()) {
             c.close();
         }
         return returnList;
-            }
+    }
+
+    public HashMap<String,String> getSKDaccPeople(String rfID,String pKPP )
+    {
+        HashMap<String,String> returnList = new HashMap<String,String>();
+        Cursor c=null;
+        SQLiteDatabase db = this.getWritableDatabase();
+        c = db.rawQuery("select decode(count(1),0,'N','Y') acc_a from skd_people_acc x , xxhr_skd_dev_acc a "+
+                " where " +
+                " a.acclev_id=x.acc_level_id " +
+                " and instr(x.acc_kpp||';'||a.dev_str,'?')>0", new String[] {pKPP, rfID } );
+        //Log.d("select full_name ,employee_number ,spec ,org ,otdel from skd_people where rf_id="+rfID,"   select ");
+        if (c.moveToFirst()) {
+            do {
+                //c.moveToFirst();
+                returnList.put("acc_a", c.getString(0));
+               /* returnList.put("employee_number", c.getString(1));
+                returnList.put("spec", c.getString(2));
+                returnList.put("org", c.getString(3));
+                returnList.put("otdel", c.getString(4));
+                returnList.put("rf_id", c.getString(5));*/
+                //  returnList.add(temp);
+            } while (c.moveToNext());
+        }
+        if (c != null && !c.isClosed()) {
+            c.close();
+        }
+        return returnList;
+    }
 
     public void refreshOrgs (String jsonOrgs) {
 
@@ -348,6 +371,88 @@ public class MobileSKDDB  extends SQLiteOpenHelper {
 
 
     }
+
+    public void loadSKDaccPeople (String jsonObjects) {
+
+        SQLiteDatabase db = this.getWritableDatabase();
+        try
+        {
+          /*  db.execSQL("delete from new_code where object_id in (select object_id from hierarchy where org_id=?)", new String[] {orgId});
+
+            db.execSQL("delete from hierarchy where org_id=?", new String[] {orgId});
+*/
+            db.execSQL("delete from skd_people_acc");
+            //   db.execSQL("delete from skd_acc");
+            try {
+                //Toast.makeText(this.getBaseContext(), builder.toString(), Toast.LENGTH_LONG).show();
+                JSONArray jsonArray = new JSONArray(jsonObjects);
+                for (int i=0;i<jsonArray.length();i++) {
+                    JSONObject jsonObject = jsonArray.getJSONObject(i);
+
+                    db.execSQL("insert into skd_people_acc (rfid ,employee_number,acc_level_id,acc_kpp,nm) values (?,?,?,?,?);",
+                            new String[] {jsonObject.getString("RFID")
+                                    ,jsonObject.getString("EMPLOYEE_NUMBER")
+                                    ,jsonObject.getString("ACC_LEVEL_ID")
+                                    ,jsonObject.getString("ACC_KPP")
+                                    ,jsonObject.getString("NM")
+                                    //       ,jsonObject.getString("CHILD_CNT")
+                            });
+                }
+            }
+            catch (JSONException e) {
+                e.printStackTrace();
+
+            }
+            replaceSettingValue("loadPeople" , new SimpleDateFormat("dd-MM-yyyy HH:mm:ss").format(Calendar.getInstance().getTime()));
+            //db.execSQL("update settings set value=? where key = ?", new String[]{new SimpleDateFormat("dd-MM-yyyy HH:mm:ss").format(Calendar.getInstance().getTime()), "orgs_date"});
+            db.close();
+
+        }
+        catch(Exception e)
+        {
+            e.printStackTrace();
+        }
+
+
+    }
+
+    public void loadSKDaccLev (String jsonObjects) {
+
+        SQLiteDatabase db = this.getWritableDatabase();
+        try
+        {
+            db.execSQL("delete from skd_acc");
+            try {
+                //Toast.makeText(this.getBaseContext(), builder.toString(), Toast.LENGTH_LONG).show();
+                JSONArray jsonArray = new JSONArray(jsonObjects);
+                for (int i=0;i<jsonArray.length();i++) {
+                    JSONObject jsonObject = jsonArray.getJSONObject(i);
+
+                    db.execSQL("insert into skd_acc (acclev_id,dev_str ,acc_name ) values (?,?,?);",
+                            new String[] {jsonObject.getString("ACCLEV_ID")
+                                    ,jsonObject.getString("DEV_STR")
+                                    ,jsonObject.getString("ACC_NAME")
+                                    //       ,jsonObject.getString("CHILD_CNT")
+                            });
+                }
+            }
+            catch (JSONException e) {
+                e.printStackTrace();
+
+            }
+            replaceSettingValue("loadPeople" , new SimpleDateFormat("dd-MM-yyyy HH:mm:ss").format(Calendar.getInstance().getTime()));
+            //db.execSQL("update settings set value=? where key = ?", new String[]{new SimpleDateFormat("dd-MM-yyyy HH:mm:ss").format(Calendar.getInstance().getTime()), "orgs_date"});
+            db.close();
+
+        }
+        catch(Exception e)
+        {
+            e.printStackTrace();
+        }
+
+
+    }
+
     public void loadSKDObj (String jsonObjects) {
 
         SQLiteDatabase db = this.getWritableDatabase();
@@ -465,25 +570,6 @@ public class MobileSKDDB  extends SQLiteOpenHelper {
         }
         return value;
     }
-   /*
-    public String getCountNewCodeByOrg (String orgId) {
-        String value = null;
-        SQLiteDatabase db = this.getWritableDatabase();
-        try
-        {
-            Cursor c = null;
-            c = db.rawQuery("select count(*) as cc from new_code a,hierarchy b where a.object_id=b.object_id and b.org_id=?", new String[] { orgId });
-            c.moveToFirst();
-            value = c.getString(c.getColumnIndex("cc"));
-            c.close();
-        }
-        catch(Exception e)
-        {
-            e.printStackTrace();
-        }
-        return value;
-    }
-    */
 
     public ArrayList<HashMap<String,String>> getNewCodeByOrg (String orgId) {
         ArrayList<HashMap<String,String>> returnList = new ArrayList<HashMap<String,String>>();

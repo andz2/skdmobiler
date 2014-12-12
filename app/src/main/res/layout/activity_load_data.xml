@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:weightSum="1">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="fill_parent"
+        android:layout_weight="1.03">
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="Загрузить данные\n"
+            android:id="@+id/xx111"
+            android:textStyle="bold"
+            android:layout_gravity="center_horizontal"
+            android:textSize="40dp"
+            android:layout_alignParentLeft="false"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentRight="false"
+            android:gravity="center_horizontal|fill_vertical|top" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Нажмите на кнопку для загрузки\n(загрузка может занять длительное время)\n"
+            android:gravity="center"
+            android:id="@+id/textView2"
+            android:layout_gravity="center_horizontal"
+            android:textSize="16dp"
+
+            android:layout_weight="0.12"
+            android:layout_below="@+id/xx111"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
+
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="1dp"
+            android:background="@android:color/darker_gray"
+            android:layout_below="@+id/textView2"
+            android:layout_alignParentLeft="true"
+            android:id="@+id/view2" />
+        <Button
+            android:layout_width="fill_parent"
+            android:layout_height="120dp"
+            android:text="ЗАГРУЗИТЬ ДАННЫЕ"
+            android:id="@+id/LoadAllid"
+            android:gravity="center"
+            android:textSize="25dp"
+            android:width="150dp"
+            android:background="@drawable/btn_scan_state"
+            android:layout_below="@+id/view2"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_marginTop="69dp" />
+
+
+
+
+    </RelativeLayout>
+
+    <Button
+        android:layout_width="fill_parent"
+        android:layout_height="60dp"
+        android:text="Назад"
+        android:id="@+id/LoadBk"
+        android:gravity="center"
+        android:textSize="25dp"
+        android:width="150dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:background="@drawable/btn_bk_state" />
+
+</LinearLayout>

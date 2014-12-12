@@ -67,6 +67,10 @@ public class MobileSKDApp extends Application {
     public String mDatURLBlockPerson = "http://neptun.eco.mmk.chel.su:7777/pls/apex/XXOTA_APEX.XXHR_SKD_MOBILE.person_info_lock1";//"https://navigator.mmk.ru/login_kis.aspx";
     public String mDatURLPerson = "http://neptun.eco.mmk.chel.su:7777/pls/apex/XXOTA_APEX.XXHR_SKD_MOBILE.person_info_all1";//"https://navigator.mmk.ru/login_kis.aspx";
     public String mDatURL3 = "http://neptun.eco.mmk.chel.su:7777/pls/apex/xxota_apex.xxhr_skd_mobile.bar_code_inf";//"https://navigator.mmk.ru/login_kis.aspx";
+
+    public String mDataSKDPeople = "http://neptun.eco.mmk.chel.su:7777/pls/apex/XXOTA_APEX.XXHR_SKD_MOBILE.get_skd_people_json";
+    public String mDataSKDObj = "http://neptun.eco.mmk.chel.su:7777/pls/apex/XXOTA_APEX.XXHR_SKD_MOBILE.get_skd_people_json";
+
     public String ListKPP = "http://neptun.eco.mmk.chel.su:7777/pls/apex/xxota_apex.xxhr_skd_mobile.list_kpp";
     public String ListBreach = "http://neptun.eco.mmk.chel.su:7777/pls/apex/xxota_apex.xxhr_skd_mobile.breach_type";
     public String BlockCard = "http://neptun.eco.mmk.chel.su:7777/pls/apex/xxota_apex.xxhr_skd_mobile.card_block";
@@ -78,6 +82,7 @@ public class MobileSKDApp extends Application {
     public String SKDRfIdCard;
     public String    SKDStep = "1";
     public String    SKDBarCode = "1";
+    public String  SKDBlockBk ="0";
     public Boolean    NetErr = false;
 
 

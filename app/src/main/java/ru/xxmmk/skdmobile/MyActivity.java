@@ -681,6 +681,18 @@ public class MyActivity extends Activity {
             }
         });
 
+         Button loginButton = (Button) findViewById(R.id.Loginbutton);
+        loginButton.setOnClickListener(new View.OnClickListener() {
+                                          @Override
+                                          public void onClick(View view) {
+                                              if (mMobileSKDApp.SKDStep != "1") {
+                                                  Intent intent = new Intent(view.getContext(), LoadData.class);
+                                                  intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                                  view.getContext().startActivity(intent);
+                                              }
+                                          }
+                                      }
+        );
 
 
         Log.d(mMobileSKDApp.SKDStep,"zzzzzzzzzzzzzzzzmMobileSKDApp.SKDStep");

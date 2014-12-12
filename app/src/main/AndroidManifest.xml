@@ -2,79 +2,89 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="ru.xxmmk.skdmobile" >
 
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.NFC" />
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICES" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+
     <application
-        android:name=".MobileSKDApp"
+        android:name="ru.xxmmk.skdmobile.MobileSKDApp"
         android:allowBackup="true"
         android:icon="@drawable/skd_ico"
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <activity
-            android:name=".MyActivity"
+            android:name="ru.xxmmk.skdmobile.MyActivity"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity
-            android:name=".LoginActivity"
+            android:name="ru.xxmmk.skdmobile.LoginActivity"
             android:label="@string/title_activity_login"
             android:theme="@style/Theme.Transparent" >
         </activity>
         <activity
-            android:name=".ScanActivity"
+            android:name="ru.xxmmk.skdmobile.ScanActivity"
             android:label="@string/ScanTxt" >
         </activity>
         <activity
-            android:name=".activity_scan_off"
+            android:name="ru.xxmmk.skdmobile.activity_scan_off"
             android:label="Сканирование офлайн" >
         </activity>
         <activity
-            android:name=".OperLogin"
+            android:name="ru.xxmmk.skdmobile.OperLogin"
             android:label="@string/title_activity_login"
             android:theme="@android:style/Theme.Translucent.NoTitleBar.Fullscreen" >
         </activity>
         <activity
-            android:name=".ErrorLogin"
+            android:name="ru.xxmmk.skdmobile.ErrorLogin"
             android:label="@string/title_activity_login"
             android:theme="@android:style/Theme.Translucent.NoTitleBar.Fullscreen" >
         </activity>
         <activity
-            android:name=".AccLogin"
+            android:name="ru.xxmmk.skdmobile.AccLogin"
             android:label="@string/title_activity_login"
             android:theme="@android:style/Theme.Translucent.NoTitleBar.Fullscreen" >
         </activity>
         <activity
-            android:name=".SetKPPAct"
+            android:name="ru.xxmmk.skdmobile.SetKPPAct"
             android:label="@string/title_activity_login" >
         </activity>
         <activity
-            android:name=".ErrorScan"
+            android:name="ru.xxmmk.skdmobile.ErrorScan"
             android:label="Ошибка сканирования" >
         </activity>
         <activity
-            android:name=".Map"
+            android:name="ru.xxmmk.skdmobile.Map"
             android:label="@string/title_activity_maps" >
         </activity>
         <activity
-            android:name=".MapSecCab"
+            android:name="ru.xxmmk.skdmobile.MapSecCab"
             android:label="@string/title_activity_maps" >
         </activity>
         <activity
-            android:name=".MapsActivity"
+            android:name="ru.xxmmk.skdmobile.MapsActivity"
             android:label="@string/title_activity_maps"
-            android:parentActivityName=".MyActivity" >
+            android:parentActivityName="ru.xxmmk.skdmobile.MyActivity" >
         </activity>
         <activity
-            android:name=".SecCab"
+            android:name="ru.xxmmk.skdmobile.SecCab"
             android:label="@string/title_activity_sec_cab" >
         </activity>
         <activity
-            android:name=".LastKpp"
+            android:name="ru.xxmmk.skdmobile.LastKpp"
             android:label="Последние КПП" >
         </activity>
         <activity
-            android:name=".MatIt"
+            android:name="ru.xxmmk.skdmobile.MatIt"
             android:label="Мат. ценности" >
         </activity>
 
@@ -86,44 +96,41 @@
             android:value="@string/google_maps_key" />
 
         <activity
-            android:name=".ListKpp"
+            android:name="ru.xxmmk.skdmobile.ListKpp"
             android:label="@string/title_activity_list_kpp" >
         </activity>
         <activity
-            android:name=".CargoA"
+            android:name="ru.xxmmk.skdmobile.CargoA"
             android:label="@string/title_activity_cargo" >
         </activity>
         <activity
-            android:name=".ScanActAll"
+            android:name="ru.xxmmk.skdmobile.ScanActAll"
             android:label="@string/title_activity_scan_act_all" >
         </activity>
         <activity
-            android:name=".SecCabAll"
+            android:name="ru.xxmmk.skdmobile.SecCabAll"
             android:label="@string/title_activity_sec_cab_all" >
         </activity>
         <activity
-            android:name=".ScanBarCode"
+            android:name="ru.xxmmk.skdmobile.ScanBarCode"
             android:label="@string/title_activity_scan_bar_code" >
         </activity>
         <activity
-            android:name=".BarCodeRes"
+            android:name="ru.xxmmk.skdmobile.BarCodeRes"
             android:label="@string/title_activity_bar_code_res" >
         </activity>
         <activity
-            android:name=".NetError"
+            android:name="ru.xxmmk.skdmobile.NetError"
             android:label="@string/title_activity_net_error"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar.Fullscreen">
+            android:theme="@android:style/Theme.Translucent.NoTitleBar.Fullscreen" >
         </activity>
-        <activity android:name=".BlockCard" android:label="Блокировка карт" />
+        <activity
+            android:name="ru.xxmmk.skdmobile.BlockCard"
+            android:label="Блокировка карт" />
+        <activity
+            android:name="ru.xxmmk.skdmobile.LoadData"
+            android:label="@string/title_activity_load_data" >
+        </activity>
     </application>
-
-    <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.NFC" />
-    <uses-permission android:name="android.permission.VIBRATE" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICES" />
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
 </manifest>

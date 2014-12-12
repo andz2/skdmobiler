@@ -1,9 +1,11 @@
 package ru.xxmmk.skdmobile;
         import android.app.ActionBar;
         import android.app.Activity;
+        import android.app.AlertDialog;
         import android.app.Fragment;
         import android.app.PendingIntent;
         import android.content.Context;
+        import android.content.DialogInterface;
         import android.content.Intent;
         import android.content.IntentFilter;
         import android.content.pm.ActivityInfo;
@@ -88,6 +90,10 @@ public class OperLogin extends Activity /*implements LoaderCallbacks<Cursor>*/{
                                            }
                                        }
         );
+        if (mMobileSKDApp.SKDStep=="1")
+        {
+            finish();
+        }
 //        mEmailView.setText(mMobileSKDApp.getmDbHelper().getSettingValue("username"));
 //        mPasswordView.setText(mMobileSKDApp.getmDbHelper().getSettingValue("password"));
     }
@@ -114,6 +120,11 @@ public class OperLogin extends Activity /*implements LoaderCallbacks<Cursor>*/{
             }
         });*/
        /* showKey();*/
+        if (mMobileSKDApp.SKDStep=="1")
+        {
+            finish();
+        }
+
         InOutColor ();
     }
 
@@ -173,13 +184,17 @@ public class OperLogin extends Activity /*implements LoaderCallbacks<Cursor>*/{
         //Log.d(TAG, "onResume");
 
         super.onResume();
-
+        if (mMobileSKDApp.SKDStep=="1")
+        {
+            finish();
+        }
         enableForegroundMode();
     }
 
     @Override
     protected void onPause() {
         super.onPause();
+
         disableForegroundMode();
     }
 
@@ -252,15 +267,28 @@ public class OperLogin extends Activity /*implements LoaderCallbacks<Cursor>*/{
                     startActivity(intent);
 
                 } else {
-                    //intent.setClass(OperLogin.this, ScanActivity.class);
-                    intent.setClass(OperLogin.this, ScanActAll.class);
-                    startActivity(intent);
+                    if (mMobileSKDApp.SKDTKPP=="Тип КПП не выбран")
+                    {
+                        new AlertDialog.Builder(this)
+                                .setTitle("Не указан тип события")
+                                .setMessage("Выберите 'Вход/Выход' и заново сканируйте карту")
+                                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface arg0, int arg1) {
+                                        //здесь можно что то сделать
+                                    }
+                                }).create().show();
+                    }
+                    else {
+                        //intent.setClass(OperLogin.this, ScanActivity.class);
+                        intent.setClass(OperLogin.this, ScanActAll.class);
+                        startActivity(intent);
+                    }
                 }
 
             } catch (InterruptedException e) {
 
             }
-            vibrate();
+            //vibrate();
             //Log.d("Поехали","action !!!!!!");
 /*
             intent.setClass(OperLogin.this, ScanActivity.class);
