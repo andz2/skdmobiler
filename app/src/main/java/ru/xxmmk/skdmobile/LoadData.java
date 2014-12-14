@@ -2,6 +2,8 @@ package ru.xxmmk.skdmobile;
 
 import android.app.ActionBar;
 import android.app.Activity;
+import android.app.Notification;
+import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -10,6 +12,7 @@ import android.content.pm.ActivityInfo;
 import android.nfc.NfcAdapter;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -28,6 +31,9 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.sql.Time;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 
 public class LoadData extends Activity {
@@ -37,6 +43,9 @@ public class LoadData extends Activity {
     private LoadTask mLoadT;
     Context context;
     ProgressDialog pd;
+    int lastId;
+    private NotificationManager manager; // Системная утилита, упарляющая уведомлениями
+    private static final int NOTIFY_ID = 1; // Уникальный индификатор вашего уведомления в пределах класса
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -226,7 +235,26 @@ public class LoadData extends Activity {
             Log.d("2","End!!!!!!!!!");
             Toast.makeText(LoadData.this, "Загрузка завершена", Toast.LENGTH_SHORT)
                     .show();
-
+            createInfoNotification("Загрузка завершена");
         }
+    }
+    public void createInfoNotification(String message){
+        SimpleDateFormat fmt = new SimpleDateFormat("HH:mm");
+        Date date = new Date();
+        String dateString = fmt.format(date);
+
+
+        NotificationManager mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE); // Создаем экземпляр менеджера уведомлений
+        int icon = android.R.drawable.arrow_down_float; // Иконка для уведомления, я решил воспользоваться стандартной иконкой для Email
+        CharSequence tickerText = "Синхронизация данных завершена"; // Подробнее под кодом
+        long when = System.currentTimeMillis(); // Выясним системное время
+        Notification notification = new Notification(icon, tickerText, when); // Создаем экземпляр уведомления, и передаем ему наши параметры
+        Context context = getApplicationContext();
+        CharSequence contentTitle = "Выполнено в "+dateString; // Текст заголовка уведомления при развернутой строке статуса
+        CharSequence contentText = "Синхронизация данных завершена"; //Текст под заголовком уведомления при развернутой строке статуса
+        //Intent notificationIntent = new Intent(this, MyActivity.class); // Создаем экземпляр Intent
+        //PendingIntent contentIntent = PendingIntent.getActivity(this, 0, notificationIntent, 0); // Подробное описание в UPD к статье
+        notification.setLatestEventInfo(context, contentTitle, contentText, null); // Передаем в наше уведомление параметры вида при развернутой строке состояния
+        mNotificationManager.notify(NOTIFY_ID, notification); // И наконец показываем наше уведомление через менеджер передав его ID
     }
 }

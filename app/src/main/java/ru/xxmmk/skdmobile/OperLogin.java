@@ -125,6 +125,31 @@ public class OperLogin extends Activity /*implements LoaderCallbacks<Cursor>*/{
             finish();
         }
 
+        Button offBtn = (Button) findViewById(R.id.idOff);
+        //сканирование оффлайн
+        offBtn.setOnClickListener(new View.OnClickListener() {
+                                           @Override
+                                           public void onClick(View view) {
+                                               if (mMobileSKDApp.SKDTKPP=="Тип КПП не выбран")
+                                               {
+                                                   new AlertDialog.Builder(OperLogin.this)
+                                                           .setTitle("Не указан тип события")
+                                                           .setMessage("Выберите 'Вход/Выход' и переходите к оффлайн сканированию")
+                                                           .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                                                               public void onClick(DialogInterface arg0, int arg1) {
+                                                                   //здесь можно что то сделать
+                                                               }
+                                                           }).create().show();
+                                               }
+                                               else {
+                                                   Intent intent = new Intent(view.getContext(), ScanActOff.class);
+                                                   intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                                   view.getContext().startActivity(intent);
+                                               }
+                                           }
+                                       }
+        );
+
         InOutColor ();
     }
 

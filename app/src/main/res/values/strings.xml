@@ -38,5 +38,6 @@
     <string name="title_activity_bar_code_res">BarCodeRes</string>
     <string name="title_activity_net_error">NetError</string>
     <string name="title_activity_load_data">LoadData</string>
+    <string name="title_activity_scan_act_off">ScanActOff</string>
 
 </resources>

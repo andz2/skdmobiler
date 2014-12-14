@@ -631,7 +631,7 @@ public class MyActivity extends Activity {
         Button Exitbutton=(Button)findViewById(R.id.ExitBtn);
         if (mMobileSKDApp.SKDStep!="1") {
       //  Logbutton.setText(Html.fromHtml(/*getResources().getString(R.string.seccabstr)*/"<b>Личный кабинет</b><br><br><sup><small>Нажмите для информации</small></sup>"));
-        Logbutton.setText(Html.fromHtml(/*getResources().getString(R.string.seccabstr)*/"<b>Вход выполнен</b><br><br><sup><small>Выберите КПП и приступайте к сканированию</small></sup>"));
+        Logbutton.setText(Html.fromHtml(/*getResources().getString(R.string.seccabstr)*/"<b>Вход выполнен (синхронизация)</b><br><br><sup><small>Выберите КПП либо выполните синхронизацию</small></sup>"));
     }
 
         Exitbutton.setOnClickListener(new View.OnClickListener() {
@@ -690,6 +690,12 @@ public class MyActivity extends Activity {
                                                   intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                                                   view.getContext().startActivity(intent);
                                               }
+                                            /*  else
+                                              {
+                                                  Intent intent = new Intent(view.getContext(), ScanActOff.class);
+                                                  intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                                  view.getContext().startActivity(intent);
+                                              }*/
                                           }
                                       }
         );

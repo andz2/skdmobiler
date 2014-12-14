@@ -131,6 +131,10 @@
             android:name="ru.xxmmk.skdmobile.LoadData"
             android:label="@string/title_activity_load_data" >
         </activity>
+        <activity
+            android:name="ru.xxmmk.skdmobile.ScanActOff"
+            android:label="@string/title_activity_scan_act_off" >
+        </activity>
     </application>
 
 </manifest>

@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:weightSum="1">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="fill_parent"
+        android:layout_weight="1.03">
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="Автономный режим"
+            android:id="@+id/xx111"
+            android:textStyle="bold"
+            android:layout_gravity="center_horizontal"
+            android:textSize="30dp"
+            android:layout_alignParentLeft="false"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentRight="false"
+            android:gravity="center_horizontal|fill_vertical|top" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@android:color/darker_gray"
+            android:id="@+id/view2"
+            android:layout_below="@+id/xx111"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="fill_parent"
+            android:layout_weight="1.03"
+            android:background="#fffff8f9"
+            android:layout_below="@+id/textView4"
+            android:layout_above="@+id/textView2"
+            android:id="@+id/OffScanLayout">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:id="@+id/txtaccup"
+                android:textSize="35dp"
+                android:layout_gravity="right|top"
+                android:gravity="center"
+                android:textStyle="bold"
+                android:text="Поднесите карту\n" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:id="@+id/txtaccdown"
+                android:textSize="35dp"
+                android:gravity="center"
+                android:textStyle="bold"
+                android:layout_gravity="center"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text=""
+                android:id="@+id/empT"
+                android:layout_centerVertical="true"
+                android:layout_centerHorizontal="true"
+                android:textSize="40dp"
+                android:gravity="center_vertical|clip_horizontal" />
+
+        </RelativeLayout>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="\nв данном режиме фото не отображается\n"
+            android:gravity="center"
+            android:id="@+id/textView2"
+            android:layout_gravity="center_horizontal"
+            android:textSize="16dp"
+
+            android:layout_weight="0.12"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:id="@+id/textView4"
+            android:layout_below="@+id/xx111"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
+
+
+    </RelativeLayout>
+
+    <Button
+        android:layout_width="fill_parent"
+        android:layout_height="60dp"
+        android:text="Назад"
+        android:id="@+id/LoadBk"
+        android:gravity="center"
+        android:textSize="25dp"
+        android:width="150dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:background="@drawable/btn_bk_state" />
+
+</LinearLayout>

@@ -55,7 +55,7 @@ public class MobileSKDDB  extends SQLiteOpenHelper {
                 + ");");
 
 
-        db.execSQL("create table skd_acc ("
+        db.execSQL("create table xxhr_skd_dev_acc ("
                 + "acclev_id integer  primary key,"
                 + "dev_str text,"
                 + "acc_name text"
@@ -170,7 +170,7 @@ public class MobileSKDDB  extends SQLiteOpenHelper {
         HashMap<String,String> returnList = new HashMap<String,String>();
         Cursor c=null;
         SQLiteDatabase db = this.getWritableDatabase();
-        c = db.rawQuery("select distinct rfid,employee_number,acc_level_id,acc_kpp,nm from skd_people where rf_id=?", new String[] { rfID });
+        c = db.rawQuery("select distinct rfid,employee_number,acc_level_id,acc_kpp,nm from skd_people_acc where rf_id=?", new String[] { rfID });
         Log.d("select full_name ,employee_number ,spec ,org ,otdel from skd_people where rf_id="+rfID,"   select ");
         if (c.moveToFirst()) {
             do {
@@ -195,15 +195,28 @@ public class MobileSKDDB  extends SQLiteOpenHelper {
         HashMap<String,String> returnList = new HashMap<String,String>();
         Cursor c=null;
         SQLiteDatabase db = this.getWritableDatabase();
-        c = db.rawQuery("select decode(count(1),0,'N','Y') acc_a from skd_people_acc x , xxhr_skd_dev_acc a "+
+
+        Log.d(rfID,"rfID------------");
+      /*  c = db.rawQuery("select  rfid ,employee_number, acc_level_id, acc_kpp, nm from skd_people_acc where rfid=?"
+                , new String[] { rfID } );*/
+
+        c = db.rawQuery("select distinct rfid ,employee_number, acc_level_id, acc_kpp, nm from skd_people_acc x , xxhr_skd_dev_acc a "+
                 " where " +
                 " a.acclev_id=x.acc_level_id " +
-                " and instr(x.acc_kpp||';'||a.dev_str,'?')>0", new String[] {pKPP, rfID } );
+                " and x.acc_kpp||';'||a.dev_str like '%"+pKPP+"%'" +
+                " and rfid=?", new String[] { rfID } );
         //Log.d("select full_name ,employee_number ,spec ,org ,otdel from skd_people where rf_id="+rfID,"   select ");
         if (c.moveToFirst()) {
             do {
                 //c.moveToFirst();
-                returnList.put("acc_a", c.getString(0));
+                returnList.put("rfid", c.getString(0));
+                returnList.put("employee_number", c.getString(1));
+                returnList.put("acc_level_id", c.getString(2));
+                returnList.put("acc_kpp", c.getString(3));
+                returnList.put("nm", c.getString(4));
+
+
+
                /* returnList.put("employee_number", c.getString(1));
                 returnList.put("spec", c.getString(2));
                 returnList.put("org", c.getString(3));
@@ -389,7 +402,7 @@ public class MobileSKDDB  extends SQLiteOpenHelper {
                 for (int i=0;i<jsonArray.length();i++) {
                     JSONObject jsonObject = jsonArray.getJSONObject(i);
 
-                    db.execSQL("insert into skd_people_acc (rfid ,employee_number,acc_level_id,acc_kpp,nm) values (?,?,?,?,?);",
+                    db.execSQL("insert into skd_people_acc (rfid , employee_number , acc_level_id , acc_kpp,nm) values (?,?,?,?,?);",
                             new String[] {jsonObject.getString("RFID")
                                     ,jsonObject.getString("EMPLOYEE_NUMBER")
                                     ,jsonObject.getString("ACC_LEVEL_ID")
@@ -421,14 +434,14 @@ public class MobileSKDDB  extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
         try
         {
-            db.execSQL("delete from skd_acc");
+            db.execSQL("delete from xxhr_skd_dev_acc");
             try {
                 //Toast.makeText(this.getBaseContext(), builder.toString(), Toast.LENGTH_LONG).show();
                 JSONArray jsonArray = new JSONArray(jsonObjects);
                 for (int i=0;i<jsonArray.length();i++) {
                     JSONObject jsonObject = jsonArray.getJSONObject(i);
 
-                    db.execSQL("insert into skd_acc (acclev_id,dev_str ,acc_name ) values (?,?,?);",
+                    db.execSQL("insert into xxhr_skd_dev_acc (acclev_id,dev_str ,acc_name ) values (?,?,?);",
                             new String[] {jsonObject.getString("ACCLEV_ID")
                                     ,jsonObject.getString("DEV_STR")
                                     ,jsonObject.getString("ACC_NAME")
