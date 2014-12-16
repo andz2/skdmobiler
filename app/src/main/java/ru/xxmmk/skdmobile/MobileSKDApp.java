@@ -7,14 +7,22 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.os.Vibrator;
 import android.util.Log;
 
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
 import org.apache.http.HttpVersion;
+import org.apache.http.StatusLine;
+import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpGet;
 import org.apache.http.conn.ClientConnectionManager;
 import org.apache.http.conn.scheme.PlainSocketFactory;
 import org.apache.http.conn.scheme.Scheme;
 import org.apache.http.conn.scheme.SchemeRegistry;
 import org.apache.http.impl.client.DefaultHttpClient;
 
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.security.SecureRandom;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
@@ -50,6 +58,9 @@ import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
 
 import org.apache.http.conn.ssl.SSLSocketFactory;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 
 public class MobileSKDApp extends Application {
@@ -66,6 +77,9 @@ public class MobileSKDApp extends Application {
     public String mDatURLCargo = "http://neptun.eco.mmk.chel.su:7777/pls/apex/XXOTA_APEX.XXHR_SKD_MOBILE.is_cargo";//"https://navigator.mmk.ru/login_kis.aspx";
     public String mDatURLBlockPerson = "http://neptun.eco.mmk.chel.su:7777/pls/apex/XXOTA_APEX.XXHR_SKD_MOBILE.person_info_lock1";//"https://navigator.mmk.ru/login_kis.aspx";
     public String mDatURLPerson = "http://neptun.eco.mmk.chel.su:7777/pls/apex/XXOTA_APEX.XXHR_SKD_MOBILE.person_info_all1";//"https://navigator.mmk.ru/login_kis.aspx";
+
+    public String mDatURLUpload = "http://neptun.eco.mmk.chel.su:7777/pls/apex/XXOTA_APEX.XXHR_SKD_MOBILE.upload_skd_history";//"https://navigator.mmk.ru/login_kis.aspx";
+
     public String mDatURL3 = "http://neptun.eco.mmk.chel.su:7777/pls/apex/xxota_apex.xxhr_skd_mobile.bar_code_inf";//"https://navigator.mmk.ru/login_kis.aspx";
 
     public String mDataSKDPeople = "http://neptun.eco.mmk.chel.su:7777/pls/apex/XXOTA_APEX.XXHR_SKD_MOBILE.get_skd_people_json";
@@ -84,7 +98,71 @@ public class MobileSKDApp extends Application {
     public String    SKDBarCode = "1";
     public String  SKDBlockBk ="0";
     public Boolean    NetErr = false;
+    protected String mResult= "null";
 
+
+    public String HistoryUpload (String rId,String personId, String rfId , String operator , String kpp ,String dt ,String rest , String kppType)
+    {
+        try {
+            StringBuilder builder = new StringBuilder();
+            HttpClient client = getNewHttpClient(); //new DefaultHttpClient();
+            HttpGet httpGet = new HttpGet(getUploadHistoryURL(personId, rfId , operator , kpp , dt , rest ,  kppType));
+            //Log.d("!!!!","!!!!"+getUploadHistoryURL(personId, rfId , operator , kpp , dt , rest ,  kppType));
+            try {
+                HttpResponse response = client.execute(httpGet);
+                StatusLine statusLine = response.getStatusLine();
+                int statusCode = statusLine.getStatusCode();
+                if (statusCode == 200) {
+                    HttpEntity entity = response.getEntity();
+                    InputStream content = entity.getContent();
+                    BufferedReader reader = new BufferedReader(new InputStreamReader(content));
+                    String line;
+                    while ((line = reader.readLine()) != null) {
+                        builder.append(line);
+                    }
+                    try {
+                        //Toast.makeText(this.getBaseContext(), builder.toString(), Toast.LENGTH_LONG).show();
+                        JSONArray jsonArray = new JSONArray(builder.toString());
+                        for (int i = 0; i < jsonArray.length(); i++) {
+                            JSONObject jsonObject = jsonArray.getJSONObject(i);
+                            mResult = jsonObject.getString("RESULT");
+                            if (mResult.equals("Y"))
+                            {
+                                //Log.d("!!!!Удаление; "+rId+";",mResult.toString());
+                                return "Y";
+                            }
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                        return "N";
+                    }
+                } else {
+                    return "N";
+                }
+            } catch (ClientProtocolException e) {
+                e.printStackTrace();
+                return "N";
+            } catch (IOException e) {
+                e.printStackTrace();
+                return "N";
+            }
+        }
+        catch (Exception e )
+        {
+            e.printStackTrace();
+            return "N";
+        }
+
+
+        return mResult;
+    }
+
+    public String getUploadHistoryURL (String personId, String rfId , String operator , String kpp ,String dt ,String rest , String kppType)
+    {
+        //(p_person_id varchar2, p_rf_id varchar2, p_operator varchar2, p_kpp varchar2, p_date_time varchar2, p_result varchar2, p_kpp_type
+        return this.mDatURLUpload+"?p_person_id="+personId+"&p_rf_id="+rfId
+                                 +"&p_operator="+operator+"&p_kpp="+kpp+"&p_date_time="+dt+"&p_result="+rest+"&p_kpp_type="+kppType;
+    }
 
     public String getDataURL(String mCode) {
         return this.mDataBasicURL+"?s="+mCode+"&token="+this.getmHASH();

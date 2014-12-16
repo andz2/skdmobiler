@@ -12,7 +12,7 @@
         <TextView
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:text="Загрузить данные\n"
+            android:text="Выход\n"
             android:id="@+id/xx111"
             android:textStyle="bold"
             android:layout_gravity="center_horizontal"
@@ -25,7 +25,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Нажмите на кнопку для загрузки\n(загрузка может занять длительное время)\n"
+            android:text="Нажмите на кнопку для выгрузки событий\n"
             android:gravity="center"
             android:id="@+id/textView2"
             android:layout_gravity="center_horizontal"
@@ -46,29 +46,28 @@
         <Button
             android:layout_width="fill_parent"
             android:layout_height="120dp"
-            android:text="ЗАГРУЗИТЬ ДАННЫЕ"
-            android:id="@+id/expBtnE"
+            android:text="ВЫГРУЗИТЬ И ВЫЙТИ"
+            android:id="@+id/expBtnF"
             android:gravity="center"
             android:textSize="25dp"
             android:width="150dp"
-            android:background="@drawable/btn_scan_state"
+            android:background="@drawable/btn_bk_state"
             android:layout_centerVertical="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="120dp"
+            android:text="ВЫХОД"
+            android:id="@+id/exitBtnF"
+            android:textSize="30dp"
+            android:background="@drawable/btn_scan_state"
+            android:layout_below="@+id/expBtnF"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true" />
 
 
     </RelativeLayout>
-
-    <Button
-        android:layout_width="fill_parent"
-        android:layout_height="60dp"
-        android:text="Назад"
-        android:id="@+id/LoadBk"
-        android:gravity="center"
-        android:textSize="25dp"
-        android:width="150dp"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:background="@drawable/btn_bk_state" />
 
 </LinearLayout>

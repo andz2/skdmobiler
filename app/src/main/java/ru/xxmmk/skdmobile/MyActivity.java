@@ -643,12 +643,19 @@ public class MyActivity extends Activity {
                                                   mMobileSKDApp.SKDStep="1";
                                                   mMobileSKDApp.SKDKPP="Укажите КПП";
                                                   mMobileSKDApp.SKDOperator="Кто ВЫ?";
-                                                 // StartScreen();
-                                                //  finish();
+                                                  StartScreen();
+                                                  Intent intent = new Intent(view.getContext(), Exit.class);
+                                                  intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                                  view.getContext().startActivity(intent);
+                                                  finish();
                                               }
-                                               Intent intent = new Intent(MyActivity.this, Activity.class); intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK)
-                                              ; finish();
-                                              StartScreen();
+                                              else {
+                                                  Intent intent = new Intent(MyActivity.this, Activity.class);
+                                                  intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK)
+                                                  ;
+                                                  finish();
+                                                  StartScreen();
+                                              }
                                           }
                                       }
         );

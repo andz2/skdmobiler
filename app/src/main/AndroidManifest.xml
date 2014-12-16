@@ -135,6 +135,10 @@
             android:name="ru.xxmmk.skdmobile.ScanActOff"
             android:label="@string/title_activity_scan_act_off" >
         </activity>
+        <activity
+            android:name="ru.xxmmk.skdmobile.Exit"
+            android:label="@string/title_activity_exit" >
+        </activity>
     </application>
 
 </manifest>

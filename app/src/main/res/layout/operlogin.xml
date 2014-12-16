@@ -12,55 +12,18 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:weightSum="1"
-        android:id="@+id/linearLayout">
+        android:id="@+id/linearLayout"
+        android:layout_above="@+id/linearLayout3">
 
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="СКАНИРУЮ"
-            android:id="@+id/x11"
-            android:gravity="center_horizontal|bottom"
-            android:layout_gravity="center_horizontal|bottom"
-            android:textColor="#6699FF"
-            android:textSize="60dp"
-            android:textIsSelectable="false"
-            android:layout_alignParentRight="true"
-            android:layout_weight="0.13" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="Для проверки поднесите карту"
-            android:id="@+id/textView2"
-            android:textColor="#ffffffff"
-            android:textSize="25dp"
-            android:gravity="center_horizontal"
-            android:layout_gravity="center_horizontal|bottom"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentTop="true" />
-
-        <ImageView
             android:layout_width="match_parent"
-            android:layout_height="140dp"
-            android:id="@+id/imageView"
-            android:layout_alignParentTop="true"
-            android:layout_alignRight="@+id/bkerr"
-            android:layout_gravity="center_horizontal|top"
-            android:src="@drawable/ust"
-            android:layout_weight="5.56" />
-
-        <TextView
-            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="\nВ случае успеха откроется карта доступа проверяемого лица\n\nВыберите тип КПП (Вход/Выход)"
+            android:text="В случае успеха откроется карта доступа проверяемого лица\n\nВыберите тип КПП (Вход/Выход)\n"
             android:id="@+id/txt4"
             android:textColor="#ffffffff"
             android:textSize="18dp"
             android:gravity="center_horizontal"
-            android:layout_gravity="center_horizontal|bottom"
             android:layout_above="@+id/bkerr"
             android:layout_alignParentLeft="true" />
 
@@ -69,21 +32,22 @@
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="70dp"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:weightSum="1"
-        android:layout_below="@+id/linearLayout"
-        android:layout_above="@+id/idOff">
+        android:layout_above="@+id/idOff"
+        android:id="@+id/linearLayout3"
+        android:paddingBottom="10dp">
 
         <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Вход"
             android:id="@+id/in"
-            android:height="90dp"
+            android:height="70dp"
             android:layout_weight="0.50"
             android:background="@drawable/btn_inact1"
             android:textSize="35dp" />
@@ -92,11 +56,12 @@
             android:layout_height="wrap_content"
             android:text="Выход"
             android:id="@+id/out"
-            android:height="90dp"
+            android:height="70dp"
             android:layout_weight="0.50"
             android:background="@drawable/btn_inact1"
             android:textSize="35dp" />
     </LinearLayout>
+
 
     <Button
         android:layout_width="match_parent"
@@ -107,10 +72,9 @@
         android:gravity="center"
         android:textSize="25dp"
         android:height="60dp"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_above="@+id/sp0"
-        />
+        android:layout_above="@+id/bkerr"
+        android:layout_toRightOf="@+id/rf"
+        android:layout_toEndOf="@+id/rf" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -181,5 +145,48 @@
 
         android:name="ru.xxmmk.skdmobile.OperLogin$ScanFragment" tools:layout="@layout/fragment_scan"
         android:id="@+id/fragment" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="СКАНИРУЮ"
+        android:id="@+id/x11"
+        android:gravity="center_horizontal|bottom"
+        android:layout_gravity="center_horizontal|bottom"
+        android:textColor="#6699FF"
+        android:textSize="60dp"
+        android:textIsSelectable="false"
+        android:layout_weight="0.13"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="Для проверки поднесите карту"
+        android:id="@+id/textView2"
+        android:textColor="#ffffffff"
+        android:textSize="25dp"
+        android:gravity="center_horizontal"
+        android:layout_gravity="center_horizontal|bottom"
+        android:layout_below="@+id/x11"
+        android:paddingBottom="10dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/imageView"
+        android:src="@drawable/ust"
+        android:layout_weight="5.56"
+        android:paddingBottom="10dp"
+        android:layout_toRightOf="@+id/rf"
+        android:layout_toEndOf="@+id/rf"
+        android:layout_alignWithParentIfMissing="true"
+        android:layout_below="@+id/textView2"
+        android:layout_above="@+id/linearLayout" />
 
 </RelativeLayout>

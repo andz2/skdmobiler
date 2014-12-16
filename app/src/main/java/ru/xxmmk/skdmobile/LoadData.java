@@ -2,17 +2,18 @@ package ru.xxmmk.skdmobile;
 
 import android.app.ActionBar;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.nfc.NfcAdapter;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -31,7 +32,6 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.sql.Time;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -53,6 +53,7 @@ public class LoadData extends Activity {
         setContentView(R.layout.activity_load_data);
         mMobileSKDApp = ((MobileSKDApp) this.getApplication());
 
+
         ActionBar myAB = getActionBar();
         myAB.setTitle(mMobileSKDApp.SKDOperator);
         myAB.setSubtitle(mMobileSKDApp.SKDKPP);
@@ -67,32 +68,46 @@ public class LoadData extends Activity {
         Bkbutton.setOnClickListener(new View.OnClickListener() {
                                         @Override
                                         public void onClick(View view) {
-                                          finish();
-                                        }
-                                    }
-        );
-        Button Lbutton=(Button)findViewById(R.id.LoadAllid); //загрузка
-        Lbutton.setOnClickListener(new View.OnClickListener() {
-                                        @Override
-                                        public void onClick(View view) {
-                                           // finish();
                                             if (mLoadT == null ||
                                                     mLoadT.getStatus().equals(AsyncTask.Status.FINISHED)) {
-                                                mLoadT = new LoadTask();
-                                                mLoadT.execute();
-                                                //       progressBar.setProgress(0);
-                                                Toast.makeText(LoadData.this, "Загрузка начата", Toast.LENGTH_SHORT)
-                                                        .show();
-                                                /*pd = new ProgressDialog(LoadData.this);
-                                                pd.setMessage("Дождитесь окончания загрузки...");
-                                                pd.show();*/
-                                            } else {
-                                                Toast.makeText(LoadData.this, "Дождитесь завершения обработки либо нажмите кнопку 'Назад' ", Toast.LENGTH_SHORT)
+                                                    finish();
+                                            }
+                                            else
+                                            {
+                                                Toast.makeText(LoadData.this, "Дождитесь завершения загрузки данных", Toast.LENGTH_SHORT)
                                                         .show();
                                             }
                                         }
                                     }
         );
+        Button Lbutton=(Button)findViewById(R.id.expBtnE); //загрузка
+        Lbutton.setOnClickListener(new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View view) {
+                                          //  finish();
+                                            if (mLoadT == null ||
+                                                    mLoadT.getStatus().equals(AsyncTask.Status.FINISHED))
+                                            { new AlertDialog.Builder(LoadData.this)
+                                                        .setTitle("Запустить процесс загрузки?")
+                                                        .setMessage("Процесс загрузки данных может занять продолжительное время (более 15 минут)")
+                                                        .setNegativeButton(android.R.string.no, null)
+                                                        .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                                                            public void onClick(DialogInterface arg0, int arg1) {
+                                                                mLoadT = new LoadTask();
+                                                                mLoadT.execute();
+                                                                Toast.makeText(LoadData.this, "Загрузка начата", Toast.LENGTH_SHORT)
+                                                                        .show();
+                                                            }
+                                                        }).create().show();
+                                            }
+                                            else {
+                                                Toast.makeText(LoadData.this, "Дождитесь завершения загрузки данных", Toast.LENGTH_SHORT)
+                                                        .show();
+                                            }
+                                        }
+                                    }
+        );
+
     }
 
 
@@ -207,7 +222,6 @@ public class LoadData extends Activity {
                         }
                         // Log.d("4","dead?= "+line);
                         mMobileSKDApp.getmDbHelper().loadSKDaccLev(builder.toString());
-
                     }
                     else {
                         //Log.d(mMobileTOiRApp.getLOG_TAG(), "LoadObjects Error = " + statusCode);
@@ -245,7 +259,7 @@ public class LoadData extends Activity {
 
 
         NotificationManager mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE); // Создаем экземпляр менеджера уведомлений
-        int icon = android.R.drawable.arrow_down_float; // Иконка для уведомления, я решил воспользоваться стандартной иконкой для Email
+        int icon = android.R.drawable.stat_sys_download_done; // Иконка для уведомления, я решил воспользоваться стандартной иконкой для Email
         CharSequence tickerText = "Синхронизация данных завершена"; // Подробнее под кодом
         long when = System.currentTimeMillis(); // Выясним системное время
         Notification notification = new Notification(icon, tickerText, when); // Создаем экземпляр уведомления, и передаем ему наши параметры

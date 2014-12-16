@@ -14,12 +14,16 @@ package ru.xxmmk.skdmobile;
         import java.text.SimpleDateFormat;
         import java.util.ArrayList;
         import java.util.Calendar;
+        import java.util.Date;
         import java.util.HashMap;
         import java.util.List;
 
 
 public class MobileSKDDB  extends SQLiteOpenHelper {
     Context mContext;
+    private MobileSKDApp mMobileSKDApp;
+
+
 
     public MobileSKDDB(Context context) {
         // конструктор суперкласса
@@ -51,7 +55,8 @@ public class MobileSKDDB  extends SQLiteOpenHelper {
                 + "employee_number text,"
                 + "acc_level_id integer,"
                 + "acc_kpp text,"
-                + "nm integer"
+                + "nm integer,"
+                + "person_id integer"
                 + ");");
 
 
@@ -59,6 +64,16 @@ public class MobileSKDDB  extends SQLiteOpenHelper {
                 + "acclev_id integer  primary key,"
                 + "dev_str text,"
                 + "acc_name text"
+                + ");");
+
+        db.execSQL("create table xxhr_skd_mobile_history ("
+                + "person_id integer,"
+                + "rf_id text,"
+                + "operator text,"
+                + "kpp text,"
+                + "dt text,"
+                + "rest text,"
+                + "kpp_type text"
                 + ");");
     }
 
@@ -190,17 +205,13 @@ public class MobileSKDDB  extends SQLiteOpenHelper {
         return returnList;
     }
 
-    public HashMap<String,String> getSKDaccPeople(String rfID,String pKPP )
+    public HashMap<String,String> getSKDaccPeople(String rfID,String pKPP ,String operator, String kpp , String tkpp )
     {
         HashMap<String,String> returnList = new HashMap<String,String>();
         Cursor c=null;
         SQLiteDatabase db = this.getWritableDatabase();
 
-        Log.d(rfID,"rfID------------");
-      /*  c = db.rawQuery("select  rfid ,employee_number, acc_level_id, acc_kpp, nm from skd_people_acc where rfid=?"
-                , new String[] { rfID } );*/
-
-        c = db.rawQuery("select distinct rfid ,employee_number, acc_level_id, acc_kpp, nm from skd_people_acc x , xxhr_skd_dev_acc a "+
+        c = db.rawQuery("select distinct rfid ,employee_number, acc_level_id, acc_kpp, nm ,person_id from skd_people_acc x , xxhr_skd_dev_acc a "+
                 " where " +
                 " a.acclev_id=x.acc_level_id " +
                 " and x.acc_kpp||';'||a.dev_str like '%"+pKPP+"%'" +
@@ -214,7 +225,24 @@ public class MobileSKDDB  extends SQLiteOpenHelper {
                 returnList.put("acc_level_id", c.getString(2));
                 returnList.put("acc_kpp", c.getString(3));
                 returnList.put("nm", c.getString(4));
+                returnList.put("person_id", c.getString(5));
 
+
+                SimpleDateFormat fmt = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss");
+                Date date = new Date();
+                String dateString = fmt.format(date);
+
+                db.execSQL("insert into xxhr_skd_mobile_history (person_id, rf_id , operator ,kpp ,dt ,rest ,kpp_type ) values (?,?,?,?,?,?,?);",
+                        new String[] {
+                                  c.getString(5)  //person_id
+                                , c.getString(0)  //rfid
+                                , operator        //охранник
+                                , kpp             //кпп
+                                , dateString      //время
+                                , "разрешен"
+                                , tkpp           //тип кпп
+
+                                                       });
 
 
                /* returnList.put("employee_number", c.getString(1));
@@ -228,6 +256,7 @@ public class MobileSKDDB  extends SQLiteOpenHelper {
         if (c != null && !c.isClosed()) {
             c.close();
         }
+        db.close();
         return returnList;
     }
 
@@ -402,12 +431,13 @@ public class MobileSKDDB  extends SQLiteOpenHelper {
                 for (int i=0;i<jsonArray.length();i++) {
                     JSONObject jsonObject = jsonArray.getJSONObject(i);
 
-                    db.execSQL("insert into skd_people_acc (rfid , employee_number , acc_level_id , acc_kpp,nm) values (?,?,?,?,?);",
+                    db.execSQL("insert into skd_people_acc (rfid , employee_number , acc_level_id , acc_kpp , nm , person_id) values (?,?,?,?,?,?);",
                             new String[] {jsonObject.getString("RFID")
                                     ,jsonObject.getString("EMPLOYEE_NUMBER")
                                     ,jsonObject.getString("ACC_LEVEL_ID")
                                     ,jsonObject.getString("ACC_KPP")
                                     ,jsonObject.getString("NM")
+                                    ,jsonObject.getString("PERSON_ID")
                                     //       ,jsonObject.getString("CHILD_CNT")
                             });
                 }
@@ -425,10 +455,59 @@ public class MobileSKDDB  extends SQLiteOpenHelper {
         {
             e.printStackTrace();
         }
-
-
     }
 
+    public void UploadSKDaccHistory () {
+
+        SQLiteDatabase db = this.getWritableDatabase();
+        String InsRes;
+        String personId;
+        String rfId;
+        String operator;
+        String kpp;
+        String dt;
+        String rest;
+        String kppType;
+        String rowId;
+        Log.d("","!!!!Начинаем выгрузку");
+        try {
+            Cursor c = null;
+            c = db.rawQuery("select ROWID  ri, person_id, rf_id , operator ,kpp ,dt ,rest ,kpp_type from xxhr_skd_mobile_history", null);
+            if (c.moveToFirst()) {
+                do {
+                    Log.d("","!!!!Запись");
+                    rowId=c.getString(c.getColumnIndex("ri"));
+                    personId=c.getString(c.getColumnIndex("person_id"));
+                    rfId=c.getString(c.getColumnIndex("rf_id"));
+                    operator=c.getString(c.getColumnIndex("operator"));
+                    kpp=c.getString(c.getColumnIndex("kpp"));
+                    dt=c.getString(c.getColumnIndex("dt"));
+                    rest=c.getString(c.getColumnIndex("rest"));
+                    kppType=c.getString(c.getColumnIndex("kpp_type"));
+
+                    mMobileSKDApp = new MobileSKDApp();
+
+                    InsRes=mMobileSKDApp.HistoryUpload (rowId , personId,rfId  , operator , kpp ,dt ,rest ,kppType );
+                    if (InsRes.equals("Y")) {
+                        DeleteHistory(rowId); //удаляем запись по rowid
+                    }
+                } while (c.moveToNext());
+            }
+
+
+            c.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+    public void DeleteHistory (String rId) //очистка истории по rowid
+    {
+        SQLiteDatabase db = this.getWritableDatabase();
+        Log.d(rId,"!!!!Удаляем: "+rId+";");
+        db.execSQL("delete from xxhr_skd_mobile_history where ROWID=" + rId);
+        db.close();
+    }
     public void loadSKDaccLev (String jsonObjects) {
 
         SQLiteDatabase db = this.getWritableDatabase();

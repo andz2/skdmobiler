@@ -136,7 +136,7 @@ public class ScanActOff extends Activity {
 
 //**********************
 
-            HashMap h= mMobileSKDApp.getmDbHelper().getSKDaccPeople(String.valueOf(i),"Проходная 1");
+            HashMap h= mMobileSKDApp.getmDbHelper().getSKDaccPeople(String.valueOf(i),"Проходная 1",mMobileSKDApp.SKDOperator, mMobileSKDApp.SKDKPP , mMobileSKDApp.SKDTKPP);
 
             String emp ="-1";
             emp=(String)h.get("employee_number");
@@ -151,8 +151,9 @@ public class ScanActOff extends Activity {
             {
 
                 mlayout.setBackgroundColor(Color.rgb(255,46,22));
-                txtUp.setText("Доступ запрещен\n");
-                txtDown.setText("Доступ запрещен");
+                txtUp.setText("Карта не найдена\n");
+                txtEmp.setText(emp);
+                txtDown.setText("Карта не найдена");
             }
             else
             {
@@ -166,37 +167,7 @@ public class ScanActOff extends Activity {
             Log.d("x"+(String) h.get("acc_level_id")+"x","acc_level_id");
             Log.d("x"+(String) h.get("zz")+"x","zz");
 
-
-          /*  rfid", c.getString(0));
-            returnList.put("employee_number", c.getString(0));
-            returnList.put("acc_level_id", c.getString(0));
-            returnList.put("acc_kpp", c.getString(0));
-            returnList.put("nm", c.getString(0));
-            returnList.put("zz", c.getString(0));*/
-
-            //  HashMap h= mMobileSKDApp.getmDbHelper().getSKDpeople((String) toInt(myTag.getId(), 0));
-            //Integer.toBinaryString()
-            //Log.d("x"+(String) h.get("rf_id")+"x"+(String) h.get("full_name"),"rf_id");
-//           int i= Integer.parseInt( mCode,16);
-//           Log.d(String.valueOf(i),"dec code");
-
-
-        /*    if ((String) h.get("rf_id")!=null) {
-                Log.d("x"+(String) h.get("rf_id")+"x","rf_id");
-                FIO.setText((String) h.get("full_name"));
-                Doljn.setText((String) h.get("spec"));
-                Orgj.setText((String) h.get("org"));
-                Otdel.setText((String) h.get("otdel"));
-            }
-            else {
-                Log.d("y" + (String) h.get("rf_id") + "y", "rf_id");
-                FIO.setText("Нет данных");
-                Doljn.setText("Информация о данной карте отсутствует в локальной БД");
-                Orgj.setText((String) h.get(" "));
-                Otdel.setText((String) h.get(" "));
-            }*/
-
- //           ScanText4.setBackgroundColor(0xfff00000);
+//           ScanText4.setBackgroundColor(0xfff00000);
 //            btnSave.setEnabled(false);
             vibrate();
         }
