@@ -4,6 +4,9 @@ import android.app.Application;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.os.Environment;
 import android.os.Vibrator;
 import android.util.Log;
 
@@ -21,8 +24,13 @@ import org.apache.http.conn.scheme.SchemeRegistry;
 import org.apache.http.impl.client.DefaultHttpClient;
 
 import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.security.SecureRandom;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
@@ -88,6 +96,9 @@ public class MobileSKDApp extends Application {
     public String ListKPP = "http://neptun.eco.mmk.chel.su:7777/pls/apex/xxota_apex.xxhr_skd_mobile.list_kpp";
     public String ListBreach = "http://neptun.eco.mmk.chel.su:7777/pls/apex/xxota_apex.xxhr_skd_mobile.breach_type";
     public String BlockCard = "http://neptun.eco.mmk.chel.su:7777/pls/apex/xxota_apex.xxhr_skd_mobile.card_block";
+
+    public String SKDPath ="/sdcard/mobSKD/";
+
     public String SKDOperator="Кто ВЫ?";
     public String SKDKPP="Укажите КПП";
     public String SKDTKPP="Тип КПП не выбран";
@@ -100,7 +111,61 @@ public class MobileSKDApp extends Application {
     public Boolean    NetErr = false;
     protected String mResult= "null";
 
+    public String LoadImage (String CholderId)
+    {
+        String filepath;
+        try
+        {
+            URL url = new URL("http://neptun.eco.mmk.chel.su:7777/i/skd_photo_resize/"+CholderId+"-1.jpg");
+            HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
+            urlConnection.setRequestMethod("GET");
+            urlConnection.setDoOutput(true);
+            urlConnection.connect();
+            File SDCardRoot = Environment.getExternalStorageDirectory().getAbsoluteFile();
+            String filename=CholderId+"-1.jpg";
+            Log.i("Local filename:",""+filename);
 
+            File file = new File(SDCardRoot+"/MobileSKD/",filename);
+            if(file.createNewFile())
+            {
+                file.createNewFile();
+            }
+            FileOutputStream fileOutput = new FileOutputStream(file);
+            InputStream inputStream = urlConnection.getInputStream();
+            int totalSize = urlConnection.getContentLength();
+            int downloadedSize = 0;
+            byte[] buffer = new byte[1024];
+            int bufferLength = 0;
+            while ( (bufferLength = inputStream.read(buffer)) > 0 )
+            {
+                fileOutput.write(buffer, 0, bufferLength);
+                downloadedSize += bufferLength;
+            //    Log.i("Progress:","downloadedSize:"+downloadedSize+"totalSize:"+ totalSize) ;
+            }
+            fileOutput.close();
+            if(downloadedSize==totalSize) filepath=file.getPath();
+        }
+        catch (MalformedURLException e)
+        {
+            e.printStackTrace();
+        }
+        catch (IOException e)
+        {
+            filepath=null;
+            e.printStackTrace();
+        }
+
+        return  CholderId;
+    }
+    public String CheckImage (String CholderId)
+    {
+        String filename=CholderId+"-1.jpg";
+        java.io.File file = new java.io.File(Environment.getExternalStorageDirectory().getAbsoluteFile()+"/MobileSKD/" , filename);
+        if (file.exists()) {
+           return "Y";
+        }
+        return "N";
+    }
     public String HistoryUpload (String rId,String personId, String rfId , String operator , String kpp ,String dt ,String rest , String kppType)
     {
         try {
@@ -279,6 +344,8 @@ public class MobileSKDApp extends Application {
             return sslContext.getSocketFactory().createSocket();
         }
     }
+
+
 
     public HttpClient getNewHttpClient() {
         try {

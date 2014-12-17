@@ -56,6 +56,16 @@
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true" />
 
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="120dp"
+            android:text="ЗАГРУЗИТЬ ФОТО"
+            android:id="@+id/loadPhoto"
+            android:layout_below="@+id/expBtnE"
+            android:layout_centerHorizontal="true"
+            android:background="@drawable/btn_rf_state"
+            android:textSize="25dp" />
+
 
     </RelativeLayout>
 

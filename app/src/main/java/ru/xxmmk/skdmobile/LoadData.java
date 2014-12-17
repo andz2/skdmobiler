@@ -14,6 +14,7 @@ import android.content.pm.ActivityInfo;
 import android.nfc.NfcAdapter;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Environment;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -29,6 +30,7 @@ import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -41,6 +43,7 @@ public class LoadData extends Activity {
     protected NfcAdapter nfcAdapter;
     protected PendingIntent nfcPendingIntent;
     private LoadTask mLoadT;
+    private LoadPhoto mLoadPhoto;
     Context context;
     ProgressDialog pd;
     int lastId;
@@ -63,6 +66,30 @@ public class LoadData extends Activity {
 
         nfcAdapter = NfcAdapter.getDefaultAdapter(this);
         nfcPendingIntent = PendingIntent.getActivity(this, 0, new Intent(this, this.getClass()).addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP), 0);
+
+        File directory = new File(Environment.getExternalStorageDirectory()+File.separator+"MobileSKD"); //попробуем создать каталог для фото
+        directory.mkdirs();
+
+        Button LPbutton=(Button)findViewById(R.id.loadPhoto); //загрузка фото
+        LPbutton.setOnClickListener(new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View view) {
+                                            if (mLoadPhoto == null ||
+                                                    mLoadPhoto.getStatus().equals(AsyncTask.Status.FINISHED)) {
+                                                         mLoadPhoto = new LoadPhoto();
+                                                         mLoadPhoto.execute();
+                                                Toast.makeText(LoadData.this, "Загрузка фотографий начата", Toast.LENGTH_SHORT)
+                                                        .show();
+                                            }
+                                            else
+                                            {
+                                                Toast.makeText(LoadData.this, "Дождитесь завершения выгрузки фотографий", Toast.LENGTH_SHORT)
+                                                        .show();
+                                            }
+                                        }
+                                    }
+        );
+
 
         Button Bkbutton=(Button)findViewById(R.id.LoadBk); //возврат
         Bkbutton.setOnClickListener(new View.OnClickListener() {
@@ -172,6 +199,7 @@ public class LoadData extends Activity {
                                 builder.append(line);
                             }
                             // Log.d("4","dead?= "+line);
+                            String cHolder;
                             mMobileSKDApp.getmDbHelper().loadSKDaccPeople(builder.toString());
 
                         }
@@ -249,7 +277,29 @@ public class LoadData extends Activity {
             Log.d("2","End!!!!!!!!!");
             Toast.makeText(LoadData.this, "Загрузка завершена", Toast.LENGTH_SHORT)
                     .show();
-            createInfoNotification("Загрузка завершена");
+            createInfoNotification("Синхронизация данных завершена");
+        }
+    }
+    class LoadPhoto extends AsyncTask<Void, Void, Void> {
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+
+        @Override
+        protected Void doInBackground(Void... params) {
+            mMobileSKDApp.getmDbHelper().UploadSKDPhoto();
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void result) {
+            super.onPostExecute(result);
+            Log.d("2","End!!!!!!!!!");
+            Toast.makeText(LoadData.this, "Выгрузка фото завершена", Toast.LENGTH_SHORT)
+                    .show();
+            createInfoNotification("Выгрузка фото завершена");
         }
     }
     public void createInfoNotification(String message){
@@ -260,12 +310,12 @@ public class LoadData extends Activity {
 
         NotificationManager mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE); // Создаем экземпляр менеджера уведомлений
         int icon = android.R.drawable.stat_sys_download_done; // Иконка для уведомления, я решил воспользоваться стандартной иконкой для Email
-        CharSequence tickerText = "Синхронизация данных завершена"; // Подробнее под кодом
+        CharSequence tickerText = message; // Подробнее под кодом
         long when = System.currentTimeMillis(); // Выясним системное время
         Notification notification = new Notification(icon, tickerText, when); // Создаем экземпляр уведомления, и передаем ему наши параметры
         Context context = getApplicationContext();
         CharSequence contentTitle = "Выполнено в "+dateString; // Текст заголовка уведомления при развернутой строке статуса
-        CharSequence contentText = "Синхронизация данных завершена"; //Текст под заголовком уведомления при развернутой строке статуса
+        CharSequence contentText = message; //Текст под заголовком уведомления при развернутой строке статуса
         //Intent notificationIntent = new Intent(this, MyActivity.class); // Создаем экземпляр Intent
         //PendingIntent contentIntent = PendingIntent.getActivity(this, 0, notificationIntent, 0); // Подробное описание в UPD к статье
         notification.setLatestEventInfo(context, contentTitle, contentText, null); // Передаем в наше уведомление параметры вида при развернутой строке состояния

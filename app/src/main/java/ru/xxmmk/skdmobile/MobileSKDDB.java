@@ -56,7 +56,8 @@ public class MobileSKDDB  extends SQLiteOpenHelper {
                 + "acc_level_id integer,"
                 + "acc_kpp text,"
                 + "nm integer,"
-                + "person_id integer"
+                + "person_id integer,"
+                + "cardholder_id integer"
                 + ");");
 
 
@@ -430,14 +431,14 @@ public class MobileSKDDB  extends SQLiteOpenHelper {
                 JSONArray jsonArray = new JSONArray(jsonObjects);
                 for (int i=0;i<jsonArray.length();i++) {
                     JSONObject jsonObject = jsonArray.getJSONObject(i);
-
-                    db.execSQL("insert into skd_people_acc (rfid , employee_number , acc_level_id , acc_kpp , nm , person_id) values (?,?,?,?,?,?);",
+                    db.execSQL("insert into skd_people_acc (rfid , employee_number , acc_level_id , acc_kpp , nm , person_id , cardholder_id) values (?,?,?,?,?,?,?);",
                             new String[] {jsonObject.getString("RFID")
                                     ,jsonObject.getString("EMPLOYEE_NUMBER")
                                     ,jsonObject.getString("ACC_LEVEL_ID")
                                     ,jsonObject.getString("ACC_KPP")
                                     ,jsonObject.getString("NM")
                                     ,jsonObject.getString("PERSON_ID")
+                                    ,jsonObject.getString("CARDHOLDER_ID")
                                     //       ,jsonObject.getString("CHILD_CNT")
                             });
                 }
@@ -449,6 +450,7 @@ public class MobileSKDDB  extends SQLiteOpenHelper {
             replaceSettingValue("loadPeople" , new SimpleDateFormat("dd-MM-yyyy HH:mm:ss").format(Calendar.getInstance().getTime()));
             //db.execSQL("update settings set value=? where key = ?", new String[]{new SimpleDateFormat("dd-MM-yyyy HH:mm:ss").format(Calendar.getInstance().getTime()), "orgs_date"});
             db.close();
+
 
         }
         catch(Exception e)
@@ -493,8 +495,30 @@ public class MobileSKDDB  extends SQLiteOpenHelper {
                     }
                 } while (c.moveToNext());
             }
+            c.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
+    }
+    public void UploadSKDPhoto () { //выгрузка фотографий
 
+        SQLiteDatabase db = this.getWritableDatabase();
+        String ChId;
+
+        Log.d("","!!!!Начинаем выгрузку фотографий");
+        try {
+            Cursor c = null;
+            c = db.rawQuery("select cardholder_id from skd_people_acc", null);
+            if (c.moveToFirst()) {
+                do {
+                    ChId=c.getString(c.getColumnIndex("cardholder_id"));
+                    mMobileSKDApp = new MobileSKDApp();
+                    if (mMobileSKDApp.CheckImage(ChId)=="N") {
+                        mMobileSKDApp.LoadImage(ChId);
+                    }
+                } while (c.moveToNext());
+            }
             c.close();
         } catch (Exception e) {
             e.printStackTrace();
