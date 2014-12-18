@@ -111,6 +111,19 @@ public class MobileSKDApp extends Application {
     public Boolean    NetErr = false;
     protected String mResult= "null";
 
+    public Bitmap ShowPhoto (String CholderId)
+
+    {
+        File SDCardRoot = Environment.getExternalStorageDirectory().getAbsoluteFile();
+        String filename=CholderId+"-1.jpg";
+        Bitmap vbitmap = BitmapFactory.decodeFile(SDCardRoot+"/MobileSKD/"+filename);
+        if (vbitmap==null)
+        {
+            vbitmap=BitmapFactory.decodeResource(getResources(), R.drawable.u34);
+        }
+        return vbitmap;
+    }
+
     public String LoadImage (String CholderId)
     {
         String filepath;

@@ -212,7 +212,7 @@ public class MobileSKDDB  extends SQLiteOpenHelper {
         Cursor c=null;
         SQLiteDatabase db = this.getWritableDatabase();
 
-        c = db.rawQuery("select distinct rfid ,employee_number, acc_level_id, acc_kpp, nm ,person_id from skd_people_acc x , xxhr_skd_dev_acc a "+
+        c = db.rawQuery("select distinct rfid ,employee_number, acc_level_id, acc_kpp, nm ,person_id,cardholder_id from skd_people_acc x , xxhr_skd_dev_acc a "+
                 " where " +
                 " a.acclev_id=x.acc_level_id " +
                 " and x.acc_kpp||';'||a.dev_str like '%"+pKPP+"%'" +
@@ -227,6 +227,7 @@ public class MobileSKDDB  extends SQLiteOpenHelper {
                 returnList.put("acc_kpp", c.getString(3));
                 returnList.put("nm", c.getString(4));
                 returnList.put("person_id", c.getString(5));
+                returnList.put("cardholder_id", c.getString(6));
 
 
                 SimpleDateFormat fmt = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss");

@@ -17,6 +17,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -132,12 +133,8 @@ public class ScanActOff extends Activity {
 //            Log.d((String) ScanText4.getText(), "Scantext4");
             Log.d(mCode, "=mCode");
             Log.d(String.valueOf(i), "=mCode");
-
-
 //**********************
-
             HashMap h= mMobileSKDApp.getmDbHelper().getSKDaccPeople(String.valueOf(i),"Проходная 1",mMobileSKDApp.SKDOperator, mMobileSKDApp.SKDKPP , mMobileSKDApp.SKDTKPP);
-
             String emp ="-1";
             emp=(String)h.get("employee_number");
 
@@ -146,6 +143,8 @@ public class ScanActOff extends Activity {
             TextView txtUp = (TextView) this.findViewById(R.id.txtaccup);
             TextView txtDown = (TextView) this.findViewById(R.id.txtaccdown);
             TextView txtEmp = (TextView) this.findViewById(R.id.empT);
+            ImageView jpgView = (ImageView)findViewById(R.id.photoid);
+
 
             if (emp==null)
             {
@@ -154,6 +153,7 @@ public class ScanActOff extends Activity {
                 txtUp.setText("Карта не найдена\n");
                 txtEmp.setText(emp);
                 txtDown.setText("Карта не найдена");
+                jpgView.setImageBitmap(mMobileSKDApp.ShowPhoto((String)h.get("cardholder_id")));
             }
             else
             {
@@ -161,6 +161,8 @@ public class ScanActOff extends Activity {
                 txtUp.setText("Доступ разрешен\n");
                 txtDown.setText("Доступ разрешен");
                 txtEmp.setText("л.н. "+emp);
+                //Bitmap bitmap = BitmapFactory.decodeFile("/sdcard/sample-1.jpg");
+                jpgView.setImageBitmap(mMobileSKDApp.ShowPhoto((String)h.get("cardholder_id")));
             }
             Log.d(emp,"emp");
             Log.d("x"+(String) h.get("employee_number")+"x","employee_number");
@@ -205,7 +207,6 @@ public class ScanActOff extends Activity {
 
     public void disableForegroundMode() {
         //Log.d(TAG, "disableForegroundMode");
-
         nfcAdapter.disableForegroundDispatch(this);
     }
 }

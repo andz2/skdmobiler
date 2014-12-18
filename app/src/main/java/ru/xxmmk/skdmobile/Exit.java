@@ -38,8 +38,8 @@ public class Exit extends Activity {
 
 
         ActionBar myAB = getActionBar();
-        myAB.setTitle(mMobileSKDApp.SKDOperator);
-        myAB.setSubtitle(mMobileSKDApp.SKDKPP);
+        myAB.setTitle("Выход");
+        myAB.setSubtitle("Вы можете выгрузить данные с устройства");
         myAB.setDisplayShowHomeEnabled(false);
 
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
