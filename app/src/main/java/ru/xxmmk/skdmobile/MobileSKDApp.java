@@ -92,6 +92,9 @@ public class MobileSKDApp extends Application {
 
     public String mDataSKDPeople = "http://neptun.eco.mmk.chel.su:7777/pls/apex/XXOTA_APEX.XXHR_SKD_MOBILE.get_skd_people_json";
     public String mDataSKDObj    = "http://neptun.eco.mmk.chel.su:7777/pls/apex/XXOTA_APEX.XXHR_SKD_MOBILE.get_skd_dev_json";
+    public String mDataSKDMobObj    = "http://neptun.eco.mmk.chel.su:7777/pls/apex/XXOTA_APEX.XXHR_SKD_MOBILE.get_skd_mob_dev_json"; // выбор кпп
+    public String mDataSKDOper    = "http://neptun.eco.mmk.chel.su:7777/pls/apex/XXOTA_APEX.XXHR_SKD_MOBILE.get_skd_mob_oper_json";  //загрузить охранника
+
 
     public String ListKPP = "http://neptun.eco.mmk.chel.su:7777/pls/apex/xxota_apex.xxhr_skd_mobile.list_kpp";
     public String ListBreach = "http://neptun.eco.mmk.chel.su:7777/pls/apex/xxota_apex.xxhr_skd_mobile.breach_type";
@@ -111,12 +114,12 @@ public class MobileSKDApp extends Application {
     public Boolean    NetErr = false;
     protected String mResult= "null";
 
-    public Bitmap ShowPhoto (String CholderId)
+    public Bitmap ShowPhoto (String CholderId,String fl)
 
     {
         File SDCardRoot = Environment.getExternalStorageDirectory().getAbsoluteFile();
         String filename=CholderId+"-1.jpg";
-        Bitmap vbitmap = BitmapFactory.decodeFile(SDCardRoot+"/MobileSKD/"+filename);
+        Bitmap vbitmap = BitmapFactory.decodeFile(SDCardRoot+"/MobileSKD/"+fl+"/"+filename);
         if (vbitmap==null)
         {
             vbitmap=BitmapFactory.decodeResource(getResources(), R.drawable.u34);
@@ -124,7 +127,7 @@ public class MobileSKDApp extends Application {
         return vbitmap;
     }
 
-    public String LoadImage (String CholderId)
+    public String LoadImage (String CholderId, String fl)
     {
         String filepath;
         try
@@ -138,7 +141,7 @@ public class MobileSKDApp extends Application {
             String filename=CholderId+"-1.jpg";
             Log.i("Local filename:",""+filename);
 
-            File file = new File(SDCardRoot+"/MobileSKD/",filename);
+            File file = new File(SDCardRoot+"/MobileSKD/"+fl+"/",filename);
             if(file.createNewFile())
             {
                 file.createNewFile();
@@ -170,10 +173,10 @@ public class MobileSKDApp extends Application {
 
         return  CholderId;
     }
-    public String CheckImage (String CholderId)
+    public String CheckImage (String CholderId,String fl)
     {
         String filename=CholderId+"-1.jpg";
-        java.io.File file = new java.io.File(Environment.getExternalStorageDirectory().getAbsoluteFile()+"/MobileSKD/" , filename);
+        java.io.File file = new java.io.File(Environment.getExternalStorageDirectory().getAbsoluteFile()+"/MobileSKD/"+fl+"/" , filename);
         if (file.exists()) {
            return "Y";
         }

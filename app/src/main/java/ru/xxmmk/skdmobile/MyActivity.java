@@ -45,6 +45,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.HashMap;
 import java.util.concurrent.TimeUnit;
 
 import com.google.zxing.integration.android.IntentIntegrator;
@@ -65,7 +66,7 @@ public class MyActivity extends Activity {
     Context context;
     ProgressDialog ringProgressDialog;
     private LoadObjects mLoadTask = null;
-    MyTask mt;
+
 
         //private SaveObjects mSaveTask = null;
         @Override
@@ -227,20 +228,6 @@ public class MyActivity extends Activity {
         vibe.vibrate(500);
     }
 
- public void loadSKDPeople(){
-     ringProgressDialog = ProgressDialog.show(MyActivity.this, "Подождите ...", "Загружаются владельцы карт с точечным уровнем доступа ...", true);
-     ringProgressDialog.setCancelable(false);
-
-     //showProgress(true);
-     mLoadTask = new LoadObjects();
-     mLoadTask.execute((Void) null);
-     Log.d("7","7 ");
-     Toast.makeText(this, "Finish.", Toast.LENGTH_SHORT).show();
-
-
-
-   //  ringProgressDialog.dismiss(); //потом убрать
- }
     public class LoadObjects extends AsyncTask<Void, Void, Boolean> {
 
         //private final String mOrgId;
@@ -254,47 +241,7 @@ public class MyActivity extends Activity {
         protected Boolean doInBackground(Void... params) {
             Boolean vStatus = false;
             try {
-                /*StringBuilder builder = new StringBuilder();
-                HttpClient client = mMobileSKDApp.getNewHttpClient();// new DefaultHttpClient();
-                //MobileTOiRApp app = MobileTOiRApp.getInstance();
-                Log.d(mMobileSKDApp.getLOG_TAG(), "LoadObjects ");
-                HttpGet httpGet = new HttpGet(mMobileSKDApp.getSKDDataURL("602"));
-                Log.d("1","http");
-                Log.d(mMobileSKDApp.getLOG_TAG(), "LoadObjects " );
 
-                try {
-                    HttpResponse response = client.execute(httpGet);
-                    StatusLine statusLine = response.getStatusLine();
-                    int statusCode = statusLine.getStatusCode();
-                    Log.d("2","statusCode!!!!="+statusCode);
-                    if (statusCode == 200 )
-                    {
-                        HttpEntity entity = response.getEntity();
-                        InputStream content = entity.getContent();
-                        BufferedReader reader = new BufferedReader(new InputStreamReader(content));
-                        String line;
-                        while ((line = reader.readLine()) != null) {
-
-                            builder.append(line);
-                       //     Log.d("1",line);
-                        }
-                        Log.d("4","dead?= "+line);
-//                        mMobileSKDApp.getmDbHelper().loadObjects(builder.toString(),mOrgId);
-
-                    }
-                    else {
-                        //Log.d(mMobileTOiRApp.getLOG_TAG(), "LoadObjects Error = " + statusCode);
-                        //Toast.makeText(this, "Example action.", Toast.LENGTH_SHORT).show();
-                    }
-                }
-                catch (ClientProtocolException e) {
-                    e.printStackTrace();
-                }
-                catch (IOException e) {
-                    e.printStackTrace();
-                }
-
-                Thread.sleep(10);*/
                 Thread.sleep(2000);
             } catch (InterruptedException e) {
                 e.printStackTrace();
@@ -330,126 +277,7 @@ public class MyActivity extends Activity {
 
 
     }
-    class MyTask extends AsyncTask<Void, Void, Void> {
 
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-        }
-
-        @Override
-        protected Void doInBackground(Void... params) {
-            try {
-                Thread.sleep(10); //  TimeUnit.SECONDS.sleep(2);
-         //       Log.d("1","!!!!!!!!!!!!!!1");
-                //Загрузка данных
-
-                Boolean vStatus = false;
-                try {
-                StringBuilder builder = new StringBuilder();
-                HttpClient client = mMobileSKDApp.getNewHttpClient();// new DefaultHttpClient();
-                //MobileTOiRApp app = MobileTOiRApp.getInstance();
-                Log.d(mMobileSKDApp.getLOG_TAG(), "LoadPeople ");
-                HttpGet httpGet = new HttpGet(mMobileSKDApp.getSKDDataURL("602"));
-                //Log.d("1","http");
-                //Log.d(mMobileSKDApp.getLOG_TAG(), "LoadObjects " );
-
-                try {
-                    HttpResponse response = client.execute(httpGet);
-                    StatusLine statusLine = response.getStatusLine();
-                    int statusCode = statusLine.getStatusCode();
-                    Log.d("2","statusCode!!!!="+statusCode);
-                    if (statusCode == 200 )
-                    {
-                        HttpEntity entity = response.getEntity();
-                        InputStream content = entity.getContent();
-                        BufferedReader reader = new BufferedReader(new InputStreamReader(content));
-                        String line;
-                        while ((line = reader.readLine()) != null) {
-
-                            builder.append(line);
-                              }
-                       // Log.d("4","dead?= "+line);
-                        mMobileSKDApp.getmDbHelper().loadSKDPeople(builder.toString());
-
-                    }
-                    else {
-                        //Log.d(mMobileTOiRApp.getLOG_TAG(), "LoadObjects Error = " + statusCode);
-                        //Toast.makeText(this, "Example action.", Toast.LENGTH_SHORT).show();
-                    }
-                }
-                catch (ClientProtocolException e) {
-                    e.printStackTrace();
-                }
-                catch (IOException e) {
-                    e.printStackTrace();
-                }
-                Thread.sleep(10);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-
-                }
-
-
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-            //***************************
-            try {
-                StringBuilder builder = new StringBuilder();
-                HttpClient client = mMobileSKDApp.getNewHttpClient();// new DefaultHttpClient();
-                Log.d(mMobileSKDApp.getLOG_TAG(), "LoadPeople ");
-                HttpGet httpGet =  new HttpGet(mMobileSKDApp.getSKDDataURL("601"));
-                //Log.d("1","http");
-                //Log.d(mMobileSKDApp.getLOG_TAG(), "LoadObjects " );
-
-                try {
-                    HttpResponse response = client.execute(httpGet);
-                    StatusLine statusLine = response.getStatusLine();
-                    int statusCode = statusLine.getStatusCode();
-                    Log.d("2","statusCode!!!!="+statusCode);
-                    if (statusCode == 200 )
-                    {
-                        HttpEntity entity = response.getEntity();
-                        InputStream content = entity.getContent();
-                        BufferedReader reader = new BufferedReader(new InputStreamReader(content));
-                        String line;
-                        while ((line = reader.readLine()) != null) {
-
-                            builder.append(line);
-                        }
-                        // Log.d("4","dead?= "+line);
-                        mMobileSKDApp.getmDbHelper().loadSKDObj(builder.toString());
-
-                    }
-                    else {
-                        //Log.d(mMobileTOiRApp.getLOG_TAG(), "LoadObjects Error = " + statusCode);
-                        //Toast.makeText(this, "Example action.", Toast.LENGTH_SHORT).show();
-                    }
-                }
-                catch (ClientProtocolException e) {
-                    e.printStackTrace();
-                }
-                catch (IOException e) {
-                    e.printStackTrace();
-                }
-                Thread.sleep(10);
-            }
-            catch (InterruptedException e) {
-                e.printStackTrace();
-
-            }
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(Void result) {
-            super.onPostExecute(result);
-            Log.d("2","End");
-            Toast.makeText(context, "Загрузка завершена", Toast.LENGTH_LONG).show();
-
-        }
-    }
     public class UserLoginTask extends AsyncTask<Void, Void, Boolean> {
 
 
@@ -550,22 +378,45 @@ public class MyActivity extends Activity {
                 Button Logbutton=(Button)findViewById(R.id.Loginbutton);
                 Logbutton.setBackgroundDrawable(getResources().getDrawable(R.drawable.btn_inact)); //setBackgroundResource
                 Logbutton.setTextColor(Color.rgb(65, 169, 4));
-
-                Logbutton.setText(Html.fromHtml(/*getResources().getString(R.string.seccabstr)*/"<b>Личный кабинет</b><br><br><sup><small>Нажмите для информации</small></sup>"));
+          //      Logbutton.setText(Html.fromHtml(/*getResources().getString(R.string.seccabstr)*/"<b>Личный кабинет</b><br><br><sup><small>Нажмите для информации</small></sup>"));
                 mMobileSKDApp.SKDStep = "2";
-            } else {
+            } else
+            {
+
                 //   super.onCreate(savedInstanceState);
-                Log.d("go error page","way");
+                Log.d("Мы не в сети","сети нет");
                 Intent intent = new Intent();
-                if ( mMobileSKDApp.SKDStep=="1" ) {
-                    if (mMobileSKDApp.NetErr==true)
-                        intent.setClass(MyActivity.this, NetError.class);
-                    else
-                    intent.setClass(MyActivity.this, ErrorLogin.class);
+                if ( mMobileSKDApp.SKDStep=="1" )
+                {
+                    Long i= Long.parseLong( mMobileSKDApp.SKDOperRfId, 16);
 
-                    startActivity(intent);
+                    HashMap h= mMobileSKDApp.getmDbHelper().getSKDOperator(String.valueOf(i));
+                    String operator=(String)h.get("operator");
+                    if (operator==null) {
+                        if (mMobileSKDApp.NetErr == true)
+                            intent.setClass(MyActivity.this, NetError.class);
+                        else
+                            intent.setClass(MyActivity.this, ErrorLogin.class);
+                        startActivity(intent);
+                    }else
+                    {
+                        mMobileSKDApp.SKDOperator=operator;
+                        Log.d("Is OK","Is OK");
+                        intent.setClass(MyActivity.this, AccLogin.class);
 
+                        startActivity(intent);
 
+                        setContentView(R.layout.activity_my);
+                        //LinearLayout mainLayout=(LinearLayout)findViewById(R.id.M);
+                        Button KPPbutton=(Button)findViewById(R.id.SetKPP);
+                        KPPbutton.setBackgroundDrawable(getResources().getDrawable(R.drawable.btm_aut)); //setBackgroundResource
+                        KPPbutton.setTextColor(Color.rgb(0,0,0));
+                        Button Logbutton=(Button)findViewById(R.id.Loginbutton);
+                        Logbutton.setBackgroundDrawable(getResources().getDrawable(R.drawable.btn_inact)); //setBackgroundResource
+                        Logbutton.setTextColor(Color.rgb(65, 169, 4));
+                        //      Logbutton.setText(Html.fromHtml(/*getResources().getString(R.string.seccabstr)*/"<b>Личный кабинет</b><br><br><sup><small>Нажмите для информации</small></sup>"));
+                        mMobileSKDApp.SKDStep = "2";
+                    }
                     //  setContentView(R.layout.error_l);
                 }
 
@@ -643,11 +494,12 @@ public class MyActivity extends Activity {
                                                   mMobileSKDApp.SKDStep="1";
                                                   mMobileSKDApp.SKDKPP="Укажите КПП";
                                                   mMobileSKDApp.SKDOperator="Кто ВЫ?";
-                                                  StartScreen();
+                                                  finish();
+                                                  //11111StartScreen();
                                                   Intent intent = new Intent(view.getContext(), Exit.class);
                                                   intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                                                   view.getContext().startActivity(intent);
-                                                  finish();
+
                                               }
                                               else {
                                                   Intent intent = new Intent(MyActivity.this, Activity.class);

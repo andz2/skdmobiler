@@ -33,6 +33,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 
 
@@ -197,9 +198,8 @@ import java.util.List;
                             }
                         } else {
                             Log.d("not ok","not ok");
-                            //Log.e("Login fail", "Login fail");
 
-                        }
+                           }
                     } catch (ClientProtocolException e) {
                         e.printStackTrace();
 
@@ -223,6 +223,28 @@ import java.util.List;
                     Log.d("not ok","not ok");
 //                    return false;
                 }
+            if (mMobileSKDApp.NetErr)
+            {
+                ArrayList<HashMap<String, String>> mKpp = new ArrayList<HashMap<String, String>>();
+
+                mKpp=mMobileSKDApp.getmDbHelper().getSKDMobDev();
+                HashMap<String, String> m = mKpp.get(0);//берём первый элемент в массиве hashMap
+
+                String strArr[] = new String[m.size()];
+
+
+                int i = 0;
+                for (HashMap<String, String> hash : mKpp) {
+                    for (String current : hash.values()) { //для каждого значения в строке хэшмапа
+//                        strArr[i] = current;
+                       data.add(current);
+                     //   Log.d("!!"+current,"!!!!");
+                        i++;
+                    }
+
+
+                }
+            }
 
 //            return false;
         }

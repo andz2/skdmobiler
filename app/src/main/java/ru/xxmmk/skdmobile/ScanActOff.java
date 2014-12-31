@@ -153,7 +153,7 @@ public class ScanActOff extends Activity {
                 txtUp.setText("Карта не найдена\n");
                 txtEmp.setText(emp);
                 txtDown.setText("Карта не найдена");
-                jpgView.setImageBitmap(mMobileSKDApp.ShowPhoto((String)h.get("cardholder_id")));
+                jpgView.setImageBitmap(mMobileSKDApp.ShowPhoto((String)h.get("cardholder_id"),(String)h.get("fl")));
             }
             else
             {
@@ -162,7 +162,7 @@ public class ScanActOff extends Activity {
                 txtDown.setText("Доступ разрешен");
                 txtEmp.setText("л.н. "+emp);
                 //Bitmap bitmap = BitmapFactory.decodeFile("/sdcard/sample-1.jpg");
-                jpgView.setImageBitmap(mMobileSKDApp.ShowPhoto((String)h.get("cardholder_id")));
+                jpgView.setImageBitmap(mMobileSKDApp.ShowPhoto((String)h.get("cardholder_id"),(String)h.get("fl")));
             }
             Log.d(emp,"emp");
             Log.d("x"+(String) h.get("employee_number")+"x","employee_number");

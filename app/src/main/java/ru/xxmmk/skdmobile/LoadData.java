@@ -42,7 +42,7 @@ public class LoadData extends Activity {
     private MobileSKDApp mMobileSKDApp;
     protected NfcAdapter nfcAdapter;
     protected PendingIntent nfcPendingIntent;
-    private LoadTask mLoadT;
+    private LoadCh mLoadT;
     private LoadPhoto mLoadPhoto;
     Context context;
     ProgressDialog pd;
@@ -55,6 +55,7 @@ public class LoadData extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_load_data);
         mMobileSKDApp = ((MobileSKDApp) this.getApplication());
+        int i=0;
 
 
         ActionBar myAB = getActionBar();
@@ -67,9 +68,11 @@ public class LoadData extends Activity {
         nfcAdapter = NfcAdapter.getDefaultAdapter(this);
         nfcPendingIntent = PendingIntent.getActivity(this, 0, new Intent(this, this.getClass()).addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP), 0);
 
-        File directory = new File(Environment.getExternalStorageDirectory()+File.separator+"MobileSKD"); //попробуем создать каталог для фото
-        directory.mkdirs();
-
+        while (i<10) {
+            File directory = new File(Environment.getExternalStorageDirectory() + File.separator + "MobileSKD"+ File.separator +i); //попробуем создать каталог для фото
+            directory.mkdirs();
+            i++;
+        }
         Button LPbutton=(Button)findViewById(R.id.loadPhoto); //загрузка фото
         LPbutton.setOnClickListener(new View.OnClickListener() {
                                         @Override
@@ -96,7 +99,8 @@ public class LoadData extends Activity {
                                         @Override
                                         public void onClick(View view) {
                                             if (mLoadT == null ||
-                                                    mLoadT.getStatus().equals(AsyncTask.Status.FINISHED)) {
+                                                    mLoadT.getStatus().equals(AsyncTask.Status.FINISHED))
+                                            {
                                                     finish();
                                             }
                                             else
@@ -120,7 +124,7 @@ public class LoadData extends Activity {
                                                         .setNegativeButton(android.R.string.no, null)
                                                         .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                                                             public void onClick(DialogInterface arg0, int arg1) {
-                                                                mLoadT = new LoadTask();
+                                                                mLoadT = new LoadCh();
                                                                 mLoadT.execute();
                                                                 Toast.makeText(LoadData.this, "Загрузка начата", Toast.LENGTH_SHORT)
                                                                         .show();
@@ -159,7 +163,7 @@ public class LoadData extends Activity {
 
         return super.onOptionsItemSelected(item);
     }
-    class LoadTask extends AsyncTask<Void, Void, Void> {
+    class LoadCh extends AsyncTask<Void, Void, Void> {
 
         @Override
         protected void onPreExecute() {
@@ -169,6 +173,7 @@ public class LoadData extends Activity {
         @Override
         protected Void doInBackground(Void... params) {
             try {
+                createInfoNotification("Идёт синхронизация данных ...","Начало в ","Start");
                 Thread.sleep(10); //  TimeUnit.SECONDS.sleep(2);
                 //       Log.d("1","!!!!!!!!!!!!!!1");
                 //Загрузка данных
@@ -224,7 +229,7 @@ public class LoadData extends Activity {
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-            //***************************
+            //загрузка уровней доступа
             try {
                 StringBuilder builder = new StringBuilder();
                 HttpClient client = mMobileSKDApp.getNewHttpClient();// new DefaultHttpClient();
@@ -264,6 +269,97 @@ public class LoadData extends Activity {
                 }
                 Thread.sleep(10);
             }
+
+            catch (InterruptedException e) {
+                e.printStackTrace();
+
+            }
+            //загрузка операторов
+            try {
+                StringBuilder builder = new StringBuilder();
+                HttpClient client = mMobileSKDApp.getNewHttpClient();// new DefaultHttpClient();
+                Log.d(mMobileSKDApp.getLOG_TAG(), "LoadDevice ");
+                HttpGet httpGet =  new HttpGet(mMobileSKDApp.mDataSKDOper);
+                //Log.d("1","http");
+                //Log.d(mMobileSKDApp.getLOG_TAG(), "LoadObjects " );
+
+                try {
+                    HttpResponse response = client.execute(httpGet);
+                    StatusLine statusLine = response.getStatusLine();
+                    int statusCode = statusLine.getStatusCode();
+                    Log.d("2","statusCode!!!!="+statusCode);
+                    if (statusCode == 200 )
+                    {
+                        HttpEntity entity = response.getEntity();
+                        InputStream content = entity.getContent();
+                        BufferedReader reader = new BufferedReader(new InputStreamReader(content));
+                        String line;
+                        while ((line = reader.readLine()) != null) {
+
+                            builder.append(line);
+                        }
+                        // Log.d("4","dead?= "+line);
+                        mMobileSKDApp.getmDbHelper().loadSKDOper(builder.toString());
+                    }
+                    else {
+                        //Log.d(mMobileTOiRApp.getLOG_TAG(), "LoadObjects Error = " + statusCode);
+                        //Toast.makeText(this, "Example action.", Toast.LENGTH_SHORT).show();
+                    }
+                }
+                catch (ClientProtocolException e) {
+                    e.printStackTrace();
+                }
+                catch (IOException e) {
+                    e.printStackTrace();
+                }
+                Thread.sleep(10);
+            }
+
+            catch (InterruptedException e) {
+                e.printStackTrace();
+
+            }
+            //загрузка проходных
+            try {
+                StringBuilder builder = new StringBuilder();
+                HttpClient client = mMobileSKDApp.getNewHttpClient();// new DefaultHttpClient();
+                Log.d(mMobileSKDApp.getLOG_TAG(), "LoadDevice ");
+                HttpGet httpGet =  new HttpGet(mMobileSKDApp.mDataSKDMobObj);
+                //Log.d("1","http");
+                //Log.d(mMobileSKDApp.getLOG_TAG(), "LoadObjects " );
+
+                try {
+                    HttpResponse response = client.execute(httpGet);
+                    StatusLine statusLine = response.getStatusLine();
+                    int statusCode = statusLine.getStatusCode();
+                    Log.d("2","statusCode!!!!="+statusCode);
+                    if (statusCode == 200 )
+                    {
+                        HttpEntity entity = response.getEntity();
+                        InputStream content = entity.getContent();
+                        BufferedReader reader = new BufferedReader(new InputStreamReader(content));
+                        String line;
+                        while ((line = reader.readLine()) != null) {
+
+                            builder.append(line);
+                        }
+                        // Log.d("4","dead?= "+line);
+                        mMobileSKDApp.getmDbHelper().loadSKDMobDev(builder.toString());
+                    }
+                    else {
+                        //Log.d(mMobileTOiRApp.getLOG_TAG(), "LoadObjects Error = " + statusCode);
+                        //Toast.makeText(this, "Example action.", Toast.LENGTH_SHORT).show();
+                    }
+                }
+                catch (ClientProtocolException e) {
+                    e.printStackTrace();
+                }
+                catch (IOException e) {
+                    e.printStackTrace();
+                }
+                Thread.sleep(10);
+            }
+
             catch (InterruptedException e) {
                 e.printStackTrace();
 
@@ -277,7 +373,7 @@ public class LoadData extends Activity {
             Log.d("2","End!!!!!!!!!");
             Toast.makeText(LoadData.this, "Загрузка завершена", Toast.LENGTH_SHORT)
                     .show();
-            createInfoNotification("Синхронизация данных завершена");
+            createInfoNotification("Синхронизация данных завершена","Выполнено в ","Finish");
         }
     }
     class LoadPhoto extends AsyncTask<Void, Void, Void> {
@@ -289,6 +385,7 @@ public class LoadData extends Activity {
 
         @Override
         protected Void doInBackground(Void... params) {
+            createInfoNotification("Идёт загрузка фото ...","Начало в ","Start");
             mMobileSKDApp.getmDbHelper().UploadSKDPhoto();
             return null;
         }
@@ -299,22 +396,28 @@ public class LoadData extends Activity {
             Log.d("2","End!!!!!!!!!");
             Toast.makeText(LoadData.this, "Выгрузка фото завершена", Toast.LENGTH_SHORT)
                     .show();
-            createInfoNotification("Выгрузка фото завершена");
+            createInfoNotification("Выгрузка фото завершена","Выполнено в ","Finish");
         }
     }
-    public void createInfoNotification(String message){
+    public void createInfoNotification(String message, String message1, String Fl){
         SimpleDateFormat fmt = new SimpleDateFormat("HH:mm");
         Date date = new Date();
         String dateString = fmt.format(date);
 
 
         NotificationManager mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE); // Создаем экземпляр менеджера уведомлений
-        int icon = android.R.drawable.stat_sys_download_done; // Иконка для уведомления, я решил воспользоваться стандартной иконкой для Email
+        int icon;
+        if (Fl.equals("Finish")) {
+            icon  = android.R.drawable.stat_sys_download_done; // Иконка для уведомления, я решил воспользоваться стандартной иконкой для Email
+        }
+        else {
+            icon = android.R.drawable.arrow_up_float; // Иконка для уведомления, я решил воспользоваться стандартной иконкой для Email
+        }
         CharSequence tickerText = message; // Подробнее под кодом
         long when = System.currentTimeMillis(); // Выясним системное время
         Notification notification = new Notification(icon, tickerText, when); // Создаем экземпляр уведомления, и передаем ему наши параметры
         Context context = getApplicationContext();
-        CharSequence contentTitle = "Выполнено в "+dateString; // Текст заголовка уведомления при развернутой строке статуса
+        CharSequence contentTitle = message1+dateString; // Текст заголовка уведомления при развернутой строке статуса
         CharSequence contentText = message; //Текст под заголовком уведомления при развернутой строке статуса
         //Intent notificationIntent = new Intent(this, MyActivity.class); // Создаем экземпляр Intent
         //PendingIntent contentIntent = PendingIntent.getActivity(this, 0, notificationIntent, 0); // Подробное описание в UPD к статье
